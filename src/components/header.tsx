@@ -27,7 +27,9 @@ export function Header() {
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4">
         <div className="flex items-center space-x-8">
           <div className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded bg-gradient-to-br from-accent to-accent/70"></div>
+            <div className="h-8 w-8 rounded-md bg-teal-500 flex items-center justify-center">
+              <span className="text-white font-bold text-sm">S</span>
+            </div>
             <span className="font-bold text-xl">Signal Log</span>
           </div>
           

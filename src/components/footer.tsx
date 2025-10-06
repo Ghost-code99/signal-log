@@ -6,23 +6,33 @@ export function Footer() {
   return (
     <footer className="border-t border-border/50 bg-background">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col sm:flex-row justify-between items-center text-muted-foreground">
-          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 mb-4 sm:mb-0">
+        <div className="flex flex-col sm:flex-row justify-between items-center text-muted-foreground text-sm">
+          <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 mb-4 sm:mb-0">
             <div className="flex items-center space-x-2">
-              <span className="font-medium">Signal Log</span>
+              <div className="h-8 w-8 rounded-md bg-teal-500 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">S</span>
+              </div>
+              <span className="font-semibold text-base">Signal Log</span>
             </div>
-            <div className="flex items-center space-x-1 text-sm">
+            <div className="flex items-center space-x-1">
               <span>Made with</span>
               <a 
                 href="https://pirateskills.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-accent hover:underline font-medium"
+                className="font-semibold hover:text-foreground transition-colors"
               >
                 AARRR
               </a>
               <span>in Cologne</span>
-              <span>🏴‍☠️</span>
+              <a
+                href="https://x.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-foreground transition-colors"
+              >
+                ✕
+              </a>
             </div>
           </div>
           
@@ -31,7 +41,7 @@ export function Footer() {
               href="https://pirateskills.com/contact"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm hover:text-accent transition-colors"
+              className="hover:text-foreground transition-colors"
             >
               Contact
             </a>
@@ -39,14 +49,11 @@ export function Footer() {
               href="https://www.iubenda.com/privacy-policy/8183741/full-legal"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm hover:text-accent transition-colors"
+              className="hover:text-foreground transition-colors"
             >
               Privacy Policy
             </a>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm">Theme:</span>
-              <ThemeToggle />
-            </div>
+            <ThemeToggle />
           </div>
         </div>
       </div>

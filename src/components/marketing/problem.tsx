@@ -3,56 +3,89 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { IconUsers } from "@tabler/icons-react";
 
 export function Problem() {
   const scrollToSolution = () => {
     document.getElementById("solution")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const problems = [
+    {
+      emoji: "📝",
+      title: "Scattered Ideas",
+      description: "Notes spread across multiple tools, making it impossible to see the big picture or track progress effectively.",
+    },
+    {
+      emoji: "⏰",
+      title: "Wasted Time",
+      description: "Energy spent on organization instead of learning and building, delaying your path to predictable revenue.",
+    },
+    {
+      emoji: "🚀",
+      title: "Lost Momentum",
+      description: "Ideas get stuck in fragmented notes and unfinished drafts, causing founders to lose momentum on critical experiments.",
+    },
+  ];
+
   return (
-    <section id="problem" className="py-16 sm:py-24 bg-gradient-to-r from-muted/20 to-accent/5">
+    <section id="problem" className="py-16 sm:py-24 bg-background">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
             viewport={{ once: true }}
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8">
-              The Problem: From Scattered Ideas to Wasted Runway
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+              The Problem Every Founder Knows
             </h2>
-            
-            <Card className="border-0 shadow-lg bg-gradient-to-br from-background to-accent/5">
-              <CardContent className="p-8 sm:p-12">
-                <div className="grid md:grid-cols-2 gap-8 items-center">
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4">For Solo Founders</h3>
-                    <p className="text-muted-foreground mb-4">
-                      You&apos;re tasked with generating and executing high-stakes ideas across all business functions—from product and marketing to sales and fundraising. But your current process is broken.
-                    </p>
-                    <p className="text-muted-foreground">
-                      Ideas are fragmented across disparate systems: personal notes, team messages, customer call transcripts, and browser bookmarks. Existing tools act as &ldquo;idea graveyards&rdquo; where valuable concepts go to die.
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-20 h-20 bg-gradient-to-br from-accent/20 to-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <IconUsers className="w-10 h-10 text-accent" />
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Pre-product-market fit startups with fewer than 10 employees
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+              Indie SaaS founders validating product experiments struggle because their ideas, notes,
+              and progress updates are scattered across tools and moments, slowing validation and
+              hiding product-market fit signals.
+            </p>
+          </motion.div>
 
-            <div className="text-center mt-8">
-              <Button onClick={scrollToSolution} size="lg" className="px-8">
-                See Our Solution
-              </Button>
-            </div>
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {problems.map((problem, index) => (
+              <motion.div
+                key={problem.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Card className="h-full border-muted/40 bg-card/50 backdrop-blur hover:border-teal-500/50 transition-colors">
+                  <CardContent className="p-8 text-center">
+                    <div className="text-5xl mb-6">{problem.emoji}</div>
+                    <h3 className="text-xl font-semibold mb-4 text-teal-500">
+                      {problem.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {problem.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <Button
+              onClick={scrollToSolution}
+              size="lg"
+              className="bg-white text-black hover:bg-gray-100 px-8 py-6 text-base font-medium"
+            >
+              See Our Solution →
+            </Button>
           </motion.div>
         </div>
       </div>
