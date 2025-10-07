@@ -48,8 +48,8 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-3xl mx-auto"
           >
-            Turn scattered ideas into evolving narratives. Validate experiments faster with less
-            cognitive overhead and keep multiple ideas moving forward.
+            Transform scattered ideas into validated experiments. Track your journey from concept 
+            to product-market fit with AI-powered insights that keep you focused and moving forward.
           </motion.p>
 
           {/* CTA Button */}
