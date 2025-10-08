@@ -68,10 +68,10 @@ export function Solution() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="h-full border-muted/40 bg-card/50 backdrop-blur hover:border-teal-500/50 transition-colors">
+                <Card className="h-full border-muted/40 bg-card/50 backdrop-blur hover:border-accent/50 hover:shadow-lg hover:shadow-accent/10 transition-all">
                   <CardContent className="p-8 text-center">
                     <div className="text-5xl mb-6">{feature.emoji}</div>
-                    <h3 className="text-xl font-semibold mb-4 text-teal-500">
+                    <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
                       {feature.title}
                     </h3>
                     <p className="text-muted-foreground leading-relaxed">

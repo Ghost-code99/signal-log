@@ -36,7 +36,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-8 text-teal-500"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-8 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent"
           >
             for Indie SaaS Founders
           </motion.h2>

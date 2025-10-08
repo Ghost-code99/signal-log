@@ -11,12 +11,12 @@ const config: Config = {
     extend: {
       colors: {
         accent: {
-          DEFAULT: "hsl(142, 76%, 36%)",
-          foreground: "hsl(355, 7%, 97%)",
+          DEFAULT: "hsl(340, 82%, 68%)",
+          foreground: "hsl(0, 0%, 100%)",
         },
         primary: {
-          DEFAULT: "hsl(142, 76%, 36%)",
-          foreground: "hsl(355, 7%, 97%)",
+          DEFAULT: "hsl(310, 70%, 65%)",
+          foreground: "hsl(0, 0%, 100%)",
         },
       },
     },
