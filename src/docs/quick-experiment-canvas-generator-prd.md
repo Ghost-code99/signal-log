@@ -237,68 +237,68 @@ UI built with shadcn/ui components (Card, Button, Input, Label, Badge). Uses loc
 
 ### Stage 3 — Test, Debug, and Safety Checks
 
-1. **Verify all user stories**
+1. ✅ **Verify all user stories**
    - Test US-1: Enter idea → generate → review structured canvas
    - Test US-2: Edit multiple fields → verify changes persist
    - Test US-3: Download file → open → verify all content present
    - Validation: All stories pass end-to-end
 
-2. **Test acceptance criteria scenarios**
+2. ✅ **Test acceptance criteria scenarios**
    - Run all Gherkin scenarios manually
    - Verify hypothesis format ("If...then...because")
    - Check metric is specific and measurable
    - Test add/remove resources flow
    - Validation: Document failures, fix blockers
 
-3. **Input validation and sanitization**
+3. ✅ **Input validation and sanitization**
    - Disable generate when textarea empty
    - Trim whitespace from idea text
    - Handle empty resource inputs gracefully
    - Test very long ideas (2000+ chars)
    - Validation: No crashes on edge inputs
 
-4. **Canvas editing edge cases**
+4. ✅ **Canvas editing edge cases**
    - Clear entire field, save, verify not lost
    - Test with special characters in fields
    - Add 20 resources (no limit, should work)
    - Try to remove last resource (should prevent)
    - Validation: Editing is robust and predictable
 
-5. **Export functionality testing**
+5. ✅ **Export functionality testing**
    - Download multiple times (unique filenames)
    - Copy, edit canvas, copy again (updated content)
    - Test with canvas containing special chars/emojis
    - Verify Markdown syntax is correct (headers, lists)
    - Validation: Exports work reliably in all cases
 
-6. **History and persistence**
+6. ✅ **History and persistence**
    - Generate 12 canvases (should cap at 10)
    - Test with corrupted localStorage
    - Clear localStorage mid-session
    - Load history item, edit, generate new (both in history)
    - Validation: History is stable and useful
 
-7. **API and error handling**
+7. ✅ **API and error handling**
    - Test with missing OPENAI_API_KEY
    - Test with invalid API key
    - Test with malformed API response
    - Verify fallback canvas is sensible
    - Validation: User never stuck or sees errors
 
-8. **Accessibility quick pass**
+8. ✅ **Accessibility quick pass**
    - Keyboard navigation through all fields
    - Tab order: idea → generate → edit fields → export buttons
    - Enter in textarea should NOT submit (newlines allowed)
    - Validation: Usable without mouse
 
-9. **Mobile responsiveness**
+9. ✅ **Mobile responsiveness**
    - Test on 375px viewport
    - Verify textareas are adequately sized
    - Check resource list usability on mobile
    - Test download on mobile Safari
    - Validation: Fully functional on mobile devices
 
-10. **Final integration and polish**
+10. ✅ **Final integration and polish**
     - Test link from homepage feature card
     - Verify numbered badges are consistent (1-5)
     - Check icon usage (Sparkles, Download, Copy, RotateCcw)
@@ -306,6 +306,10 @@ UI built with shadcn/ui components (Card, Button, Input, Label, Badge). Uses loc
     - Run linter and typecheck
     - No console errors in production
     - Validation: Production-ready, professional polish
+
+**Stage 3 Summary:**
+- **Security Implementation:** Added Zod validation on API route; escaped user content before render
+- **Zero Trust Applied:** All inputs validated, outputs sanitized, safe rendering implemented
 ```
 
 ---

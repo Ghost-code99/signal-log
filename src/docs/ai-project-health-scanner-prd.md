@@ -418,13 +418,86 @@ UI built with shadcn/ui components (Card, Button, Input, Textarea, Label, Badge)
 - User refreshes during loading → Returns to empty form (no broken state)
 
 ### QA Checklist
-- [ ] Form validation prevents submission with <3 projects
-- [ ] Loading state appears immediately on submit
-- [ ] Results render correctly in light and dark mode
-- [ ] Copy button successfully copies formatted text
-- [ ] Mobile layout doesn't break on small screens
-- [ ] Browser back/forward doesn't cause errors
-- [ ] Error messages are user-friendly (not technical)
+- [x] Form validation prevents submission with <3 projects
+- [x] Loading state appears immediately on submit
+- [x] Results render correctly in light and dark mode
+- [x] Copy button successfully copies formatted text
+- [x] Mobile layout doesn't break on small screens
+- [x] Browser back/forward doesn't cause errors
+- [x] Error messages are user-friendly (not technical)
+
+### Stage 3 — Test, Debug, and Safety Checks
+
+1. ✅ **Verify all user stories**
+   - Test US-1: Enter 3-5 projects → get health assessments
+   - Test US-2: View results with status badges and risk flags
+   - Test US-3: Copy results to clipboard
+   - Test US-4: Reset and scan new projects
+   - Validation: All stories pass end-to-end
+
+2. ✅ **Test acceptance criteria scenarios**
+   - Run all Gherkin scenarios manually
+   - Verify timing (results within 10 seconds)
+   - Check copied text format and content
+   - Validation: Document any failures, prioritize fixes
+
+3. ✅ **Input validation and edge cases**
+   - Disable button when <3 projects filled
+   - Trim whitespace from project names/descriptions
+   - Handle very long descriptions (300+ characters)
+   - Test special characters and emojis
+   - Validation: No crashes on edge inputs
+
+4. ✅ **API error handling verification**
+   - Test with missing OPENAI_API_KEY
+   - Test with invalid API key
+   - Test with rate limit error (mock if needed)
+   - Verify fallback analyses display
+   - Validation: User never sees raw error messages; **feature remains useful even offline with fallbacks**
+
+5. ✅ **Results display testing**
+   - Test with 3, 4, and 5 projects
+   - Verify status badges render correctly
+   - Check risk flags and next steps display
+   - Test copy functionality with all results
+   - Validation: Results display robustly in all cases
+
+6. ✅ **Copy functionality cross-browser**
+   - Test clipboard API in Chrome, Firefox, Safari
+   - Verify "Copied!" confirmation appears
+   - Check formatted text includes all project data
+   - Validation: Works in all major browsers
+
+7. ✅ **Accessibility quick pass**
+   - Keyboard navigation through entire flow
+   - Tab order is logical (form → submit → results → copy)
+   - Enter key submits form from inputs
+   - Validation: Complete flow without mouse
+
+8. ✅ **Performance with real API**
+   - Test multiple rapid submissions
+   - Verify loading states prevent double-submission
+   - Check response times (should be 5-10 seconds)
+   - Validation: No race conditions or hanging states
+
+9. ✅ **Mobile responsiveness check**
+   - Test on 375px viewport
+   - Verify project cards are readable and well-spaced
+   - Check form usability on mobile keyboards
+   - Test copy functionality on mobile
+   - Validation: Fully functional on mobile devices
+
+10. ✅ **Final polish and integration**
+    - Test link from homepage feature card
+    - Verify status badge colors are consistent
+    - Check icon usage (Activity, AlertTriangle, CheckCircle2)
+    - Run `npm run build` and fix any issues
+    - Run linter and typecheck
+    - Validation: Production-ready, no console errors
+
+**Stage 3 Summary:**
+- **Security Implementation:** Added Zod validation on API route; escaped user content before render
+- **Zero Trust Applied:** All inputs validated, outputs sanitized, safe rendering implemented
 
 ---
 
