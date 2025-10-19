@@ -370,20 +370,26 @@ UI built with shadcn/ui components (Card, Button, Input, Textarea, Label, Badge)
 
 #### Stage 2 — Real Functionality
 
-1. **API Route** (30 min)
-   - Create `/api/scan-projects/route.ts`
-   - Implement OpenAI integration
-   - Add fallback logic
+1. ✅ **API Route** (30 min)
+   - ✅ Create `/api/scan-projects/route.ts`
+   - ✅ Implement OpenAI integration
+   - ✅ Add fallback logic
 
-2. **Wire up API integration**
-   - Replace mock setTimeout with real API call
-   - Handle loading and error states
-   - Parse and display real AI analysis
+2. ✅ **Wire up API integration**
+   - ✅ Replace mock setTimeout with real API call
+   - ✅ Handle loading and error states
+   - ✅ Parse and display real AI analysis
 
-3. **Testing** (20 min)
-   - Test with 3, 4, and 5 projects
-   - Test error states and fallbacks
-   - Mobile responsiveness check
+3. ✅ **Testing** (20 min)
+   - ✅ Test with 3, 4, and 5 projects
+   - ✅ Test error states and fallbacks
+   - ✅ Mobile responsiveness check
+
+**Stage 2 Summary:**
+- **Route Added:** `/api/scan-projects` (POST)
+- **Request Shape:** `{ projects: [{ name: string, description: string }] }` (3-5 projects)
+- **Response Shape:** `{ analyses: [{ projectName, status, statusLabel, riskFlags, nextSteps }] }`
+- **Notable Constraints:** Uses GPT-4o-mini for cost efficiency, validates 3-5 projects, includes fallback analysis if API fails
 
 ### Phase 2: Polish & Optimization (Future)
 - Add localStorage to persist last scan
