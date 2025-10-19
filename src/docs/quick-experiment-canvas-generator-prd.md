@@ -162,64 +162,70 @@ UI built with shadcn/ui components (Card, Button, Input, Label, Badge). Uses loc
 
 ### Stage 2 — Real Functionality
 
-1. **Create API route** (`src/app/api/generate-canvas/route.ts`)
-   - Accept POST with `{ idea: string }`
-   - Call OpenAI GPT-4 with lean experiment system prompt
-   - Parse JSON: `{ hypothesis, successMetric, smallestTest, timeline, resources[] }`
-   - Return fallback canvas structure on error
-   - Validation: Test endpoint, verify JSON structure
+1. ✅ **Create API route** (`src/app/api/generate-canvas/route.ts`)
+   - ✅ Accept POST with `{ idea: string }`
+   - ✅ Call OpenAI GPT-4 with lean experiment system prompt
+   - ✅ Parse JSON: `{ hypothesis, successMetric, smallestTest, timeline, resources[] }`
+   - ✅ Return fallback canvas structure on error
+   - ✅ Validation: Test endpoint, verify JSON structure
 
-2. **Implement canvas generation flow**
-   - Fetch from `/api/generate-canvas` on button click
-   - Set loading state (`isGenerating`)
-   - Update `canvas` state with response
-   - Set `editableCanvas` as mutable copy
-   - Show canvas display section
-   - Validation: API call completes, UI updates
+2. ✅ **Implement canvas generation flow**
+   - ✅ Fetch from `/api/generate-canvas` on button click
+   - ✅ Set loading state (`isGenerating`)
+   - ✅ Update `canvas` state with response
+   - ✅ Set `editableCanvas` as mutable copy
+   - ✅ Show canvas display section
+   - ✅ Validation: API call completes, UI updates
 
-3. **Wire up inline editing**
-   - Bind textarea/input values to `editableCanvas` state
-   - `updateField()` function for text fields
-   - Update state on change events
-   - Validation: Type in fields, verify state updates in React DevTools
+3. ✅ **Wire up inline editing**
+   - ✅ Bind textarea/input values to `editableCanvas` state
+   - ✅ `updateField()` function for text fields
+   - ✅ Update state on change events
+   - ✅ Validation: Type in fields, verify state updates in React DevTools
 
-4. **Implement resource management**
-   - `addResource()` appends empty string to resources array
-   - `updateResource(index, value)` updates specific resource
-   - `removeResource(index)` filters out by index
-   - Prevent removing last resource
-   - Validation: Add/edit/remove resources, check state
+4. ✅ **Implement resource management**
+   - ✅ `addResource()` appends empty string to resources array
+   - ✅ `updateResource(index, value)` updates specific resource
+   - ✅ `removeResource(index)` filters out by index
+   - ✅ Prevent removing last resource
+   - ✅ Validation: Add/edit/remove resources, check state
 
-5. **Add copy to clipboard functionality**
-   - Format text: "Experiment Canvas\n\nIdea: ...\n\nHypothesis:\n..."
-   - Use `navigator.clipboard.writeText()`
-   - Set `copied` true, reset after 2 seconds
-   - Validation: Copy, paste into editor, check formatting
+5. ✅ **Add copy to clipboard functionality**
+   - ✅ Format text: "Experiment Canvas\n\nIdea: ...\n\nHypothesis:\n..."
+   - ✅ Use `navigator.clipboard.writeText()`
+   - ✅ Set `copied` true, reset after 2 seconds
+   - ✅ Validation: Copy, paste into editor, check formatting
 
-6. **Implement Markdown download**
-   - Build markdown string with proper formatting (## headers, lists)
-   - Create Blob with type 'text/markdown'
-   - Generate download link with `experiment-canvas-{timestamp}.md` filename
-   - Trigger download, clean up URL
-   - Validation: Download file, open in text editor, verify format
+6. ✅ **Implement Markdown download**
+   - ✅ Build markdown string with proper formatting (## headers, lists)
+   - ✅ Create Blob with type 'text/markdown'
+   - ✅ Generate download link with `experiment-canvas-{timestamp}.md` filename
+   - ✅ Trigger download, clean up URL
+   - ✅ Validation: Download file, open in text editor, verify format
 
-7. **Add localStorage history**
-   - Define `SavedCanvas` interface **(localStorage only—no backend)**: `{ id, idea, canvas, timestamp }`
-   - Load history on mount
-   - Save new canvas to history (keep last 10)
-   - Update localStorage after generation
-   - Validation: Generate multiple, check localStorage
+7. ✅ **Add localStorage history**
+   - ✅ Define `SavedCanvas` interface **(localStorage only—no backend)**: `{ id, idea, canvas, timestamp }`
+   - ✅ Load history on mount
+   - ✅ Save new canvas to history (keep last 10)
+   - ✅ Update localStorage after generation
+   - ✅ Validation: Generate multiple, check localStorage
 
-8. **Wire history panel**
-   - Toggle `showHistory` state
-   - Render list of saved canvases
-   - `loadFromHistory()` populates idea and canvas
-   - Close panel after selection
-   - Validation: Click history items, verify data loads
+8. ✅ **Wire history panel**
+   - ✅ Toggle `showHistory` state
+   - ✅ Render list of saved canvases
+   - ✅ `loadFromHistory()` populates idea and canvas
+   - ✅ Close panel after selection
+   - ✅ Validation: Click history items, verify data loads
 
-9. **Implement reset flow**
-   - "New Canvas" clears all states (idea, canvas, editable)
-   - Returns to initial input form
+9. ✅ **Implement reset flow**
+   - ✅ "New Canvas" clears all states (idea, canvas, editable)
+   - ✅ Returns to initial input form
+
+**Stage 2 Summary:**
+- **Route Added:** `/api/generate-canvas` (POST)
+- **Request Shape:** `{ idea: string }`
+- **Response Shape:** `{ hypothesis, successMetric, smallestTest, timeline, resources }`
+- **Notable Constraints:** Uses GPT-4 for structured experiment design, includes fallback canvas, supports project linking via URL parameters
    - Validation: Generate → edit → reset → verify clean state
 
 10. **Add error handling**
