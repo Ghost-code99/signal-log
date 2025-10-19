@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { challengeIdeaSchema, validateInput, sanitizeText } from '../../../lib/validation';
+import {
+  challengeIdeaSchema,
+  validateInput,
+  sanitizeText,
+} from '../../../lib/validation';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     // Validate input with Zod schema
     const validation = validateInput(challengeIdeaSchema, body);
     if (!validation.success) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
     const { idea } = validation.data!;
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: 'gpt-4',
@@ -90,7 +91,7 @@ Respond ONLY with a JSON object containing a "questions" array of strings, e.g.:
     try {
       const parsed = JSON.parse(content);
       questions = parsed.questions || [];
-      
+
       if (!Array.isArray(questions) || questions.length === 0) {
         questions = [
           'What evidence supports your assumptions about customer demand?',
@@ -126,4 +127,3 @@ Respond ONLY with a JSON object containing a "questions" array of strings, e.g.:
     );
   }
 }
-

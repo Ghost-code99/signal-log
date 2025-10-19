@@ -128,7 +128,9 @@ describe('Dashboard Server Actions', () => {
       const result = await createProject(input);
 
       expect(result.success).toBe(false);
-      expect(result.error).toBe('Project description must be 300 characters or less');
+      expect(result.error).toBe(
+        'Project description must be 300 characters or less'
+      );
     });
 
     it('should accept description exactly 300 characters', async () => {
@@ -248,7 +250,9 @@ describe('Dashboard Server Actions', () => {
       const result = await updateProject(input);
 
       expect(result.success).toBe(false);
-      expect(result.error).toBe('Project description must be 300 characters or less');
+      expect(result.error).toBe(
+        'Project description must be 300 characters or less'
+      );
     });
 
     it('should only update provided fields', async () => {
@@ -313,14 +317,20 @@ describe('Dashboard Server Actions', () => {
     });
 
     it('should reject duplicate project name (case-insensitive)', async () => {
-      const result = await validateProjectName('existing project', existingProjects);
+      const result = await validateProjectName(
+        'existing project',
+        existingProjects
+      );
 
       expect(result.isValid).toBe(false);
       expect(result.error).toBe('A project with this name already exists');
     });
 
     it('should reject duplicate with different casing', async () => {
-      const result = await validateProjectName('EXISTING PROJECT', existingProjects);
+      const result = await validateProjectName(
+        'EXISTING PROJECT',
+        existingProjects
+      );
 
       expect(result.isValid).toBe(false);
       expect(result.error).toBe('A project with this name already exists');
@@ -338,7 +348,10 @@ describe('Dashboard Server Actions', () => {
     });
 
     it('should trim whitespace before comparison', async () => {
-      const result = await validateProjectName('  Existing Project  ', existingProjects);
+      const result = await validateProjectName(
+        '  Existing Project  ',
+        existingProjects
+      );
 
       expect(result.isValid).toBe(false);
       expect(result.error).toBe('A project with this name already exists');
@@ -385,17 +398,31 @@ describe('Dashboard Server Actions', () => {
 
       const now = new Date();
       const recentIdeas = [
-        { id: '1', text: 'Idea 1', timestamp: now.getTime(), tags: [] },
-        { id: '2', text: 'Idea 2', timestamp: now.getTime() - 3 * 24 * 60 * 60 * 1000, tags: [] }, // 3 days ago
+        { id: '1', text: 'Idea 1', timestamp: now.toISOString(), tags: [] },
+        {
+          id: '2',
+          text: 'Idea 2',
+          timestamp: new Date(
+            now.getTime() - 3 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          tags: [],
+        }, // 3 days ago
       ];
 
       const oldIdeas = [
-        { id: '3', text: 'Old idea', timestamp: now.getTime() - 10 * 24 * 60 * 60 * 1000, tags: [] }, // 10 days ago
+        {
+          id: '3',
+          text: 'Old idea',
+          timestamp: new Date(
+            now.getTime() - 10 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          tags: [],
+        }, // 10 days ago
       ];
 
       const experiments = [
-        { id: 'e1', canvas: {} },
-        { id: 'e2', canvas: {} },
+        { id: 'e1', canvas: {}, timestamp: now.toISOString() },
+        { id: 'e2', canvas: {}, timestamp: now.toISOString() },
       ];
 
       const stats = await calculateDashboardStats(
@@ -421,10 +448,42 @@ describe('Dashboard Server Actions', () => {
 
     it('should count only Active projects', async () => {
       const projects: Project[] = [
-        { id: 'p1', name: 'Active', description: '', status: 'Active', tags: [], createdAt: '', updatedAt: '' },
-        { id: 'p2', name: 'Stalled', description: '', status: 'Stalled', tags: [], createdAt: '', updatedAt: '' },
-        { id: 'p3', name: 'Validated', description: '', status: 'Validated', tags: [], createdAt: '', updatedAt: '' },
-        { id: 'p4', name: 'Idea', description: '', status: 'Idea', tags: [], createdAt: '', updatedAt: '' },
+        {
+          id: 'p1',
+          name: 'Active',
+          description: '',
+          status: 'Active',
+          tags: [],
+          createdAt: '',
+          updatedAt: '',
+        },
+        {
+          id: 'p2',
+          name: 'Stalled',
+          description: '',
+          status: 'Stalled',
+          tags: [],
+          createdAt: '',
+          updatedAt: '',
+        },
+        {
+          id: 'p3',
+          name: 'Validated',
+          description: '',
+          status: 'Validated',
+          tags: [],
+          createdAt: '',
+          updatedAt: '',
+        },
+        {
+          id: 'p4',
+          name: 'Idea',
+          description: '',
+          status: 'Idea',
+          tags: [],
+          createdAt: '',
+          updatedAt: '',
+        },
       ];
 
       const stats = await calculateDashboardStats(projects, [], []);
@@ -436,9 +495,23 @@ describe('Dashboard Server Actions', () => {
     it('should only count ideas from past 7 days', async () => {
       const now = new Date();
       const ideas = [
-        { id: '1', timestamp: now.getTime(), tags: [] }, // Today
-        { id: '2', timestamp: now.getTime() - 6 * 24 * 60 * 60 * 1000, tags: [] }, // 6 days ago
-        { id: '3', timestamp: now.getTime() - 8 * 24 * 60 * 60 * 1000, tags: [] }, // 8 days ago - should NOT count
+        { id: '1', text: 'Idea 1', timestamp: now.toISOString(), tags: [] }, // Today
+        {
+          id: '2',
+          text: 'Idea 2',
+          timestamp: new Date(
+            now.getTime() - 6 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          tags: [],
+        }, // 6 days ago
+        {
+          id: '3',
+          text: 'Idea 3',
+          timestamp: new Date(
+            now.getTime() - 8 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          tags: [],
+        }, // 8 days ago - should NOT count
       ];
 
       const stats = await calculateDashboardStats([], ideas, []);

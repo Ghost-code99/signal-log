@@ -20,7 +20,8 @@ export default function IdeaCapturePage() {
           Idea Capture & AI Tag Suggester
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Transform scattered thoughts into organized, actionable insights with AI-powered tagging
+          Transform scattered thoughts into organized, actionable insights with
+          AI-powered tagging
         </p>
       </div>
       <Suspense fallback={<div>Loading...</div>}>
@@ -29,4 +30,3 @@ export default function IdeaCapturePage() {
     </div>
   );
 }
-

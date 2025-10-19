@@ -6,11 +6,12 @@ import { z } from 'zod';
 
 // Sanitized string with length limits
 const sanitizedString = (minLength: number, maxLength: number) =>
-  z.string()
+  z
+    .string()
     .min(minLength, `Must be at least ${minLength} characters`)
     .max(maxLength, `Must be no more than ${maxLength} characters`)
     .trim()
-    .transform((val) => val.replace(/[<>]/g, '')); // Remove potential HTML tags
+    .transform(val => val.replace(/[<>]/g, '')); // Remove potential HTML tags
 
 // Project name validation
 export const projectNameSchema = sanitizedString(1, 60);
@@ -22,7 +23,12 @@ export const projectDescriptionSchema = sanitizedString(0, 300);
 export const ideaTextSchema = sanitizedString(10, 2000);
 
 // Project status validation
-export const projectStatusSchema = z.enum(['Active', 'Stalled', 'Validated', 'Idea']);
+export const projectStatusSchema = z.enum([
+  'Active',
+  'Stalled',
+  'Validated',
+  'Idea',
+]);
 
 // Tag validation
 export const tagSchema = sanitizedString(1, 30);
@@ -33,13 +39,15 @@ export const tagSchema = sanitizedString(1, 30);
 
 // Project Health Scanner API
 export const scanProjectsSchema = z.object({
-  projects: z.array(
-    z.object({
-      name: projectNameSchema,
-      description: projectDescriptionSchema,
-    })
-  ).min(3, 'Must provide at least 3 projects')
-   .max(5, 'Must provide no more than 5 projects'),
+  projects: z
+    .array(
+      z.object({
+        name: projectNameSchema,
+        description: projectDescriptionSchema,
+      })
+    )
+    .min(3, 'Must provide at least 3 projects')
+    .max(5, 'Must provide no more than 5 projects'),
 });
 
 // Assumption Challenger API
@@ -88,15 +96,17 @@ export const deleteProjectSchema = z.object({
 // ============================================================================
 
 // Project ID from URL params
-export const projectIdSchema = z.string()
+export const projectIdSchema = z
+  .string()
   .min(1, 'Project ID is required')
   .regex(/^project-\d+-[a-z0-9]+$/, 'Invalid project ID format');
 
 // Project name from URL params
-export const urlProjectNameSchema = z.string()
+export const urlProjectNameSchema = z
+  .string()
   .min(1, 'Project name is required')
   .max(60, 'Project name too long')
-  .transform((val) => decodeURIComponent(val));
+  .transform(val => decodeURIComponent(val));
 
 // ============================================================================
 // RESPONSE SCHEMAS
@@ -113,7 +123,10 @@ export const apiResponseSchema = z.object({
 // VALIDATION HELPERS
 // ============================================================================
 
-export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): {
+export function validateInput<T>(
+  schema: z.ZodSchema<T>,
+  data: unknown
+): {
   success: boolean;
   data?: T;
   error?: string;

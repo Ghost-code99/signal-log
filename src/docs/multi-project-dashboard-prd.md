@@ -7,6 +7,7 @@ A unified dashboard that transforms the four standalone AI strategy tools into a
 ## Problem Statement
 
 Currently, the four features (Project Health Scanner, Idea Capture, Assumption Challenger, Experiment Canvas) exist as separate tools. While valuable individually, they don't help founders manage the complexity of juggling multiple projects simultaneously. Founders need to:
+
 - See all projects in one unified view
 - Understand which projects deserve focus
 - Track project evolution over time
@@ -31,6 +32,7 @@ Solo founders and small teams (≤5 people) navigating pre-product-market-fit ch
 **Goal**: Validate the dashboard UX with fake data before building real persistence.
 
 ### Deliverables:
+
 - Dashboard page at `/dashboard` showing 3-5 mock project cards
 - Each card displays: project name, status badge (Active/Stalled/Validated), tags, last activity timestamp
 - Add Project button (opens modal with form)
@@ -40,6 +42,7 @@ Solo founders and small teams (≤5 people) navigating pre-product-market-fit ch
 - All data hard-coded in component state (no persistence)
 
 ### Acceptance Criteria:
+
 - ✅ User can view mock project cards in grid layout
 - ✅ User can see status, tags, and last activity for each project
 - ✅ User can click "Add Project" and see form modal (doesn't save yet)
@@ -59,6 +62,7 @@ Solo founders and small teams (≤5 people) navigating pre-product-market-fit ch
 **Server Action**: `createProject`, `updateProject`, `deleteProject`, `getProjects`
 
 **Functionality**:
+
 - User can create projects with: name (60 chars), description (300 chars), status (Active/Stalled/Validated/Idea), and tags (multi-select)
 - Projects save to localStorage under key `dashboard-projects`
 - Each project gets unique ID, created timestamp, and last updated timestamp
@@ -67,6 +71,7 @@ Solo founders and small teams (≤5 people) navigating pre-product-market-fit ch
 - Projects list persists across page reloads
 
 **Data Schema**:
+
 ```typescript
 interface Project {
   id: string;
@@ -84,6 +89,7 @@ interface Project {
 **Server Action**: `linkIdeaToProject`, `linkAssumptionToProject`, `linkExperimentToProject`
 
 **Functionality**:
+
 - When user creates an idea in Idea Capture, they can optionally assign it to a project
 - When user creates an assumption challenge, they can optionally assign it to a project
 - When user creates an experiment canvas, they can optionally assign it to a project
@@ -91,6 +97,7 @@ interface Project {
 - User can view quick count badges on project cards (e.g., "3 ideas, 2 experiments")
 
 **Data Schema Extension**:
+
 ```typescript
 // Extend existing stored items
 interface CapturedIdea {
@@ -114,17 +121,24 @@ interface CanvasHistory {
 **Server Action**: `getProjectActivity`
 
 **Functionality**:
+
 - Project detail view shows chronological timeline of all activity
 - Activity types: Project created, Idea added, Assumption challenged, Experiment generated, Status changed
 - Each activity item shows timestamp, type icon, and brief description
 - Timeline auto-updates when new items are linked
 
 **Data Schema**:
+
 ```typescript
 interface ProjectActivity {
   id: string;
   projectId: string;
-  type: 'project_created' | 'idea_added' | 'assumption_challenged' | 'experiment_generated' | 'status_changed';
+  type:
+    | 'project_created'
+    | 'idea_added'
+    | 'assumption_challenged'
+    | 'experiment_generated'
+    | 'status_changed';
   description: string;
   timestamp: string; // ISO timestamp
   metadata?: Record<string, any>; // e.g., { ideaId: '123' }
@@ -136,12 +150,14 @@ interface ProjectActivity {
 **Server Action**: `getDashboardStats`
 
 **Functionality**:
+
 - Dashboard header shows stats: Total Projects, Active Projects, Ideas Captured This Week, Experiments In Progress
 - Quick filter chips: All, Active, Stalled, Validated, Ideas
 - Search bar filters projects by name or tag
 - Sort dropdown: Last Updated, Alphabetical, Status
 
 ### Acceptance Criteria:
+
 - ✅ User can create a project and see it saved to localStorage
 - ✅ User can edit project name, description, status, and tags
 - ✅ User can delete a project with confirmation dialog
@@ -156,11 +172,13 @@ interface ProjectActivity {
 - ✅ Error states handle corrupted localStorage gracefully
 
 **Stage 2 Summary:**
+
 - **Server Actions Added:** `createProject`, `updateProject`, `deleteProject`, `logProjectActivity`, `linkItemToProject`, `calculateDashboardStats`, `validateProjectName`
 - **Data Storage:** localStorage with keys `dashboard-projects`, `project-activity`, `captured-ideas`, `challenge-history`, `canvas-history`
 - **Notable Constraints:** Client-side persistence only, project linking via URL parameters, activity logging for all feature interactions
 
 ### Implementation Approach:
+
 - Use Next.js Server Actions for all data operations (preferred over API routes)
 - Store data in localStorage with structured keys: `dashboard-projects`, `project-activity`
 - Update existing Idea Capture, Assumption Challenger, and Experiment Canvas components to accept optional `projectId` parameter
@@ -174,6 +192,7 @@ interface ProjectActivity {
 **Goal**: Add cross-project AI analysis that provides strategic recommendations.
 
 ### Planned Features:
+
 - AI scans all projects and identifies conflicting assumptions
 - AI suggests which projects might have synergies
 - AI recommends prioritization based on status and activity
@@ -201,6 +220,7 @@ interface ProjectActivity {
 ## Success Metrics (Stage 2)
 
 After Stage 2 is complete, we'll measure success by:
+
 1. **Usage**: Do founders actually create projects? (Goal: Avg 3-5 projects per active user)
 2. **Linking**: Do they link ideas/assumptions/experiments to projects? (Goal: 60%+ of new items linked)
 3. **Return visits**: Do they come back to the dashboard regularly? (Goal: 3+ visits per week)
@@ -231,8 +251,8 @@ After Stage 2 is complete, we'll measure success by:
 ## Next Steps
 
 After Stage 2 completion:
+
 1. Gather user feedback on dashboard utility
 2. Measure linking behavior (which features get linked most?)
 3. Prototype Stage 3 AI portfolio intelligence
 4. Consider database migration if retention validates need for cross-device sync
-

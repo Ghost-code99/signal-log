@@ -5,18 +5,24 @@ import { useParams, useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  ArrowLeft, 
-  Edit2, 
+import {
+  ArrowLeft,
+  Edit2,
   Trash2,
   Lightbulb,
   Target,
   FlaskConical,
   Clock,
-  Plus
+  Plus,
 } from 'lucide-react';
 import Link from 'next/link';
-import { Project, ProjectActivity } from '@/app/dashboard/actions';
+import {
+  Project,
+  ProjectActivity,
+  Idea,
+  Experiment,
+  Assumption,
+} from '@/app/dashboard/actions';
 import { ProjectFormModal } from '@/components/dashboard/project-form-modal';
 import { DeleteConfirmDialog } from '@/components/dashboard/delete-confirm-dialog';
 import { updateProject, deleteProject } from '@/app/dashboard/actions';
@@ -25,9 +31,12 @@ const STORAGE_KEY = 'dashboard-projects';
 const ACTIVITY_KEY = 'project-activity';
 
 const STATUS_COLORS = {
-  Active: 'bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20',
-  Stalled: 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-500/20',
-  Validated: 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20',
+  Active:
+    'bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20',
+  Stalled:
+    'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-500/20',
+  Validated:
+    'bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20',
   Idea: 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/20',
 };
 
@@ -41,10 +50,10 @@ export default function ProjectDetailPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [allProjects, setAllProjects] = useState<Project[]>([]);
   const [activities, setActivities] = useState<ProjectActivity[]>([]);
-  const [linkedIdeas, setLinkedIdeas] = useState<any[]>([]);
-  const [linkedAssumptions, setLinkedAssumptions] = useState<any[]>([]);
-  const [linkedExperiments, setLinkedExperiments] = useState<any[]>([]);
-  
+  const [linkedIdeas, setLinkedIdeas] = useState<Idea[]>([]);
+  const [linkedAssumptions, setLinkedAssumptions] = useState<Assumption[]>([]);
+  const [linkedExperiments, setLinkedExperiments] = useState<Experiment[]>([]);
+
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -60,7 +69,9 @@ export default function ProjectDetailPage() {
         setAllProjects(projects);
 
         // Find this project
-        const currentProject = projects.find((p: Project) => p.id === projectId);
+        const currentProject = projects.find(
+          (p: Project) => p.id === projectId
+        );
         if (!currentProject) {
           router.push('/dashboard');
           return;
@@ -72,24 +83,38 @@ export default function ProjectDetailPage() {
         const allActivities = activitiesStr ? JSON.parse(activitiesStr) : [];
         const projectActivities = allActivities
           .filter((a: ProjectActivity) => a.projectId === projectId)
-          .sort((a: ProjectActivity, b: ProjectActivity) => 
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+          .sort(
+            (a: ProjectActivity, b: ProjectActivity) =>
+              new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
           );
         setActivities(projectActivities);
 
         // Load linked items
         const ideasStr = localStorage.getItem('captured-ideas');
         const ideas = ideasStr ? JSON.parse(ideasStr) : [];
-        setLinkedIdeas(ideas.filter((i: any) => i.projectId === projectId));
+        setLinkedIdeas(
+          ideas.filter(
+            (i: Idea & { projectId?: string }) => i.projectId === projectId
+          )
+        );
 
         const assumptionsStr = localStorage.getItem('challenge-history');
         const assumptions = assumptionsStr ? JSON.parse(assumptionsStr) : [];
-        setLinkedAssumptions(assumptions.filter((a: any) => a.projectId === projectId));
+        setLinkedAssumptions(
+          assumptions.filter(
+            (a: Assumption & { projectId?: string }) =>
+              a.projectId === projectId
+          )
+        );
 
         const experimentsStr = localStorage.getItem('canvas-history');
         const experiments = experimentsStr ? JSON.parse(experimentsStr) : [];
-        setLinkedExperiments(experiments.filter((e: any) => e.projectId === projectId));
-
+        setLinkedExperiments(
+          experiments.filter(
+            (e: Experiment & { projectId?: string }) =>
+              e.projectId === projectId
+          )
+        );
       } catch (error) {
         console.error('Error loading project data:', error);
         router.push('/dashboard');
@@ -101,10 +126,18 @@ export default function ProjectDetailPage() {
     loadProjectData();
   }, [projectId, router]);
 
-  const handleUpdate = async (input: any) => {
-    const result = await updateProject(input);
+  const handleUpdate = async (input: {
+    id?: string;
+    name: string;
+    description: string;
+    status: Project['status'];
+    tags: string[];
+  }) => {
+    // Ensure id is provided for update operations
+    const updateInput = { ...input, id: input.id || projectId };
+    const result = await updateProject(updateInput);
     if (result.success && result.project) {
-      const updatedProjects = allProjects.map(p => 
+      const updatedProjects = allProjects.map(p =>
         p.id === projectId ? { ...p, ...result.project } : p
       );
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProjects));
@@ -157,11 +190,26 @@ export default function ProjectDetailPage() {
     return null;
   }
 
-  const tabs: { id: TabType; label: string; count?: number; icon: any }[] = [
+  const tabs: {
+    id: TabType;
+    label: string;
+    count?: number;
+    icon: React.ComponentType<{ className?: string }>;
+  }[] = [
     { id: 'overview', label: 'Overview', icon: Clock },
     { id: 'ideas', label: 'Ideas', count: linkedIdeas.length, icon: Lightbulb },
-    { id: 'assumptions', label: 'Assumptions', count: linkedAssumptions.length, icon: Target },
-    { id: 'experiments', label: 'Experiments', count: linkedExperiments.length, icon: FlaskConical },
+    {
+      id: 'assumptions',
+      label: 'Assumptions',
+      count: linkedAssumptions.length,
+      icon: Target,
+    },
+    {
+      id: 'experiments',
+      label: 'Experiments',
+      count: linkedExperiments.length,
+      icon: FlaskConical,
+    },
   ];
 
   return (
@@ -188,13 +236,22 @@ export default function ProjectDetailPage() {
               <p className="text-muted-foreground">{project.description}</p>
             )}
           </div>
-          
+
           <div className="flex gap-2 shrink-0">
-            <Button variant="outline" size="sm" onClick={() => setIsEditOpen(true)}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsEditOpen(true)}
+            >
               <Edit2 className="h-4 w-4 mr-2" />
               Edit
             </Button>
-            <Button variant="outline" size="sm" onClick={() => setIsDeleteOpen(true)} className="text-destructive hover:text-destructive">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsDeleteOpen(true)}
+              className="text-destructive hover:text-destructive"
+            >
               <Trash2 className="h-4 w-4 mr-2" />
               Delete
             </Button>
@@ -204,7 +261,7 @@ export default function ProjectDetailPage() {
         {/* Tags */}
         {project.tags.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
+            {project.tags.map(tag => (
               <Badge key={tag} variant="outline">
                 {tag}
               </Badge>
@@ -216,7 +273,7 @@ export default function ProjectDetailPage() {
       {/* Tabs */}
       <div className="border-b mb-6">
         <div className="flex gap-6">
-          {tabs.map((tab) => (
+          {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -246,32 +303,53 @@ export default function ProjectDetailPage() {
             <Card className="p-6">
               <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Link href={`/idea-capture?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}>
-                  <Button variant="outline" className="w-full justify-start gap-3 h-auto py-4">
+                <Link
+                  href={`/idea-capture?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}
+                >
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start gap-3 h-auto py-4"
+                  >
                     <Lightbulb className="h-5 w-5 text-purple-600 shrink-0" />
                     <div className="text-left">
                       <div className="font-medium">Add Idea</div>
-                      <div className="text-xs text-muted-foreground">Capture new idea for this project</div>
+                      <div className="text-xs text-muted-foreground">
+                        Capture new idea for this project
+                      </div>
                     </div>
                   </Button>
                 </Link>
-                
-                <Link href={`/assumption-challenger?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}>
-                  <Button variant="outline" className="w-full justify-start gap-3 h-auto py-4">
+
+                <Link
+                  href={`/assumption-challenger?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}
+                >
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start gap-3 h-auto py-4"
+                  >
                     <Target className="h-5 w-5 text-amber-600 shrink-0" />
                     <div className="text-left">
                       <div className="font-medium">Challenge Assumptions</div>
-                      <div className="text-xs text-muted-foreground">Test your thinking</div>
+                      <div className="text-xs text-muted-foreground">
+                        Test your thinking
+                      </div>
                     </div>
                   </Button>
                 </Link>
-                
-                <Link href={`/experiment-canvas?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}>
-                  <Button variant="outline" className="w-full justify-start gap-3 h-auto py-4">
+
+                <Link
+                  href={`/experiment-canvas?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}
+                >
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start gap-3 h-auto py-4"
+                  >
                     <FlaskConical className="h-5 w-5 text-green-600 shrink-0" />
                     <div className="text-left">
                       <div className="font-medium">Create Experiment</div>
-                      <div className="text-xs text-muted-foreground">Generate experiment canvas</div>
+                      <div className="text-xs text-muted-foreground">
+                        Generate experiment canvas
+                      </div>
                     </div>
                   </Button>
                 </Link>
@@ -283,18 +361,29 @@ export default function ProjectDetailPage() {
               <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
               {activities.length === 0 ? (
                 <p className="text-muted-foreground text-center py-8">
-                  No activity yet. Start by adding ideas, challenges, or experiments.
+                  No activity yet. Start by adding ideas, challenges, or
+                  experiments.
                 </p>
               ) : (
                 <div className="space-y-4">
-                  {activities.slice(0, 10).map((activity) => (
+                  {activities.slice(0, 10).map(activity => (
                     <div key={activity.id} className="flex gap-4 items-start">
                       <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        {activity.type === 'idea_added' && <Lightbulb className="h-4 w-4 text-purple-600" />}
-                        {activity.type === 'assumption_challenged' && <Target className="h-4 w-4 text-amber-600" />}
-                        {activity.type === 'experiment_generated' && <FlaskConical className="h-4 w-4 text-green-600" />}
-                        {activity.type === 'project_created' && <Plus className="h-4 w-4 text-primary" />}
-                        {activity.type === 'status_changed' && <Edit2 className="h-4 w-4 text-blue-600" />}
+                        {activity.type === 'idea_added' && (
+                          <Lightbulb className="h-4 w-4 text-purple-600" />
+                        )}
+                        {activity.type === 'assumption_challenged' && (
+                          <Target className="h-4 w-4 text-amber-600" />
+                        )}
+                        {activity.type === 'experiment_generated' && (
+                          <FlaskConical className="h-4 w-4 text-green-600" />
+                        )}
+                        {activity.type === 'project_created' && (
+                          <Plus className="h-4 w-4 text-primary" />
+                        )}
+                        {activity.type === 'status_changed' && (
+                          <Edit2 className="h-4 w-4 text-blue-600" />
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm">{activity.description}</p>
@@ -314,7 +403,9 @@ export default function ProjectDetailPage() {
           <Card className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Linked Ideas</h2>
-              <Link href={`/idea-capture?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}>
+              <Link
+                href={`/idea-capture?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}
+              >
                 <Button size="sm" className="gap-2">
                   <Plus className="h-4 w-4" />
                   Add Idea
@@ -324,8 +415,12 @@ export default function ProjectDetailPage() {
             {linkedIdeas.length === 0 ? (
               <div className="text-center py-12">
                 <Lightbulb className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground mb-4">No ideas linked to this project yet</p>
-                <Link href={`/idea-capture?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}>
+                <p className="text-muted-foreground mb-4">
+                  No ideas linked to this project yet
+                </p>
+                <Link
+                  href={`/idea-capture?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}
+                >
                   <Button className="gap-2">
                     <Plus className="h-4 w-4" />
                     Capture Your First Idea
@@ -334,7 +429,7 @@ export default function ProjectDetailPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                {linkedIdeas.map((idea) => (
+                {linkedIdeas.map(idea => (
                   <Card key={idea.id} className="p-4">
                     <p className="mb-2">{idea.text}</p>
                     <div className="flex flex-wrap gap-2">
@@ -358,7 +453,9 @@ export default function ProjectDetailPage() {
           <Card className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Challenged Assumptions</h2>
-              <Link href={`/assumption-challenger?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}>
+              <Link
+                href={`/assumption-challenger?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}
+              >
                 <Button size="sm" className="gap-2">
                   <Plus className="h-4 w-4" />
                   Challenge Assumptions
@@ -368,8 +465,12 @@ export default function ProjectDetailPage() {
             {linkedAssumptions.length === 0 ? (
               <div className="text-center py-12">
                 <Target className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground mb-4">No assumptions challenged yet</p>
-                <Link href={`/assumption-challenger?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}>
+                <p className="text-muted-foreground mb-4">
+                  No assumptions challenged yet
+                </p>
+                <Link
+                  href={`/assumption-challenger?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}
+                >
                   <Button className="gap-2">
                     <Plus className="h-4 w-4" />
                     Start Challenging Assumptions
@@ -378,15 +479,20 @@ export default function ProjectDetailPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                {linkedAssumptions.map((assumption) => (
+                {linkedAssumptions.map(assumption => (
                   <Card key={assumption.id} className="p-4">
                     <p className="font-medium mb-2">{assumption.idea}</p>
                     <div className="space-y-2">
-                      {assumption.questions?.slice(0, 3).map((q: string, i: number) => (
-                        <p key={i} className="text-sm text-muted-foreground pl-4 border-l-2 border-amber-500/50">
-                          {q}
-                        </p>
-                      ))}
+                      {assumption.questions
+                        ?.slice(0, 3)
+                        .map((q: string, i: number) => (
+                          <p
+                            key={i}
+                            className="text-sm text-muted-foreground pl-4 border-l-2 border-amber-500/50"
+                          >
+                            {q}
+                          </p>
+                        ))}
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
                       {formatTimestamp(assumption.timestamp)}
@@ -402,7 +508,9 @@ export default function ProjectDetailPage() {
           <Card className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Experiments</h2>
-              <Link href={`/experiment-canvas?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}>
+              <Link
+                href={`/experiment-canvas?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}
+              >
                 <Button size="sm" className="gap-2">
                   <Plus className="h-4 w-4" />
                   Create Experiment
@@ -412,8 +520,12 @@ export default function ProjectDetailPage() {
             {linkedExperiments.length === 0 ? (
               <div className="text-center py-12">
                 <FlaskConical className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground mb-4">No experiments created yet</p>
-                <Link href={`/experiment-canvas?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}>
+                <p className="text-muted-foreground mb-4">
+                  No experiments created yet
+                </p>
+                <Link
+                  href={`/experiment-canvas?projectId=${projectId}&projectName=${encodeURIComponent(project.name)}`}
+                >
                   <Button className="gap-2">
                     <Plus className="h-4 w-4" />
                     Generate Your First Experiment
@@ -422,17 +534,21 @@ export default function ProjectDetailPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                {linkedExperiments.map((experiment) => (
+                {linkedExperiments.map(experiment => (
                   <Card key={experiment.id} className="p-4">
                     <h3 className="font-semibold mb-2">Experiment Canvas</h3>
                     <div className="space-y-2 text-sm">
                       <div>
                         <span className="font-medium">Hypothesis:</span>
-                        <p className="text-muted-foreground">{experiment.canvas?.hypothesis || 'N/A'}</p>
+                        <p className="text-muted-foreground">
+                          {experiment.canvas?.hypothesis || 'N/A'}
+                        </p>
                       </div>
                       <div>
                         <span className="font-medium">Success Metric:</span>
-                        <p className="text-muted-foreground">{experiment.canvas?.successMetric || 'N/A'}</p>
+                        <p className="text-muted-foreground">
+                          {experiment.canvas?.successMetric || 'N/A'}
+                        </p>
                       </div>
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
@@ -464,4 +580,3 @@ export default function ProjectDetailPage() {
     </div>
   );
 }
-

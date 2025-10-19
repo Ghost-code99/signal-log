@@ -3,15 +3,19 @@
 ## 1. Overview
 
 ### Product Name
+
 AI Project Health Scanner
 
 ### Version
+
 1.0 (MVP)
 
 ### Date
+
 October 15, 2025
 
 ### Product Manager
+
 AI Product Copilot
 
 ---
@@ -27,17 +31,20 @@ This feature addresses a critical pain point: founders juggling multiple experim
 ## 3. Goals & Success Metrics
 
 ### Primary Goals
+
 1. Demonstrate AI strategic intelligence within 30 seconds of use
 2. Help founders prioritize their portfolio with confidence
 3. Validate product-market fit for AI-powered strategic tools
 
 ### Success Metrics (Post-Launch)
+
 - **Engagement:** 70%+ of users who land on the page submit at least one scan
 - **Time to Value:** Users see results within 10 seconds of submission
 - **Perceived Value:** 60%+ of users copy or screenshot results (proxy for usefulness)
 - **Retention:** 30%+ of users return to scan again within 7 days
 
 ### Out of Scope for MVP
+
 - Multi-session persistence (database storage)
 - Cross-project conflict detection
 - Historical tracking / progress over time
@@ -49,6 +56,7 @@ This feature addresses a critical pain point: founders juggling multiple experim
 ## 4. User Personas
 
 ### Primary Persona: Solo Founder Sam
+
 - **Context:** Running a pre-PMF startup, managing 3-5 active experiments simultaneously
 - **Pain:** No clear view of which projects are stalled, risky, or ready to ship
 - **Goal:** Quickly triage portfolio to focus energy on highest-impact work
@@ -61,11 +69,13 @@ This feature addresses a critical pain point: founders juggling multiple experim
 ### Epic: Project Portfolio Health Assessment
 
 #### Story 1: Submit Projects for Analysis
+
 **As a** solo founder  
 **I want to** input 3-5 active projects with brief descriptions  
 **So that** I can get AI-powered health assessments for my portfolio
 
 **Acceptance Criteria:**
+
 - [ ] Form allows 3-5 project entries (each with name + description fields)
 - [ ] Name field has 60-character limit; description has 300-character limit
 - [ ] Form validates that at least 3 projects are filled in before submission
@@ -73,11 +83,13 @@ This feature addresses a critical pain point: founders juggling multiple experim
 - [ ] Form is disabled during processing to prevent double-submission
 
 #### Story 2: View AI Health Assessments
+
 **As a** solo founder  
 **I want to** see health status, risks, and next steps for each project  
 **So that** I can make informed prioritization decisions
 
 **Acceptance Criteria:**
+
 - [ ] Results display as project cards in a grid/list layout
 - [ ] Each card shows: project name, description (truncated if long), status badge, risk flags, and 2-3 next-step bullets
 - [ ] Status badges use color coding: Green (Ready/Healthy), Yellow (Needs Attention), Red (High Risk/Stalled)
@@ -85,22 +97,26 @@ This feature addresses a critical pain point: founders juggling multiple experim
 - [ ] If AI call fails, fallback generic assessment is shown (not a blank error page)
 
 #### Story 3: Copy Results for External Use
+
 **As a** solo founder  
 **I want to** copy all results to clipboard  
 **So that** I can paste them into my notes or share with advisors
 
 **Acceptance Criteria:**
+
 - [ ] "Copy All" button appears above results
 - [ ] Button click copies formatted text (project name, status, risks, next steps)
 - [ ] Visual confirmation ("Copied!") appears for 2 seconds after click
 - [ ] Copied format is readable in plain text (e.g., Slack, Notes app)
 
 #### Story 4: Scan Multiple Times
+
 **As a** solo founder  
 **I want to** easily reset and scan a new set of projects  
 **So that** I can compare different portfolio configurations
 
 **Acceptance Criteria:**
+
 - [ ] "Start Over" or "New Scan" button clears form and results
 - [ ] Browser back button doesn't break the experience
 - [ ] (Optional) Last scan saved to localStorage for quick reference if user refreshes
@@ -112,6 +128,7 @@ This feature addresses a critical pain point: founders juggling multiple experim
 ### 6.1 User Interface
 
 #### Project Input Form
+
 - 3-5 expandable project entry sections
 - Each section contains:
   - **Project Name:** Single-line text input (max 60 chars)
@@ -121,6 +138,7 @@ This feature addresses a critical pain point: founders juggling multiple experim
 - Primary CTA: "Analyze My Portfolio" button (disabled until ≥3 projects filled)
 
 #### Results Display
+
 - Full-width card grid (2 columns on desktop, 1 on mobile)
 - Each project card includes:
   - **Header:** Project name + status badge
@@ -130,6 +148,7 @@ This feature addresses a critical pain point: founders juggling multiple experim
 - "Copy All Results" and "Start Over" buttons above grid
 
 #### Loading States
+
 - Submit button → spinner + "Analyzing..." text
 - Skeleton cards appear during processing
 - Error state: Friendly message + "Try Again" button
@@ -139,6 +158,7 @@ This feature addresses a critical pain point: founders juggling multiple experim
 #### Endpoint: `POST /api/scan-projects`
 
 **Request Body:**
+
 ```json
 {
   "projects": [
@@ -159,6 +179,7 @@ This feature addresses a critical pain point: founders juggling multiple experim
 ```
 
 **Response Body:**
+
 ```json
 {
   "analyses": [
@@ -211,12 +232,14 @@ This feature addresses a critical pain point: founders juggling multiple experim
 ```
 
 **Status Codes:**
+
 - `200 OK`: Successful analysis
 - `400 Bad Request`: Invalid input (e.g., <3 projects, missing fields)
 - `500 Internal Server Error`: AI call failure (returns fallback analysis)
 
 **Fallback Behavior:**
 If OpenAI API fails, return generic but useful assessments:
+
 - Status: All projects marked "needs_attention"
 - Risk flags: Generic strategic questions
 - Next steps: Standard best practices (validate assumptions, talk to users, set deadlines)
@@ -226,6 +249,7 @@ If OpenAI API fails, return generic but useful assessments:
 ## 7. Technical Architecture
 
 ### Tech Stack
+
 - **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS
 - **API:** Next.js API Routes (Edge Runtime for speed)
 - **AI:** OpenAI GPT-4 (gpt-4o-mini for cost efficiency)
@@ -233,10 +257,11 @@ If OpenAI API fails, return generic but useful assessments:
 - **Storage:** Browser localStorage (optional, for last scan)
 
 ### Component Structure
+
 ```
 /src/app/project-health-scanner/
   page.tsx                    # Page wrapper with header/footer
-  
+
 /src/components/
   project-health-scanner.tsx  # Main client component
 
@@ -247,6 +272,7 @@ If OpenAI API fails, return generic but useful assessments:
 ### AI Prompt Engineering
 
 **System Prompt:**
+
 ```
 You are a strategic advisor helping solo founders triage their project portfolio. You analyze projects and provide:
 1. Status assessment (ready/needs_attention/stalled)
@@ -276,6 +302,7 @@ Respond ONLY with valid JSON in this format:
 ```
 
 **User Prompt:**
+
 ```
 Analyze these projects:
 1. [Project Name]: [Description]
@@ -288,6 +315,7 @@ Analyze these projects:
 ## 8. UI/UX Design Specifications
 
 ### Visual Design
+
 - **Brand Alignment:** Use existing Signal Log design system (Tailwind, shadcn/ui components)
 - **Color Palette:**
   - Status badges: Green (#10b981), Yellow (#f59e0b), Red (#ef4444)
@@ -295,11 +323,13 @@ Analyze these projects:
   - Accents: Primary brand color for CTAs
 
 ### Responsive Behavior
+
 - **Desktop (≥1024px):** 2-column grid for results, full-width form
 - **Tablet (768-1023px):** 2-column grid, slightly condensed form
 - **Mobile (<768px):** Single-column layout, stacked project cards
 
 ### Accessibility
+
 - [ ] All form inputs have associated labels
 - [ ] Status badges have ARIA labels (not just color-coded)
 - [ ] Keyboard navigation works for entire flow
@@ -311,6 +341,7 @@ Analyze these projects:
 ## 9. Implementation Plan
 
 ### Phase 1: Core Functionality (MVP)
+
 **Timeline:** 2-3 hours
 
 #### Stage 1 — UI Design Only
@@ -386,12 +417,14 @@ UI built with shadcn/ui components (Card, Button, Input, Textarea, Label, Badge)
    - ✅ Mobile responsiveness check
 
 **Stage 2 Summary:**
+
 - **Route Added:** `/api/scan-projects` (POST)
 - **Request Shape:** `{ projects: [{ name: string, description: string }] }` (3-5 projects)
 - **Response Shape:** `{ analyses: [{ projectName, status, statusLabel, riskFlags, nextSteps }] }`
 - **Notable Constraints:** Uses GPT-4o-mini for cost efficiency, validates 3-5 projects, includes fallback analysis if API fails
 
 ### Phase 2: Polish & Optimization (Future)
+
 - Add localStorage to persist last scan
 - Improve AI prompt for better edge cases
 - Add "Export as PDF" feature
@@ -404,6 +437,7 @@ UI built with shadcn/ui components (Card, Button, Input, Textarea, Label, Badge)
 ### Test Scenarios
 
 **Happy Path:**
+
 1. User lands on page
 2. Fills in 3 projects with realistic descriptions
 3. Clicks "Analyze My Portfolio"
@@ -412,12 +446,14 @@ UI built with shadcn/ui components (Card, Button, Input, Textarea, Label, Badge)
 6. Clicks "Start Over" to scan again
 
 **Edge Cases:**
+
 - User submits with only 2 projects → Validation error
 - User submits with 250+ word descriptions → Truncated gracefully
 - API call times out → Fallback results shown
 - User refreshes during loading → Returns to empty form (no broken state)
 
 ### QA Checklist
+
 - [x] Form validation prevents submission with <3 projects
 - [x] Loading state appears immediately on submit
 - [x] Results render correctly in light and dark mode
@@ -496,6 +532,7 @@ UI built with shadcn/ui components (Card, Button, Input, Textarea, Label, Badge)
     - Validation: Production-ready, no console errors
 
 **Stage 3 Summary:**
+
 - **Security Implementation:** Added Zod validation on API route; escaped user content before render
 - **Zero Trust Applied:** All inputs validated, outputs sanitized, safe rendering implemented
 
@@ -503,30 +540,33 @@ UI built with shadcn/ui components (Card, Button, Input, Textarea, Label, Badge)
 
 ## 11. Risks & Mitigations
 
-| Risk | Impact | Likelihood | Mitigation |
-|------|--------|------------|------------|
-| AI responses are too generic | High | Medium | Iterate on prompt engineering; include few-shot examples |
-| API latency >15 seconds | Medium | Low | Use streaming response; show per-project results as they arrive |
-| Users don't understand status labels | Medium | Medium | Add tooltips explaining "Ready/Needs Attention/Stalled" |
-| Feature feels like a toy (no persistence) | High | Medium | Add localStorage; mention in UI this is MVP; promise more features soon |
-| OpenAI API costs spike | Low | Low | Use gpt-4o-mini; implement rate limiting in Phase 2 |
+| Risk                                      | Impact | Likelihood | Mitigation                                                              |
+| ----------------------------------------- | ------ | ---------- | ----------------------------------------------------------------------- |
+| AI responses are too generic              | High   | Medium     | Iterate on prompt engineering; include few-shot examples                |
+| API latency >15 seconds                   | Medium | Low        | Use streaming response; show per-project results as they arrive         |
+| Users don't understand status labels      | Medium | Medium     | Add tooltips explaining "Ready/Needs Attention/Stalled"                 |
+| Feature feels like a toy (no persistence) | High   | Medium     | Add localStorage; mention in UI this is MVP; promise more features soon |
+| OpenAI API costs spike                    | Low    | Low        | Use gpt-4o-mini; implement rate limiting in Phase 2                     |
 
 ---
 
 ## 12. Launch Plan
 
 ### Pre-Launch
+
 - [ ] Add feature card to homepage (update `/app/page.tsx`)
 - [ ] Create social media preview image
 - [ ] Write launch tweet/post copy
 
 ### Launch
+
 - [ ] Deploy to production
 - [ ] Post to social media with demo video
 - [ ] Share in founder communities (Indie Hackers, Twitter)
 - [ ] Monitor for errors in first 24 hours
 
 ### Post-Launch
+
 - [ ] Collect user feedback (add feedback button?)
 - [ ] Track usage metrics (GA or similar)
 - [ ] Iterate on AI prompt based on user reactions
@@ -537,16 +577,18 @@ UI built with shadcn/ui components (Card, Button, Input, Textarea, Label, Badge)
 ## 13. Appendix
 
 ### Related Documents
+
 - [AI Project Health Scanner Concept](./ai-project-health-scanner-concept.md)
 - [Multi-Project Dashboard Concept](./concept.md)
 
 ### Open Questions
+
 1. Should we allow 6+ projects, or keep strict 3-5 limit?
 2. Should status labels be customizable (e.g., user can override AI assessment)?
 3. Do we need a "Refresh Analysis" button for same projects?
 
 ### Glossary
+
 - **Portfolio:** The collection of active projects/experiments a founder is managing
 - **Triage:** The process of prioritizing which projects deserve immediate attention
 - **Status Signal:** AI-generated indicator of project health (ready/needs attention/stalled)
-

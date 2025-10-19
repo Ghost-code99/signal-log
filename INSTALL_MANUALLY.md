@@ -57,6 +57,7 @@ npm run test
 ```
 
 **Expected output:**
+
 ```
 ✓ src/app/dashboard/__tests__/actions.test.ts (30)
 ✓ src/app/dashboard/__tests__/page.test.tsx (12)
@@ -124,14 +125,17 @@ Once the server is running:
 ## Troubleshooting
 
 **"zsh: command not found: brew"**
+
 - Homebrew not in PATH
 - Run: `eval "$(/opt/homebrew/bin/brew shellenv)"`
 
 **"Cannot find module 'vitest'"**
+
 - Test dependencies not installed
 - Run: `npm install -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/jest-dom`
 
 **Port 3000 already in use**
+
 - Another process using port 3000
 - Run: `lsof -ti:3000 | xargs kill -9`
 - Or use different port: `npm run dev -- --port 3001`
@@ -147,10 +151,10 @@ Once the server is running:
 ---
 
 **Once installed, you'll have:**
+
 - ✅ 42 automated tests
 - ✅ Performance-optimized dashboard
 - ✅ Full documentation
 - ✅ Working development server
 
 **Good luck! 🚀**
-

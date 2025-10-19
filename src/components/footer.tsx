@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export function Footer() {
   return (
@@ -16,9 +16,9 @@ export function Footer() {
             </div>
             <div className="flex items-center space-x-1">
               <span>Made with</span>
-              <a 
-                href="https://pirateskills.com" 
-                target="_blank" 
+              <a
+                href="https://pirateskills.com"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold hover:text-foreground transition-colors"
               >
@@ -35,7 +35,7 @@ export function Footer() {
               </a>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-6">
             <a
               href="https://pirateskills.com/contact"
@@ -60,4 +60,3 @@ export function Footer() {
     </footer>
   );
 }
-

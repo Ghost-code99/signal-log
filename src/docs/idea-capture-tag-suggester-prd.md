@@ -3,11 +3,13 @@
 **Links:** [Concept Doc](./idea-capture-tag-suggester-concept.md) | [Product Context](./concept.md)
 
 ## 1. Objective
+
 Enable solo founders to capture raw business ideas and instantly organize them with AI-suggested tags, eliminating manual categorization friction.
 
 ## 2. Scope
 
 ### In-Scope
+
 - Text input for capturing ideas (textarea)
 - AI-powered tag generation (3-5 tags per idea)
 - Accept/remove suggested tags with one click
@@ -18,6 +20,7 @@ Enable solo founders to capture raw business ideas and instantly organize them w
 - Basic error handling and loading states
 
 ### Out-of-Scope
+
 - Database persistence or backend storage
 - User authentication or multi-user support
 - Idea editing after save (single-shot capture only—prevents scope creep)
@@ -43,20 +46,20 @@ Scenario: Generate tags for new idea
   And I click "Generate Tags"
   Then I should see 3-5 relevant tag suggestions within 3 seconds
   And tags should be clickable to toggle selection
-  
+
 Scenario: Save idea with tags
   Given I have generated tags for an idea
   When I select 2 tags and click "Save Idea"
   Then the idea should appear in my saved list
   And display the selected tags
   And show the timestamp
-  
+
 Scenario: Add custom tag
   Given I have generated AI tags
   When I type "Q4 Priority" in the custom tag field
   And press Enter
   Then "Q4 Priority" should be added to selected tags
-  
+
 Scenario: Delete saved idea
   Given I have saved ideas in my list
   When I click the delete button on an idea
@@ -173,6 +176,7 @@ UI built with shadcn/ui components (Card, Button, Input, Badge). Uses localStora
    - ✅ Validation: Test with network offline, verify fallbacks work
 
 **Stage 2 Summary:**
+
 - **Route Added:** `/api/generate-tags` (POST)
 - **Request Shape:** `{ idea: string }`
 - **Response Shape:** `{ tags: string[] }`
@@ -243,12 +247,15 @@ UI built with shadcn/ui components (Card, Button, Input, Badge). Uses localStora
     - Validation: No console errors, clean production build
 
 **Stage 3 Summary:**
+
 - **Security Implementation:** Added Zod validation on API route; escaped user content before render
 - **Zero Trust Applied:** All inputs validated, outputs sanitized, safe rendering implemented
+
 ```
 
 ---
 
-**Status:** Ready for Implementation  
+**Status:** Ready for Implementation
 **Last Updated:** October 15, 2025
 
+```

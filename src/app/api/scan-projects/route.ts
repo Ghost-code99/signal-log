@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { scanProjectsSchema, validateInput, sanitizeText } from '../../../lib/validation';
+import {
+  scanProjectsSchema,
+  validateInput,
+  sanitizeText,
+} from '../../../lib/validation';
 
 interface Project {
   name: string;
@@ -17,14 +21,11 @@ interface ProjectAnalysis {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     // Validate input with Zod schema
     const validation = validateInput(scanProjectsSchema, body);
     if (!validation.success) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
     const { projects } = validation.data!;
@@ -39,14 +40,17 @@ export async function POST(request: NextRequest) {
 
     // Build prompt with sanitized content
     const projectsList = projects
-      .map((p: Project, i: number) => `${i + 1}. ${sanitizeText(p.name)}: ${sanitizeText(p.description)}`)
+      .map(
+        (p: Project, i: number) =>
+          `${i + 1}. ${sanitizeText(p.name)}: ${sanitizeText(p.description)}`
+      )
       .join('\n');
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
@@ -118,7 +122,7 @@ Important: Ensure projectName exactly matches the input project name.`,
     return NextResponse.json({ analyses });
   } catch (error) {
     console.error('Error scanning projects:', error);
-    
+
     // Try to extract projects from request for fallback
     let projects: Project[] = [];
     try {
@@ -128,9 +132,8 @@ Important: Ensure projectName exactly matches the input project name.`,
       projects = [];
     }
 
-    const fallbackAnalyses = projects.length > 0 
-      ? generateFallbackAnalyses(projects)
-      : [];
+    const fallbackAnalyses =
+      projects.length > 0 ? generateFallbackAnalyses(projects) : [];
 
     return NextResponse.json(
       {
@@ -143,7 +146,7 @@ Important: Ensure projectName exactly matches the input project name.`,
 }
 
 function generateFallbackAnalyses(projects: Project[]): ProjectAnalysis[] {
-  return projects.map((project) => ({
+  return projects.map(project => ({
     projectName: sanitizeText(project.name),
     status: 'needs_attention',
     statusLabel: 'Needs Validation',
@@ -159,4 +162,3 @@ function generateFallbackAnalyses(projects: Project[]): ProjectAnalysis[] {
     ],
   }));
 }
-

@@ -3,11 +3,13 @@
 **Links:** [Concept Doc](./ai-assumption-challenger-concept.md) | [Product Context](./concept.md)
 
 ## 1. Objective
+
 Enable solo founders to identify blind spots and strengthen their business ideas through AI-generated critical questions **that prevent costly mistakes**.
 
 ## 2. Scope
 
 ### In-Scope
+
 - Text input for idea/hypothesis (textarea)
 - AI generation of 4-5 critical challenging questions
 - Questions displayed in numbered, highlighted cards
@@ -18,6 +20,7 @@ Enable solo founders to identify blind spots and strengthen their business ideas
 - Fallback questions if API unavailable
 
 ### Out-of-Scope
+
 - Multi-turn conversation or dialogue
 - Follow-up questions on specific challenges
 - Saving responses/answers to challenges
@@ -45,20 +48,20 @@ Scenario: Generate challenges for idea
   And I click "Challenge My Thinking"
   Then I should see 4-5 critical questions within 5 seconds
   And questions should be displayed in numbered amber-themed cards
-  
+
 Scenario: Copy challenges to clipboard
   Given I have generated challenges for an idea
   When I click the "Copy All" button
   Then all questions should be copied to clipboard
   And button should show "Copied!" confirmation for 2 seconds
-  
+
 Scenario: Load from history
   Given I have challenged ideas previously
   When I click "History" button
   Then I should see a list of recent challenges
   When I click on a historical challenge
   Then the idea and questions should reload in the main view
-  
+
 Scenario: Handle API failure gracefully
   Given the OpenAI API is unavailable
   When I submit an idea for challenge
@@ -180,6 +183,7 @@ UI built with shadcn/ui components (Card, Button, Badge). Uses localStorage for 
    - ✅ Validation: Test with network disabled, verify fallbacks
 
 **Stage 2 Summary:**
+
 - **Route Added:** `/api/challenge-idea` (POST)
 - **Request Shape:** `{ idea: string }`
 - **Response Shape:** `{ questions: string[] }`
@@ -254,12 +258,15 @@ UI built with shadcn/ui components (Card, Button, Badge). Uses localStorage for 
     - Validation: Production-ready, no console errors
 
 **Stage 3 Summary:**
+
 - **Security Implementation:** Added Zod validation on API route; escaped user content before render
 - **Zero Trust Applied:** All inputs validated, outputs sanitized, safe rendering implemented
+
 ```
 
 ---
 
-**Status:** Ready for Implementation  
+**Status:** Ready for Implementation
 **Last Updated:** October 15, 2025
 
+```

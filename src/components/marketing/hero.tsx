@@ -1,15 +1,18 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 
 export function Hero() {
   const scrollToProblem = () => {
-    document.getElementById("problem")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById('problem')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-background" aria-label="Hero section">
+    <section
+      className="relative min-h-screen flex items-center justify-center bg-background"
+      aria-label="Hero section"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32">
         <div className="text-center max-w-4xl mx-auto space-y-8">
           {/* Coming Soon Badge */}
@@ -19,7 +22,7 @@ export function Hero() {
             transition={{ duration: 0.5 }}
             className="inline-block"
           >
-            <span 
+            <span
               className="text-sm text-muted-foreground px-4 py-2 bg-muted/50 rounded-full font-medium"
               role="status"
             >
@@ -53,8 +56,9 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
           >
-            Transform scattered ideas into validated experiments. Track your journey from concept 
-            to product-market fit with AI-powered insights that keep you focused and moving forward.
+            Transform scattered ideas into validated experiments. Track your
+            journey from concept to product-market fit with AI-powered insights
+            that keep you focused and moving forward.
           </motion.p>
 
           {/* CTA Button */}

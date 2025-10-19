@@ -1,12 +1,12 @@
-import { Hero } from "@/components/marketing/hero";
-import { Problem } from "@/components/marketing/problem";
-import { Solution } from "@/components/marketing/solution";
-import { CTA } from "@/components/marketing/cta";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Sparkles, Target, Lightbulb, BarChart3 } from "lucide-react";
-import Link from "next/link";
+import { Hero } from '@/components/marketing/hero';
+import { Problem } from '@/components/marketing/problem';
+import { Solution } from '@/components/marketing/solution';
+import { CTA } from '@/components/marketing/cta';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Sparkles, Target, Lightbulb, BarChart3 } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
       <Hero />
       <Problem />
       <Solution />
-      
+
       {/* Dashboard CTA */}
       <section className="container mx-auto px-4 py-12">
         <Card className="p-8 bg-gradient-to-br from-primary/5 to-purple-500/5 border-2 border-primary/20">
@@ -24,7 +24,9 @@ export default function Home() {
               Manage All Your Projects in One Place
             </h2>
             <p className="text-lg text-muted-foreground mb-6">
-              Use the new Multi-Project Dashboard to organize your initiatives, track progress, and link ideas, assumptions, and experiments to specific projects.
+              Use the new Multi-Project Dashboard to organize your initiatives,
+              track progress, and link ideas, assumptions, and experiments to
+              specific projects.
             </p>
             <Link href="/dashboard">
               <Button size="lg" className="gap-2">
@@ -43,7 +45,8 @@ export default function Home() {
             Four Powerful Tools to Get Started
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            No database required. No complex setup. Just AI-powered intelligence to help you think better and move faster.
+            No database required. No complex setup. Just AI-powered intelligence
+            to help you think better and move faster.
           </p>
         </div>
 
@@ -55,10 +58,15 @@ export default function Home() {
                 <BarChart3 className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <Badge className="mb-2 bg-primary/20 text-primary border-primary">NEW</Badge>
-                <h3 className="text-xl font-bold mb-2">AI Project Health Scanner</h3>
+                <Badge className="mb-2 bg-primary/20 text-primary border-primary">
+                  NEW
+                </Badge>
+                <h3 className="text-xl font-bold mb-2">
+                  AI Project Health Scanner
+                </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Get instant AI triage for 3-5 active projects. See status, risks, and next steps for your entire portfolio.
+                  Get instant AI triage for 3-5 active projects. See status,
+                  risks, and next steps for your entire portfolio.
                 </p>
               </div>
               <Link href="/project-health-scanner">
@@ -74,13 +82,18 @@ export default function Home() {
                 <Sparkles className="h-6 w-6 text-purple-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold mb-2">Idea Capture & AI Tag Suggester</h3>
+                <h3 className="text-xl font-bold mb-2">
+                  Idea Capture & AI Tag Suggester
+                </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Capture scattered thoughts and let AI instantly organize them with intelligent tags. No more idea graveyards.
+                  Capture scattered thoughts and let AI instantly organize them
+                  with intelligent tags. No more idea graveyards.
                 </p>
               </div>
               <Link href="/idea-capture">
-                <Button className="w-full" variant="outline">Try It Now</Button>
+                <Button className="w-full" variant="outline">
+                  Try It Now
+                </Button>
               </Link>
             </div>
           </Card>
@@ -92,13 +105,18 @@ export default function Home() {
                 <Target className="h-6 w-6 text-amber-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold mb-2">AI Assumption Challenger</h3>
+                <h3 className="text-xl font-bold mb-2">
+                  AI Assumption Challenger
+                </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Get critical questions that challenge your thinking and strengthen ideas before you invest time and resources.
+                  Get critical questions that challenge your thinking and
+                  strengthen ideas before you invest time and resources.
                 </p>
               </div>
               <Link href="/assumption-challenger">
-                <Button className="w-full" variant="outline">Try It Now</Button>
+                <Button className="w-full" variant="outline">
+                  Try It Now
+                </Button>
               </Link>
             </div>
           </Card>
@@ -110,13 +128,18 @@ export default function Home() {
                 <Lightbulb className="h-6 w-6 text-green-600" />
               </div>
               <div>
-                <h3 className="text-xl font-bold mb-2">Quick Experiment Canvas</h3>
+                <h3 className="text-xl font-bold mb-2">
+                  Quick Experiment Canvas
+                </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Transform vague concepts into structured experiments with clear metrics and next steps in seconds.
+                  Transform vague concepts into structured experiments with
+                  clear metrics and next steps in seconds.
                 </p>
               </div>
               <Link href="/experiment-canvas">
-                <Button className="w-full" variant="outline">Try It Now</Button>
+                <Button className="w-full" variant="outline">
+                  Try It Now
+                </Button>
               </Link>
             </div>
           </Card>

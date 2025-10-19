@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { CTAModal } from "@/components/cta-modal";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/theme-toggle';
+import { CTAModal } from '@/components/cta-modal';
 
 const navigation = [
-  { name: "Problem", href: "#problem" },
-  { name: "Solution", href: "#solution" },
-  { name: "Get Started", href: "#cta" },
+  { name: 'Problem', href: '#problem' },
+  { name: 'Solution', href: '#solution' },
+  { name: 'Get Started', href: '#cta' },
 ];
 
 export function Header() {
@@ -17,7 +17,7 @@ export function Header() {
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      element.scrollIntoView({ behavior: 'smooth' });
     }
     setMobileMenuOpen(false);
   };
@@ -32,10 +32,10 @@ export function Header() {
             </div>
             <span className="font-bold text-xl">Signal Log</span>
           </div>
-          
+
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            {navigation.map((item) => (
+            {navigation.map(item => (
               <Button
                 key={item.name}
                 variant="ghost"
@@ -53,7 +53,7 @@ export function Header() {
             <CTAModal />
           </div>
           <ThemeToggle />
-          
+
           {/* Mobile menu button */}
           <Button
             variant="ghost"
@@ -71,7 +71,11 @@ export function Header() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"}
+                d={
+                  mobileMenuOpen
+                    ? 'M6 18L18 6M6 6l12 12'
+                    : 'M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5'
+                }
               />
             </svg>
           </Button>
@@ -82,7 +86,7 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container px-4 py-4 space-y-2">
-            {navigation.map((item) => (
+            {navigation.map(item => (
               <Button
                 key={item.name}
                 variant="ghost"
@@ -101,4 +105,3 @@ export function Header() {
     </header>
   );
 }
-

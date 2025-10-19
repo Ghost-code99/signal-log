@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateCanvasSchema, validateInput, sanitizeText } from '../../../lib/validation';
+import {
+  generateCanvasSchema,
+  validateInput,
+  sanitizeText,
+} from '../../../lib/validation';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     // Validate input with Zod schema
     const validation = validateInput(generateCanvasSchema, body);
     if (!validation.success) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
     const { idea } = validation.data!;
@@ -22,11 +23,18 @@ export async function POST(request: NextRequest) {
     if (!apiKey) {
       // Fallback canvas if no API key configured
       const fallbackCanvas = {
-        hypothesis: 'If we [action], then [expected outcome] because [reasoning].',
-        successMetric: 'Number of users who complete the desired action within 7 days',
-        smallestTest: 'Create a simple landing page and drive 100 visitors to measure interest',
+        hypothesis:
+          'If we [action], then [expected outcome] because [reasoning].',
+        successMetric:
+          'Number of users who complete the desired action within 7 days',
+        smallestTest:
+          'Create a simple landing page and drive 100 visitors to measure interest',
         timeline: '1-2 weeks',
-        resources: ['Landing page builder', 'Marketing budget ($50-100)', 'Analytics tool'],
+        resources: [
+          'Landing page builder',
+          'Marketing budget ($50-100)',
+          'Analytics tool',
+        ],
       };
       return NextResponse.json({ canvas: fallbackCanvas });
     }
@@ -35,7 +43,7 @@ export async function POST(request: NextRequest) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: 'gpt-4',
@@ -80,7 +88,8 @@ Respond ONLY with JSON in this exact format:
       const fallbackCanvas = {
         hypothesis: 'Define a clear, testable hypothesis for your idea',
         successMetric: 'Choose one measurable metric to track success',
-        smallestTest: 'Design the simplest possible test to validate your hypothesis',
+        smallestTest:
+          'Design the simplest possible test to validate your hypothesis',
         timeline: '2-3 weeks',
         resources: ['Time investment', 'Basic tools', 'Initial budget'],
       };
@@ -94,7 +103,7 @@ Respond ONLY with JSON in this exact format:
     let canvas;
     try {
       canvas = JSON.parse(content);
-      
+
       // Validate structure
       if (!canvas.hypothesis || !canvas.successMetric || !canvas.smallestTest) {
         throw new Error('Invalid canvas structure');
@@ -133,7 +142,3 @@ Respond ONLY with JSON in this exact format:
     );
   }
 }
-
-
-
-

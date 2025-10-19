@@ -5,21 +5,24 @@ This implementation includes **three complete features** built for the AI Strate
 ## 🚀 Features Implemented
 
 ### 1. **Idea Capture & AI Tag Suggester**
+
 - **Route**: `/idea-capture`
 - **What it does**: Captures raw ideas and automatically suggests relevant organizational tags using AI
 - **Storage**: Browser localStorage (no database required)
 - **Key benefits**: Transforms scattered thoughts into organized, categorized insights instantly
 
-### 2. **AI Assumption Challenger**  
+### 2. **AI Assumption Challenger**
+
 - **Route**: `/assumption-challenger`
 - **What it does**: Analyzes business ideas and generates 4-5 critical questions to challenge assumptions
 - **Storage**: Optional history in localStorage
 - **Key benefits**: Provides strategic sparring partner experience, surfaces blind spots before execution
 
 ### 3. **Quick Experiment Canvas Generator**
+
 - **Route**: `/experiment-canvas`
 - **What it does**: Transforms vague ideas into structured experiments with hypothesis, metrics, and next steps
-- **Storage**: Optional history in localStorage  
+- **Storage**: Optional history in localStorage
 - **Key benefits**: Eliminates analysis paralysis, creates actionable plans in seconds
 
 ## 📋 Prerequisites
@@ -30,21 +33,25 @@ This implementation includes **three complete features** built for the AI Strate
 ## 🛠️ Setup Instructions
 
 1. **Clone and install dependencies**:
+
    ```bash
    npm install
    ```
 
 2. **Configure environment variables**:
+
    ```bash
    cp .env.example .env.local
    ```
-   
+
    Then edit `.env.local` and add your OpenAI API key:
+
    ```
    OPENAI_API_KEY=sk-your-actual-api-key-here
    ```
 
 3. **Run the development server**:
+
    ```bash
    npm run dev
    ```
@@ -88,17 +95,21 @@ src/
 ## 💡 Implementation Notes
 
 ### No Database Required
+
 All three features work without a database:
+
 - Data stored in browser `localStorage` for persistence across sessions
 - API routes are stateless (generate on-demand)
 - History tracking optional and client-side only
 
 ### AI Integration
+
 - Uses OpenAI API (GPT-3.5-turbo for tags, GPT-4 for challenges & canvas)
 - Fallback responses if API fails or key is missing
 - All AI calls are server-side (Next.js API routes)
 
 ### User Experience
+
 - Inline editing for all generated content
 - Copy to clipboard functionality
 - Download as Markdown (experiment canvas)
@@ -110,6 +121,7 @@ All three features work without a database:
 **Important**: Never commit your `.env.local` file to version control. The `.gitignore` is already configured to exclude it.
 
 If you don't have an OpenAI API key:
+
 1. Features will use fallback responses
 2. They'll still work but with generic output
 3. Consider getting a key for best experience
@@ -117,6 +129,7 @@ If you don't have an OpenAI API key:
 ## 🧪 Testing the Features
 
 ### Feature 1: Idea Capture & AI Tag Suggester
+
 1. Navigate to `/idea-capture`
 2. Paste an idea: "Add a referral program that gives both parties 20% off"
 3. Click "Generate Tags"
@@ -124,6 +137,7 @@ If you don't have an OpenAI API key:
 5. Save and see it in your history
 
 ### Feature 2: AI Assumption Challenger
+
 1. Navigate to `/assumption-challenger`
 2. Enter: "I want to build a marketplace for freelance AI consultants with 15% commission"
 3. Click "Challenge My Thinking"
@@ -131,6 +145,7 @@ If you don't have an OpenAI API key:
 5. Copy or review history
 
 ### Feature 3: Quick Experiment Canvas
+
 1. Navigate to `/experiment-canvas`
 2. Describe: "Test if a 7-day free trial with no credit card increases SaaS conversions"
 3. Click "Generate Experiment Canvas"
@@ -140,6 +155,7 @@ If you don't have an OpenAI API key:
 ## 📖 Documentation
 
 Each feature has a detailed concept document in `src/docs/` explaining:
+
 - What users can do
 - Why it delivers value
 - Implementation approach
@@ -148,6 +164,7 @@ Each feature has a detailed concept document in `src/docs/` explaining:
 ## 🚧 What's NOT Included (By Design)
 
 These features intentionally exclude:
+
 - User authentication / accounts
 - Backend database or persistence layer
 - Cross-device synchronization
@@ -168,6 +185,7 @@ This keeps the MVP focused on **validating core value** before adding complexity
 ## 📝 Next Steps
 
 After testing these features, consider:
+
 1. Gathering user feedback on which feature provides most value
 2. Adding analytics to track feature usage
 3. Implementing database persistence for cross-device access
@@ -181,7 +199,3 @@ This is a prototype implementation. Feel free to extend, modify, or use as a fou
 ---
 
 **Built as an MVP for solo founders seeking product-market fit.** 🚀
-
-
-
-

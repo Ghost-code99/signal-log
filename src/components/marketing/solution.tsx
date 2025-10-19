@@ -1,29 +1,35 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 export function Solution() {
   const scrollToCTA = () => {
-    document.getElementById("cta")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById('cta')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const features = [
     {
-      emoji: "💬",
-      title: "Natural Capture",
-      description: "Through chat-based collaboration, automatic summaries, and simple capture methods like voice-to-text, founders can offload mental overhead while the system keeps ideas structured.",
+      emoji: '💬',
+      title: 'Natural Capture',
+      description:
+        'Through chat-based collaboration, automatic summaries, and simple capture methods like voice-to-text, founders can offload mental overhead while the system keeps ideas structured.',
     },
     {
-      emoji: "📊",
-      title: "Visible Progress",
-      description: "The workspace maintains a clear history, provides reminders, and surfaces signals that help validate experiments faster. Every experiment leaves a visible trail of learning.",
+      emoji: '📊',
+      title: 'Visible Progress',
+      description:
+        'The workspace maintains a clear history, provides reminders, and surfaces signals that help validate experiments faster. Every experiment leaves a visible trail of learning.',
     },
   ];
 
   return (
-    <section id="solution" className="py-20 sm:py-28 bg-background" aria-labelledby="solution-heading">
+    <section
+      id="solution"
+      className="py-20 sm:py-28 bg-background"
+      aria-labelledby="solution-heading"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -50,17 +56,24 @@ export function Solution() {
             viewport={{ once: true }}
             className="text-center mb-20 space-y-6"
           >
-            <h2 id="solution-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+            <h2
+              id="solution-heading"
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight"
+            >
               Your AI Project Journal
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-              An AI-assisted workspace designed to act like a collaborative companion for founders.
-              Instead of scattered notes, turn ideas into evolving narratives that track progression over
-              time.
+              An AI-assisted workspace designed to act like a collaborative
+              companion for founders. Instead of scattered notes, turn ideas
+              into evolving narratives that track progression over time.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-10" role="list" aria-label="Key features">
+          <div
+            className="grid md:grid-cols-2 gap-8 lg:gap-10"
+            role="list"
+            aria-label="Key features"
+          >
             {features.map((feature, index) => (
               <motion.article
                 key={feature.title}
@@ -72,7 +85,9 @@ export function Solution() {
               >
                 <Card className="h-full border-muted/40 bg-card/50 backdrop-blur hover:border-accent/50 hover:shadow-xl hover:shadow-accent/10 hover:scale-105 transition-all duration-300">
                   <CardContent className="p-10 text-center">
-                    <div className="text-6xl mb-6" aria-hidden="true">{feature.emoji}</div>
+                    <div className="text-6xl mb-6" aria-hidden="true">
+                      {feature.emoji}
+                    </div>
                     <h3 className="text-xl sm:text-2xl font-semibold mb-5 bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
                       {feature.title}
                     </h3>
@@ -89,4 +104,3 @@ export function Solution() {
     </section>
   );
 }
-

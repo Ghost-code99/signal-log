@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
 export function BlurOrbs() {
   return (
@@ -16,11 +16,11 @@ export function BlurOrbs() {
         transition={{
           duration: 20,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
         style={{
-          top: "10%",
-          left: "10%",
+          top: '10%',
+          left: '10%',
         }}
       />
 
@@ -35,11 +35,11 @@ export function BlurOrbs() {
         transition={{
           duration: 15,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
         style={{
-          top: "50%",
-          right: "10%",
+          top: '50%',
+          right: '10%',
         }}
       />
 
@@ -54,17 +54,13 @@ export function BlurOrbs() {
         transition={{
           duration: 18,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
         style={{
-          bottom: "10%",
-          left: "50%",
+          bottom: '10%',
+          left: '50%',
         }}
       />
     </div>
   );
 }
-
-
-
-

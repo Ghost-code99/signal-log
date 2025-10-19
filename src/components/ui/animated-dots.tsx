@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export function AnimatedDots() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -9,7 +9,7 @@ export function AnimatedDots() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     const resizeCanvas = () => {
@@ -18,7 +18,7 @@ export function AnimatedDots() {
     };
 
     resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener('resize', resizeCanvas);
 
     const dots: Array<{
       x: number;
@@ -57,7 +57,7 @@ export function AnimatedDots() {
         // Draw dot
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(120, 119, 198, 0.3)";
+        ctx.fillStyle = 'rgba(120, 119, 198, 0.3)';
         ctx.fill();
 
         // Draw connections
@@ -85,7 +85,7 @@ export function AnimatedDots() {
     animate();
 
     return () => {
-      window.removeEventListener("resize", resizeCanvas);
+      window.removeEventListener('resize', resizeCanvas);
     };
   }, []);
 
@@ -97,7 +97,3 @@ export function AnimatedDots() {
     />
   );
 }
-
-
-
-

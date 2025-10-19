@@ -3,11 +3,13 @@
 **Links:** [Concept Doc](./quick-experiment-canvas-generator-concept.md) | [Product Context](./concept.md)
 
 ## 1. Objective
+
 Enable solo founders to move from vague idea to testable experiment in under 2 minutes—**eliminating analysis paralysis**.
 
 ## 2. Scope
 
 ### In-Scope
+
 - Text input for idea description (textarea)
 - AI generation of 5-section experiment canvas:
   1. Hypothesis (If-Then-Because format)
@@ -23,6 +25,7 @@ Enable solo founders to move from vague idea to testable experiment in under 2 m
 - Loading states and error handling
 
 ### Out-of-Scope
+
 - Experiment execution tracking
 - Results and outcome recording
 - Team collaboration or sharing
@@ -50,7 +53,7 @@ Scenario: Generate experiment canvas
   Then I should see a canvas with 5 sections within 5 seconds
   And hypothesis should follow "If...then...because" format
   And success metric should be specific and measurable
-  
+
 Scenario: Edit canvas fields inline
   Given I have generated a canvas
   When I click into the "Hypothesis" textarea
@@ -58,7 +61,7 @@ Scenario: Edit canvas fields inline
   Then the changes should be reflected immediately
   And persisted for download/copy actions
   And canvas maintains valid structure (no broken sections)
-  
+
 Scenario: Manage resources list
   Given I have a canvas with 3 resources
   When I click "+ Add Resource"
@@ -66,14 +69,14 @@ Scenario: Manage resources list
   When I fill it with "Analytics tool"
   And click remove on another resource
   Then the list should update accordingly
-  
+
 Scenario: Download as Markdown
   Given I have a completed canvas
   When I click "Download"
   Then a .md file should download
   And contain all sections formatted in Markdown
   And include my edited content
-  
+
 Scenario: Copy to clipboard
   Given I have a canvas
   When I click "Copy"
@@ -222,11 +225,12 @@ UI built with shadcn/ui components (Card, Button, Input, Label, Badge). Uses loc
    - ✅ Returns to initial input form
 
 **Stage 2 Summary:**
+
 - **Route Added:** `/api/generate-canvas` (POST)
 - **Request Shape:** `{ idea: string }`
 - **Response Shape:** `{ hypothesis, successMetric, smallestTest, timeline, resources }`
 - **Notable Constraints:** Uses GPT-4 for structured experiment design, includes fallback canvas, supports project linking via URL parameters
-   - Validation: Generate → edit → reset → verify clean state
+  - Validation: Generate → edit → reset → verify clean state
 
 10. **Add error handling**
     - Try-catch around API calls
@@ -308,12 +312,15 @@ UI built with shadcn/ui components (Card, Button, Input, Label, Badge). Uses loc
     - Validation: Production-ready, professional polish
 
 **Stage 3 Summary:**
+
 - **Security Implementation:** Added Zod validation on API route; escaped user content before render
 - **Zero Trust Applied:** All inputs validated, outputs sanitized, safe rendering implemented
+
 ```
 
 ---
 
-**Status:** Ready for Implementation  
+**Status:** Ready for Implementation
 **Last Updated:** October 15, 2025
 
+```

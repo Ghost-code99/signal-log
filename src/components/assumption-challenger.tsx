@@ -4,9 +4,21 @@ import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Sparkles, Copy, Check, History, AlertCircle, FolderOpen } from 'lucide-react';
+import {
+  Loader2,
+  Sparkles,
+  Copy,
+  Check,
+  History,
+  AlertCircle,
+  FolderOpen,
+} from 'lucide-react';
 import { ProjectActivity } from '@/app/dashboard/actions';
-import { challengeIdeaSchema, validateInput, sanitizeText } from '../lib/validation';
+import {
+  challengeIdeaSchema,
+  validateInput,
+  sanitizeText,
+} from '../lib/validation';
 import Link from 'next/link';
 
 interface Challenge {
@@ -23,7 +35,10 @@ interface AssumptionChallengerProps {
   projectName?: string;
 }
 
-export function AssumptionChallenger({ projectId, projectName }: AssumptionChallengerProps = {}) {
+export function AssumptionChallenger({
+  projectId,
+  projectName,
+}: AssumptionChallengerProps = {}) {
   const [ideaText, setIdeaText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [challenges, setChallenges] = useState<string[]>([]);
@@ -80,7 +95,7 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
 
       const data = await response.json();
       const questions = data.questions || [];
-      
+
       setChallenges(questions);
 
       // Save to history with sanitized data
@@ -100,16 +115,19 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
           const ACTIVITY_KEY = 'project-activity';
           const activitiesStr = localStorage.getItem(ACTIVITY_KEY);
           const activities = activitiesStr ? JSON.parse(activitiesStr) : [];
-          
+
           const newActivity: ProjectActivity = {
             id: `activity-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             projectId,
             type: 'assumption_challenged',
             description: `Challenged assumption: "${ideaText.slice(0, 50)}${ideaText.length > 50 ? '...' : ''}"`,
             timestamp: new Date().toISOString(),
-            metadata: { challengeId: newChallenge.id, ideaText: ideaText.slice(0, 100) }
+            metadata: {
+              challengeId: newChallenge.id,
+              ideaText: ideaText.slice(0, 100),
+            },
           };
-          
+
           activities.push(newActivity);
           localStorage.setItem(ACTIVITY_KEY, JSON.stringify(activities));
         } catch (error) {
@@ -169,7 +187,8 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
             <FolderOpen className="h-5 w-5 text-primary" />
             <div className="flex-1">
               <p className="text-sm font-medium">
-                Challenging assumptions for: <span className="text-primary">{projectName}</span>
+                Challenging assumptions for:{' '}
+                <span className="text-primary">{projectName}</span>
               </p>
               <p className="text-xs text-muted-foreground">
                 This challenge will be automatically linked to your project
@@ -189,9 +208,12 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
         <div className="space-y-6">
           <div className="flex justify-between items-start gap-4">
             <div className="space-y-2 flex-1">
-              <h2 className="text-2xl sm:text-3xl font-bold">Challenge Your Thinking</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold">
+                Challenge Your Thinking
+              </h2>
               <p className="text-muted-foreground text-base leading-relaxed">
-                Share your idea and let AI ask the hard questions you might be avoiding.
+                Share your idea and let AI ask the hard questions you might be
+                avoiding.
               </p>
             </div>
             {history.length > 0 && (
@@ -215,14 +237,15 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
             <textarea
               id="idea-textarea"
               value={ideaText}
-              onChange={(e) => setIdeaText(e.target.value)}
+              onChange={e => setIdeaText(e.target.value)}
               placeholder="E.g., I want to build a marketplace for freelance AI consultants. We'll take 15% commission on each project and focus on mid-market companies who can't afford full-time AI teams..."
               className="w-full min-h-[160px] p-4 border-2 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
               disabled={isGenerating}
               aria-describedby="idea-hint"
             />
             <p id="idea-hint" className="text-xs text-muted-foreground">
-              Be detailed about your assumptions, target market, and business model
+              Be detailed about your assumptions, target market, and business
+              model
             </p>
           </div>
 
@@ -232,11 +255,16 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
               disabled={!ideaText.trim() || isGenerating}
               className="flex-1 transition-all hover:scale-[1.02] disabled:hover:scale-100"
               size="lg"
-              aria-label={isGenerating ? "Analyzing your idea" : "Challenge my thinking"}
+              aria-label={
+                isGenerating ? 'Analyzing your idea' : 'Challenge my thinking'
+              }
             >
               {isGenerating ? (
                 <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" aria-hidden="true" />
+                  <Loader2
+                    className="mr-2 h-5 w-5 animate-spin"
+                    aria-hidden="true"
+                  />
                   Analyzing...
                 </>
               ) : (
@@ -261,10 +289,17 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
 
           {/* Challenge Results */}
           {showChallenges && challenges.length > 0 && (
-            <div className="space-y-5 pt-6 border-t-2" role="region" aria-label="Critical questions">
+            <div
+              className="space-y-5 pt-6 border-t-2"
+              role="region"
+              aria-label="Critical questions"
+            >
               <div className="flex justify-between items-center gap-4">
                 <h3 className="font-semibold text-lg flex items-center gap-2">
-                  <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" aria-hidden="true" />
+                  <AlertCircle
+                    className="w-5 h-5 text-amber-600 dark:text-amber-400"
+                    aria-hidden="true"
+                  />
                   Critical Questions to Consider
                 </h3>
                 <Button
@@ -272,7 +307,11 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
                   variant="outline"
                   size="sm"
                   className="transition-all hover:scale-105"
-                  aria-label={copied ? "Questions copied to clipboard" : "Copy all questions to clipboard"}
+                  aria-label={
+                    copied
+                      ? 'Questions copied to clipboard'
+                      : 'Copy all questions to clipboard'
+                  }
                 >
                   {copied ? (
                     <>
@@ -293,8 +332,8 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
                   <li key={index}>
                     <Card className="p-5 bg-amber-50 dark:bg-amber-950/20 border-2 border-amber-200 dark:border-amber-900 transition-all hover:shadow-md">
                       <div className="flex gap-4">
-                        <Badge 
-                          variant="outline" 
+                        <Badge
+                          variant="outline"
                           className="h-7 shrink-0 font-semibold border-amber-600 dark:border-amber-400 text-amber-700 dark:text-amber-300"
                           aria-label={`Question ${index + 1}`}
                         >
@@ -309,12 +348,16 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
                 ))}
               </ol>
 
-              <aside 
+              <aside
                 className="pt-4 p-4 bg-muted/50 rounded-lg border-dashed border-2"
                 aria-label="Tip"
               >
                 <p className="text-xs text-muted-foreground italic leading-relaxed">
-                  <strong className="text-foreground not-italic">💡 Take time to honestly answer each question.</strong> Strong ideas survive scrutiny and become stronger through critical examination.
+                  <strong className="text-foreground not-italic">
+                    💡 Take time to honestly answer each question.
+                  </strong>{' '}
+                  Strong ideas survive scrutiny and become stronger through
+                  critical examination.
                 </p>
               </aside>
             </div>
@@ -324,16 +367,20 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
 
       {/* History Panel */}
       {showHistory && history.length > 0 && (
-        <Card className="p-8 shadow-lg" role="region" aria-label="Challenge history">
+        <Card
+          className="p-8 shadow-lg"
+          role="region"
+          aria-label="Challenge history"
+        >
           <h3 className="text-xl font-bold mb-5">Recent Challenges</h3>
           <div className="space-y-3" role="list">
-            {history.map((challenge) => (
+            {history.map(challenge => (
               <Card
                 key={challenge.id}
                 className="p-5 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer focus-within:ring-2 focus-within:ring-primary/20"
                 role="listitem"
                 onClick={() => loadFromHistory(challenge)}
-                onKeyDown={(e) => {
+                onKeyDown={e => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     loadFromHistory(challenge);
@@ -348,9 +395,12 @@ export function AssumptionChallenger({ projectId, projectName }: AssumptionChall
                   </p>
                   <div className="flex justify-between items-center">
                     <Badge variant="secondary" className="text-xs">
-                      {challenge.questions.length} {challenge.questions.length === 1 ? 'question' : 'questions'}
+                      {challenge.questions.length}{' '}
+                      {challenge.questions.length === 1
+                        ? 'question'
+                        : 'questions'}
                     </Badge>
-                    <time 
+                    <time
                       className="text-xs text-muted-foreground"
                       dateTime={new Date(challenge.timestamp).toISOString()}
                     >

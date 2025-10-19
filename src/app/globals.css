@@ -78,15 +78,24 @@
 @layer utilities {
   /* Grid pattern for background */
   .bg-grid-pattern {
-    background-image: 
-      linear-gradient(to right, hsl(var(--foreground) / 0.1) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(var(--foreground) / 0.1) 1px, transparent 1px);
+    background-image:
+      linear-gradient(
+        to right,
+        hsl(var(--foreground) / 0.1) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        hsl(var(--foreground) / 0.1) 1px,
+        transparent 1px
+      );
     background-size: 40px 40px;
   }
 
   /* Animated gradient */
   @keyframes gradient-x {
-    0%, 100% {
+    0%,
+    100% {
       background-position: 0% 50%;
     }
     50% {

@@ -1,7 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,20 +14,49 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { X } from 'lucide-react';
 import { Project, validateProjectName } from '@/app/dashboard/actions';
-import { sanitizeText } from '../../lib/validation';
+
+type ProjectFormData = {
+  name: string;
+  description: string;
+  status: Project['status'];
+  tags: string[];
+  id?: string;
+};
 
 interface ProjectFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: any) => Promise<{ success: boolean; error?: string }>;
+  onSubmit: (
+    data: ProjectFormData
+  ) => Promise<{ success: boolean; error?: string }>;
   project?: Project | null;
   existingProjects: Project[];
 }
 
-const STATUS_OPTIONS: Project['status'][] = ['Active', 'Stalled', 'Validated', 'Idea'];
-const COMMON_TAGS = ['MVP', 'Growth', 'Product', 'Marketing', 'Sales', 'Fundraising', 'Tech', 'Research'];
+const STATUS_OPTIONS: Project['status'][] = [
+  'Active',
+  'Stalled',
+  'Validated',
+  'Idea',
+];
+const COMMON_TAGS = [
+  'MVP',
+  'Growth',
+  'Product',
+  'Marketing',
+  'Sales',
+  'Fundraising',
+  'Tech',
+  'Research',
+];
 
-export function ProjectFormModal({ isOpen, onClose, onSubmit, project, existingProjects }: ProjectFormModalProps) {
+export function ProjectFormModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  project,
+  existingProjects,
+}: ProjectFormModalProps) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState<Project['status']>('Active');
@@ -71,7 +105,11 @@ export function ProjectFormModal({ isOpen, onClose, onSubmit, project, existingP
 
     try {
       // Validate name uniqueness
-      const validation = await validateProjectName(name, existingProjects, project?.id);
+      const validation = await validateProjectName(
+        name,
+        existingProjects,
+        project?.id
+      );
       if (!validation.isValid) {
         setError(validation.error || 'Invalid project name');
         setIsSubmitting(false);
@@ -83,14 +121,14 @@ export function ProjectFormModal({ isOpen, onClose, onSubmit, project, existingP
         : { name, description, status, tags };
 
       const result = await onSubmit(data);
-      
+
       if (result.success) {
         resetForm();
         onClose();
       } else {
         setError(result.error || 'Failed to save project');
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred');
     } finally {
       setIsSubmitting(false);
@@ -121,14 +159,16 @@ export function ProjectFormModal({ isOpen, onClose, onSubmit, project, existingP
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="name">Project Name *</Label>
-              <span className={`text-xs ${nameLength > 60 ? 'text-destructive' : 'text-muted-foreground'}`}>
+              <span
+                className={`text-xs ${nameLength > 60 ? 'text-destructive' : 'text-muted-foreground'}`}
+              >
                 {nameLength}/60
               </span>
             </div>
             <Input
               id="name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={e => setName(e.target.value)}
               placeholder="e.g., Launch referral program"
               maxLength={60}
               required
@@ -139,14 +179,16 @@ export function ProjectFormModal({ isOpen, onClose, onSubmit, project, existingP
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="description">Description</Label>
-              <span className={`text-xs ${descriptionLength > 300 ? 'text-destructive' : 'text-muted-foreground'}`}>
+              <span
+                className={`text-xs ${descriptionLength > 300 ? 'text-destructive' : 'text-muted-foreground'}`}
+              >
                 {descriptionLength}/300
               </span>
             </div>
             <Textarea
               id="description"
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={e => setDescription(e.target.value)}
               placeholder="Brief description of what this project aims to achieve..."
               maxLength={300}
               rows={3}
@@ -157,7 +199,7 @@ export function ProjectFormModal({ isOpen, onClose, onSubmit, project, existingP
           <div className="space-y-2">
             <Label>Status *</Label>
             <div className="flex flex-wrap gap-2">
-              {STATUS_OPTIONS.map((option) => (
+              {STATUS_OPTIONS.map(option => (
                 <button
                   key={option}
                   type="button"
@@ -177,11 +219,11 @@ export function ProjectFormModal({ isOpen, onClose, onSubmit, project, existingP
           {/* Tags */}
           <div className="space-y-2">
             <Label>Tags</Label>
-            
+
             {/* Selected Tags */}
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-2 p-3 bg-muted rounded-md">
-                {tags.map((tag) => (
+                {tags.map(tag => (
                   <Badge key={tag} variant="secondary" className="gap-1">
                     {tag}
                     <button
@@ -200,7 +242,7 @@ export function ProjectFormModal({ isOpen, onClose, onSubmit, project, existingP
             <div className="space-y-2">
               <p className="text-xs text-muted-foreground">Quick add:</p>
               <div className="flex flex-wrap gap-2">
-                {COMMON_TAGS.filter(t => !tags.includes(t)).map((tag) => (
+                {COMMON_TAGS.filter(t => !tags.includes(t)).map(tag => (
                   <Badge
                     key={tag}
                     variant="outline"
@@ -217,8 +259,8 @@ export function ProjectFormModal({ isOpen, onClose, onSubmit, project, existingP
             <div className="flex gap-2">
               <Input
                 value={customTag}
-                onChange={(e) => setCustomTag(e.target.value)}
-                onKeyDown={(e) => {
+                onChange={e => setCustomTag(e.target.value)}
+                onKeyDown={e => {
                   if (e.key === 'Enter') {
                     e.preventDefault();
                     handleAddTag(customTag);
@@ -265,8 +307,10 @@ export function ProjectFormModal({ isOpen, onClose, onSubmit, project, existingP
                   <span className="animate-spin mr-2">⏳</span>
                   {project ? 'Updating...' : 'Creating...'}
                 </>
+              ) : project ? (
+                'Update Project'
               ) : (
-                project ? 'Update Project' : 'Create Project'
+                'Create Project'
               )}
             </Button>
           </div>
@@ -275,4 +319,3 @@ export function ProjectFormModal({ isOpen, onClose, onSubmit, project, existingP
     </Dialog>
   );
 }
-

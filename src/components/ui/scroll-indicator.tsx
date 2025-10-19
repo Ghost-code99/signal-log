@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 
 interface ScrollIndicatorProps {
   onClick?: () => void;
@@ -23,7 +23,7 @@ export function ScrollIndicator({ onClick }: ScrollIndicatorProps) {
         transition={{
           duration: 1.5,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
       >
         <ChevronDown className="w-5 h-5" />
@@ -31,7 +31,3 @@ export function ScrollIndicator({ onClick }: ScrollIndicatorProps) {
     </motion.button>
   );
 }
-
-
-
-

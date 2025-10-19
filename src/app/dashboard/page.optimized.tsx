@@ -1,6 +1,6 @@
 /**
  * OPTIMIZED Dashboard Page
- * 
+ *
  * Performance improvements:
  * 1. useMemo for filtered projects calculation
  * 2. useCallback for event handlers to prevent child re-renders
@@ -14,18 +14,17 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { 
-  LayoutDashboard, 
-  Plus, 
-  Search, 
+import {
+  LayoutDashboard,
+  Plus,
+  Search,
   Filter,
   TrendingUp,
   FolderOpen,
   Lightbulb,
   FlaskConical,
-  ChevronDown
+  ChevronDown,
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -35,6 +34,8 @@ import {
   deleteProject,
   calculateDashboardStats,
   type DashboardStats,
+  type CreateProjectInput,
+  type UpdateProjectInput,
 } from './actions';
 import { ProjectCard } from '@/components/dashboard/project-card';
 import { ProjectFormModal } from '@/components/dashboard/project-form-modal';
@@ -73,17 +74,24 @@ export default function DashboardPageOptimized() {
     ideasThisWeek: 0,
     experimentsInProgress: 0,
   });
-  
+
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
-  const [deleteConfirm, setDeleteConfirm] = useState<{ isOpen: boolean; project: Project | null }>({
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    isOpen: boolean;
+    project: Project | null;
+  }>({
     isOpen: false,
     project: null,
   });
-  
+
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'All' | Project['status']>('All');
-  const [sortBy, setSortBy] = useState<'updated' | 'alphabetical' | 'status'>('updated');
+  const [statusFilter, setStatusFilter] = useState<'All' | Project['status']>(
+    'All'
+  );
+  const [sortBy, setSortBy] = useState<'updated' | 'alphabetical' | 'status'>(
+    'updated'
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   // Debounce search query to reduce filtering operations
@@ -105,7 +113,7 @@ export default function DashboardPageOptimized() {
         setIsLoading(false);
       }
     };
-    
+
     loadProjects();
   }, []);
 
@@ -126,17 +134,21 @@ export default function DashboardPageOptimized() {
       try {
         const ideasStr = localStorage.getItem('captured-ideas');
         const experimentsStr = localStorage.getItem('canvas-history');
-        
+
         const ideas = ideasStr ? JSON.parse(ideasStr) : [];
         const experiments = experimentsStr ? JSON.parse(experimentsStr) : [];
-        
-        const newStats = await calculateDashboardStats(projects, ideas, experiments);
+
+        const newStats = await calculateDashboardStats(
+          projects,
+          ideas,
+          experiments
+        );
         setStats(newStats);
       } catch (error) {
         console.error('Error calculating stats:', error);
       }
     };
-    
+
     if (!isLoading) {
       updateStats();
     }
@@ -145,22 +157,23 @@ export default function DashboardPageOptimized() {
   // OPTIMIZATION: Memoize filtered and sorted projects
   const filteredProjects = useMemo(() => {
     let filtered = [...projects];
-    
+
     // Apply status filter
     if (statusFilter !== 'All') {
       filtered = filtered.filter(p => p.status === statusFilter);
     }
-    
+
     // Apply search (debounced)
     if (debouncedSearchQuery.trim()) {
       const query = debouncedSearchQuery.toLowerCase();
-      filtered = filtered.filter(p => 
-        p.name.toLowerCase().includes(query) ||
-        p.description.toLowerCase().includes(query) ||
-        p.tags.some(tag => tag.toLowerCase().includes(query))
+      filtered = filtered.filter(
+        p =>
+          p.name.toLowerCase().includes(query) ||
+          p.description.toLowerCase().includes(query) ||
+          p.tags.some(tag => tag.toLowerCase().includes(query))
       );
     }
-    
+
     // Apply sorting
     filtered.sort((a, b) => {
       if (sortBy === 'alphabetical') {
@@ -169,15 +182,17 @@ export default function DashboardPageOptimized() {
         return a.status.localeCompare(b.status);
       } else {
         // Sort by updated date (most recent first)
-        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+        return (
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        );
       }
     });
-    
+
     return filtered;
   }, [projects, debouncedSearchQuery, statusFilter, sortBy]);
 
   // OPTIMIZATION: useCallback for handlers to prevent child re-renders
-  const handleCreateProject = useCallback(async (input: any) => {
+  const handleCreateProject = useCallback(async (input: CreateProjectInput) => {
     const result = await createProject(input);
     if (result.success && result.project) {
       setProjects(prev => [...prev, result.project!]);
@@ -187,12 +202,12 @@ export default function DashboardPageOptimized() {
     return result;
   }, []);
 
-  const handleUpdateProject = useCallback(async (input: any) => {
+  const handleUpdateProject = useCallback(async (input: UpdateProjectInput) => {
     const result = await updateProject(input);
     if (result.success && result.project) {
-      setProjects(prev => prev.map(p => 
-        p.id === input.id ? { ...p, ...result.project } : p
-      ));
+      setProjects(prev =>
+        prev.map(p => (p.id === input.id ? { ...p, ...result.project } : p))
+      );
       setIsFormOpen(false);
       setEditingProject(null);
       return { success: true };
@@ -200,9 +215,42 @@ export default function DashboardPageOptimized() {
     return result;
   }, []);
 
+  // Wrapper functions to handle type conversion for form modal
+  const handleFormSubmit = useCallback(
+    async (data: {
+      name: string;
+      description: string;
+      status: Project['status'];
+      tags: string[];
+      id?: string;
+    }) => {
+      if (editingProject) {
+        // Update operation
+        const updateInput: UpdateProjectInput = {
+          id: data.id || editingProject.id,
+          name: data.name,
+          description: data.description,
+          status: data.status,
+          tags: data.tags,
+        };
+        return await handleUpdateProject(updateInput);
+      } else {
+        // Create operation
+        const createInput: CreateProjectInput = {
+          name: data.name,
+          description: data.description,
+          status: data.status,
+          tags: data.tags,
+        };
+        return await handleCreateProject(createInput);
+      }
+    },
+    [editingProject, handleCreateProject, handleUpdateProject]
+  );
+
   const handleDeleteProject = useCallback(async () => {
     if (!deleteConfirm.project) return;
-    
+
     const result = await deleteProject(deleteConfirm.project.id);
     if (result.success) {
       setProjects(prev => prev.filter(p => p.id !== deleteConfirm.project!.id));
@@ -290,7 +338,9 @@ export default function DashboardPageOptimized() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Experiments</p>
-              <p className="text-2xl font-bold">{stats.experimentsInProgress}</p>
+              <p className="text-2xl font-bold">
+                {stats.experimentsInProgress}
+              </p>
             </div>
           </div>
         </Card>
@@ -303,7 +353,7 @@ export default function DashboardPageOptimized() {
           <Input
             placeholder="Search projects by name, description, or tags..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
             className="pl-10"
           />
         </div>
@@ -339,7 +389,12 @@ export default function DashboardPageOptimized() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="gap-2">
-                Sort: {sortBy === 'updated' ? 'Last Updated' : sortBy === 'alphabetical' ? 'A-Z' : 'Status'}
+                Sort:{' '}
+                {sortBy === 'updated'
+                  ? 'Last Updated'
+                  : sortBy === 'alphabetical'
+                    ? 'A-Z'
+                    : 'Status'}
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -356,7 +411,13 @@ export default function DashboardPageOptimized() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button onClick={() => { setEditingProject(null); setIsFormOpen(true); }} className="gap-2">
+          <Button
+            onClick={() => {
+              setEditingProject(null);
+              setIsFormOpen(true);
+            }}
+            className="gap-2"
+          >
             <Plus className="h-4 w-4" />
             Add Project
           </Button>
@@ -369,10 +430,12 @@ export default function DashboardPageOptimized() {
           <div className="text-center">
             <FolderOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">
-              {projects.length === 0 ? 'No projects yet' : 'No projects match your filters'}
+              {projects.length === 0
+                ? 'No projects yet'
+                : 'No projects match your filters'}
             </h3>
             <p className="text-muted-foreground mb-6">
-              {projects.length === 0 
+              {projects.length === 0
                 ? 'Create your first project to start organizing your initiatives'
                 : 'Try adjusting your search or filter criteria'}
             </p>
@@ -386,7 +449,7 @@ export default function DashboardPageOptimized() {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => (
+          {filteredProjects.map(project => (
             <ProjectCard
               key={project.id}
               project={project}
@@ -406,29 +469,41 @@ export default function DashboardPageOptimized() {
               <Lightbulb className="h-5 w-5 text-purple-600" />
               <div className="text-left">
                 <div className="font-medium">Capture New Idea</div>
-                <div className="text-xs text-muted-foreground">Add ideas and link to projects</div>
+                <div className="text-xs text-muted-foreground">
+                  Add ideas and link to projects
+                </div>
               </div>
             </Button>
           </Link>
-          
+
           <Link href="/assumption-challenger">
             <Button variant="outline" className="w-full justify-start gap-3">
-              <svg className="h-5 w-5 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                className="h-5 w-5 text-amber-600"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <div className="text-left">
                 <div className="font-medium">Challenge Assumptions</div>
-                <div className="text-xs text-muted-foreground">Test your thinking on projects</div>
+                <div className="text-xs text-muted-foreground">
+                  Test your thinking on projects
+                </div>
               </div>
             </Button>
           </Link>
-          
+
           <Link href="/experiment-canvas">
             <Button variant="outline" className="w-full justify-start gap-3">
               <FlaskConical className="h-5 w-5 text-green-600" />
               <div className="text-left">
                 <div className="font-medium">Create Experiment</div>
-                <div className="text-xs text-muted-foreground">Generate canvas for projects</div>
+                <div className="text-xs text-muted-foreground">
+                  Generate canvas for projects
+                </div>
               </div>
             </Button>
           </Link>
@@ -438,8 +513,11 @@ export default function DashboardPageOptimized() {
       {/* Modals */}
       <ProjectFormModal
         isOpen={isFormOpen}
-        onClose={() => { setIsFormOpen(false); setEditingProject(null); }}
-        onSubmit={editingProject ? handleUpdateProject : handleCreateProject}
+        onClose={() => {
+          setIsFormOpen(false);
+          setEditingProject(null);
+        }}
+        onSubmit={handleFormSubmit}
         project={editingProject}
         existingProjects={projects}
       />
@@ -453,4 +531,3 @@ export default function DashboardPageOptimized() {
     </div>
   );
 }
-

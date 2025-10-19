@@ -6,9 +6,23 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Sparkles, Copy, Check, Download, RotateCcw, History, X, FolderOpen } from 'lucide-react';
+import {
+  Loader2,
+  Sparkles,
+  Copy,
+  Check,
+  Download,
+  RotateCcw,
+  History,
+  X,
+  FolderOpen,
+} from 'lucide-react';
 import { ProjectActivity } from '@/app/dashboard/actions';
-import { generateCanvasSchema, validateInput, sanitizeText } from '../lib/validation';
+import {
+  generateCanvasSchema,
+  validateInput,
+  sanitizeText,
+} from '../lib/validation';
 import Link from 'next/link';
 
 interface ExperimentCanvas {
@@ -33,12 +47,17 @@ interface ExperimentCanvasProps {
   projectName?: string;
 }
 
-export function ExperimentCanvas({ projectId, projectName }: ExperimentCanvasProps = {}) {
+export function ExperimentCanvas({
+  projectId,
+  projectName,
+}: ExperimentCanvasProps = {}) {
   const [ideaText, setIdeaText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [canvas, setCanvas] = useState<ExperimentCanvas | null>(null);
   const [copied, setCopied] = useState(false);
-  const [editableCanvas, setEditableCanvas] = useState<ExperimentCanvas | null>(null);
+  const [editableCanvas, setEditableCanvas] = useState<ExperimentCanvas | null>(
+    null
+  );
   const [history, setHistory] = useState<SavedCanvas[]>([]);
   const [showHistory, setShowHistory] = useState(false);
 
@@ -120,16 +139,19 @@ export function ExperimentCanvas({ projectId, projectName }: ExperimentCanvasPro
           const ACTIVITY_KEY = 'project-activity';
           const activitiesStr = localStorage.getItem(ACTIVITY_KEY);
           const activities = activitiesStr ? JSON.parse(activitiesStr) : [];
-          
+
           const newActivity: ProjectActivity = {
             id: `activity-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             projectId,
             type: 'experiment_generated',
             description: `Generated experiment: "${ideaText.slice(0, 50)}${ideaText.length > 50 ? '...' : ''}"`,
             timestamp: new Date().toISOString(),
-            metadata: { canvasId: newCanvas.id, ideaText: ideaText.slice(0, 100) }
+            metadata: {
+              canvasId: newCanvas.id,
+              ideaText: ideaText.slice(0, 100),
+            },
           };
-          
+
           activities.push(newActivity);
           localStorage.setItem(ACTIVITY_KEY, JSON.stringify(activities));
         } catch (error) {
@@ -185,7 +207,7 @@ Generated on ${new Date().toLocaleDateString()}
     if (!editableCanvas) return;
 
     const text = `Experiment Canvas\n\nIdea: ${ideaText}\n\nHypothesis:\n${editableCanvas.hypothesis}\n\nSuccess Metric:\n${editableCanvas.successMetric}\n\nSmallest Test:\n${editableCanvas.smallestTest}\n\nTimeline:\n${editableCanvas.timeline}\n\nResources:\n${editableCanvas.resources.map(r => `• ${r}`).join('\n')}`;
-    
+
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -203,7 +225,10 @@ Generated on ${new Date().toLocaleDateString()}
     setShowHistory(false);
   };
 
-  const updateField = (field: keyof ExperimentCanvas, value: string | string[]) => {
+  const updateField = (
+    field: keyof ExperimentCanvas,
+    value: string | string[]
+  ) => {
     if (!editableCanvas) return;
     setEditableCanvas({
       ...editableCanvas,
@@ -256,7 +281,8 @@ Generated on ${new Date().toLocaleDateString()}
             <FolderOpen className="h-5 w-5 text-primary" />
             <div className="flex-1">
               <p className="text-sm font-medium">
-                Creating experiment for: <span className="text-primary">{projectName}</span>
+                Creating experiment for:{' '}
+                <span className="text-primary">{projectName}</span>
               </p>
               <p className="text-xs text-muted-foreground">
                 This experiment will be automatically linked to your project
@@ -276,9 +302,12 @@ Generated on ${new Date().toLocaleDateString()}
         <div className="space-y-6">
           <div className="flex justify-between items-start gap-4">
             <div className="space-y-2 flex-1">
-              <h2 className="text-2xl sm:text-3xl font-bold">Describe Your Idea</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold">
+                Describe Your Idea
+              </h2>
               <p className="text-muted-foreground text-base leading-relaxed">
-                Share your concept and we'll structure it into an actionable experiment.
+                Share your concept and we&apos;ll structure it into an
+                actionable experiment.
               </p>
             </div>
             {history.length > 0 && (
@@ -302,7 +331,7 @@ Generated on ${new Date().toLocaleDateString()}
             <textarea
               id="idea-textarea"
               value={ideaText}
-              onChange={(e) => setIdeaText(e.target.value)}
+              onChange={e => setIdeaText(e.target.value)}
               placeholder="E.g., I want to test if offering a 7-day free trial with no credit card required will increase conversion rates for our SaaS product..."
               className="w-full min-h-[140px] p-4 border-2 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
               disabled={isGenerating || !!canvas}
@@ -319,11 +348,18 @@ Generated on ${new Date().toLocaleDateString()}
               disabled={!ideaText.trim() || isGenerating || !!canvas}
               className="flex-1 transition-all hover:scale-[1.02] disabled:hover:scale-100"
               size="lg"
-              aria-label={isGenerating ? "Generating canvas" : "Generate experiment canvas"}
+              aria-label={
+                isGenerating
+                  ? 'Generating canvas'
+                  : 'Generate experiment canvas'
+              }
             >
               {isGenerating ? (
                 <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" aria-hidden="true" />
+                  <Loader2
+                    className="mr-2 h-5 w-5 animate-spin"
+                    aria-hidden="true"
+                  />
                   Generating Canvas...
                 </>
               ) : (
@@ -351,17 +387,25 @@ Generated on ${new Date().toLocaleDateString()}
 
       {/* Canvas Display */}
       {editableCanvas && (
-        <Card className="p-8 shadow-lg" role="region" aria-label="Experiment canvas">
+        <Card
+          className="p-8 shadow-lg"
+          role="region"
+          aria-label="Experiment canvas"
+        >
           <div className="space-y-8">
             <div className="flex justify-between items-center gap-4">
               <h2 className="text-2xl font-bold">Your Experiment Canvas</h2>
               <div className="flex gap-2">
-                <Button 
-                  onClick={copyToClipboard} 
-                  variant="outline" 
+                <Button
+                  onClick={copyToClipboard}
+                  variant="outline"
                   size="sm"
                   className="transition-all hover:scale-105"
-                  aria-label={copied ? "Canvas copied to clipboard" : "Copy canvas to clipboard"}
+                  aria-label={
+                    copied
+                      ? 'Canvas copied to clipboard'
+                      : 'Copy canvas to clipboard'
+                  }
                 >
                   {copied ? (
                     <>
@@ -375,9 +419,9 @@ Generated on ${new Date().toLocaleDateString()}
                     </>
                   )}
                 </Button>
-                <Button 
-                  onClick={exportAsMarkdown} 
-                  variant="outline" 
+                <Button
+                  onClick={exportAsMarkdown}
+                  variant="outline"
                   size="sm"
                   className="transition-all hover:scale-105"
                   aria-label="Download canvas as markdown file"
@@ -391,27 +435,35 @@ Generated on ${new Date().toLocaleDateString()}
             {/* Hypothesis */}
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <Badge variant="default" className="text-base px-3 py-1">1</Badge>
-                <Label htmlFor="hypothesis-field" className="text-lg font-semibold">
+                <Badge variant="default" className="text-base px-3 py-1">
+                  1
+                </Badge>
+                <Label
+                  htmlFor="hypothesis-field"
+                  className="text-lg font-semibold"
+                >
                   Hypothesis
                 </Label>
               </div>
               <textarea
                 id="hypothesis-field"
                 value={editableCanvas.hypothesis}
-                onChange={(e) => updateField('hypothesis', e.target.value)}
+                onChange={e => updateField('hypothesis', e.target.value)}
                 className="w-full min-h-[100px] p-4 border-2 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                 aria-describedby="hypothesis-hint"
               />
               <p id="hypothesis-hint" className="text-xs text-muted-foreground">
-                Format: "If [action], then [outcome], because [reasoning]"
+                Format: &quot;If [action], then [outcome], because
+                [reasoning]&quot;
               </p>
             </div>
 
             {/* Success Metric */}
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <Badge variant="default" className="text-base px-3 py-1">2</Badge>
+                <Badge variant="default" className="text-base px-3 py-1">
+                  2
+                </Badge>
                 <Label htmlFor="metric-field" className="text-lg font-semibold">
                   Success Metric
                 </Label>
@@ -419,7 +471,7 @@ Generated on ${new Date().toLocaleDateString()}
               <Input
                 id="metric-field"
                 value={editableCanvas.successMetric}
-                onChange={(e) => updateField('successMetric', e.target.value)}
+                onChange={e => updateField('successMetric', e.target.value)}
                 className="text-base transition-all"
                 aria-describedby="metric-hint"
               />
@@ -431,7 +483,9 @@ Generated on ${new Date().toLocaleDateString()}
             {/* Smallest Test */}
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <Badge variant="default" className="text-base px-3 py-1">3</Badge>
+                <Badge variant="default" className="text-base px-3 py-1">
+                  3
+                </Badge>
                 <Label htmlFor="test-field" className="text-lg font-semibold">
                   Smallest Possible Test
                 </Label>
@@ -439,7 +493,7 @@ Generated on ${new Date().toLocaleDateString()}
               <textarea
                 id="test-field"
                 value={editableCanvas.smallestTest}
-                onChange={(e) => updateField('smallestTest', e.target.value)}
+                onChange={e => updateField('smallestTest', e.target.value)}
                 className="w-full min-h-[120px] p-4 border-2 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                 aria-describedby="test-hint"
               />
@@ -451,15 +505,20 @@ Generated on ${new Date().toLocaleDateString()}
             {/* Timeline */}
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <Badge variant="default" className="text-base px-3 py-1">4</Badge>
-                <Label htmlFor="timeline-field" className="text-lg font-semibold">
+                <Badge variant="default" className="text-base px-3 py-1">
+                  4
+                </Badge>
+                <Label
+                  htmlFor="timeline-field"
+                  className="text-lg font-semibold"
+                >
                   Timeline
                 </Label>
               </div>
               <Input
                 id="timeline-field"
                 value={editableCanvas.timeline}
-                onChange={(e) => updateField('timeline', e.target.value)}
+                onChange={e => updateField('timeline', e.target.value)}
                 className="text-base transition-all"
                 placeholder="e.g., 1-2 weeks"
               />
@@ -469,12 +528,16 @@ Generated on ${new Date().toLocaleDateString()}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Badge variant="default" className="text-base px-3 py-1">5</Badge>
-                  <Label className="text-lg font-semibold">Resources Needed</Label>
+                  <Badge variant="default" className="text-base px-3 py-1">
+                    5
+                  </Badge>
+                  <Label className="text-lg font-semibold">
+                    Resources Needed
+                  </Label>
                 </div>
-                <Button 
-                  onClick={addResource} 
-                  variant="outline" 
+                <Button
+                  onClick={addResource}
+                  variant="outline"
                   size="sm"
                   className="transition-all hover:scale-105"
                   aria-label="Add another resource"
@@ -482,7 +545,11 @@ Generated on ${new Date().toLocaleDateString()}
                   + Add Resource
                 </Button>
               </div>
-              <div className="space-y-3" role="list" aria-label="Required resources">
+              <div
+                className="space-y-3"
+                role="list"
+                aria-label="Required resources"
+              >
                 {editableCanvas.resources.map((resource, index) => (
                   <div key={index} className="flex gap-2" role="listitem">
                     <label htmlFor={`resource-${index}`} className="sr-only">
@@ -491,7 +558,7 @@ Generated on ${new Date().toLocaleDateString()}
                     <Input
                       id={`resource-${index}`}
                       value={resource}
-                      onChange={(e) => updateResource(index, e.target.value)}
+                      onChange={e => updateResource(index, e.target.value)}
                       className="text-base transition-all"
                       placeholder="e.g., Landing page builder"
                     />
@@ -511,12 +578,14 @@ Generated on ${new Date().toLocaleDateString()}
               </div>
             </div>
 
-            <aside 
+            <aside
               className="pt-4 border-t-2 p-4 bg-muted/50 rounded-lg border-dashed border-2"
               aria-label="Tip"
             >
               <p className="text-xs text-muted-foreground italic leading-relaxed">
-                <strong className="text-foreground not-italic">💡 Tip:</strong> Edit any field to customize your experiment. Download or copy when ready to execute.
+                <strong className="text-foreground not-italic">💡 Tip:</strong>{' '}
+                Edit any field to customize your experiment. Download or copy
+                when ready to execute.
               </p>
             </aside>
           </div>
@@ -525,16 +594,20 @@ Generated on ${new Date().toLocaleDateString()}
 
       {/* History Panel */}
       {showHistory && history.length > 0 && (
-        <Card className="p-8 shadow-lg" role="region" aria-label="Canvas history">
+        <Card
+          className="p-8 shadow-lg"
+          role="region"
+          aria-label="Canvas history"
+        >
           <h3 className="text-xl font-bold mb-5">Recent Canvases</h3>
           <div className="space-y-3" role="list">
-            {history.map((saved) => (
+            {history.map(saved => (
               <Card
                 key={saved.id}
                 className="p-5 hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer focus-within:ring-2 focus-within:ring-primary/20"
                 role="listitem"
                 onClick={() => loadFromHistory(saved)}
-                onKeyDown={(e) => {
+                onKeyDown={e => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     loadFromHistory(saved);
@@ -551,7 +624,7 @@ Generated on ${new Date().toLocaleDateString()}
                     <Badge variant="secondary" className="text-xs">
                       Canvas
                     </Badge>
-                    <time 
+                    <time
                       className="text-xs text-muted-foreground"
                       dateTime={new Date(saved.timestamp).toISOString()}
                     >

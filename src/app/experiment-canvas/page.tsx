@@ -20,7 +20,8 @@ export default function ExperimentCanvasPage() {
           Quick Experiment Canvas Generator
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Transform vague ideas into structured, actionable experiments with clear success metrics and next steps
+          Transform vague ideas into structured, actionable experiments with
+          clear success metrics and next steps
         </p>
       </div>
       <Suspense fallback={<div>Loading...</div>}>
@@ -29,7 +30,3 @@ export default function ExperimentCanvasPage() {
     </div>
   );
 }
-
-
-
-

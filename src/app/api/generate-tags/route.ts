@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateTagsSchema, validateInput, sanitizeText } from '../../../lib/validation';
+import {
+  generateTagsSchema,
+  validateInput,
+  sanitizeText,
+} from '../../../lib/validation';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     // Validate input with Zod schema
     const validation = validateInput(generateTagsSchema, body);
     if (!validation.success) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
     const { idea } = validation.data!;
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: 'gpt-3.5-turbo',
@@ -93,4 +94,3 @@ Respond ONLY with a JSON array of tag strings, e.g.: ["Product Feature", "User R
     );
   }
 }
-

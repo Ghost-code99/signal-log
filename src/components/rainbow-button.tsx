@@ -1,17 +1,22 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
-interface RainbowButtonProps extends React.ComponentPropsWithoutRef<typeof Button> {
+interface RainbowButtonProps
+  extends React.ComponentPropsWithoutRef<typeof Button> {
   children: React.ReactNode;
 }
 
-export function RainbowButton({ children, className, ...props }: RainbowButtonProps) {
+export function RainbowButton({
+  children,
+  className,
+  ...props
+}: RainbowButtonProps) {
   return (
     <Button
       className={cn(
-        "relative inline-flex h-12 overflow-hidden rounded-md p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 dark:focus:ring-offset-slate-950",
+        'relative inline-flex h-12 overflow-hidden rounded-md p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 dark:focus:ring-offset-slate-950',
         className
       )}
       {...props}
@@ -23,6 +28,3 @@ export function RainbowButton({ children, className, ...props }: RainbowButtonPr
     </Button>
   );
 }
-
-
-
