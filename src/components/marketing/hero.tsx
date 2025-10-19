@@ -9,17 +9,22 @@ export function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-background">
-      <div className="container mx-auto px-4 py-20 sm:py-32">
-        <div className="text-center max-w-4xl mx-auto">
+    <section className="relative min-h-screen flex items-center justify-center bg-background" aria-label="Hero section">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32">
+        <div className="text-center max-w-4xl mx-auto space-y-8">
           {/* Coming Soon Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-8"
+            className="inline-block"
           >
-            <span className="text-sm text-muted-foreground">Coming Soon</span>
+            <span 
+              className="text-sm text-muted-foreground px-4 py-2 bg-muted/50 rounded-full font-medium"
+              role="status"
+            >
+              Coming Soon
+            </span>
           </motion.div>
 
           {/* Main Heading */}
@@ -27,26 +32,26 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-4"
+            className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight"
           >
             AI Project Journal
           </motion.h1>
 
-          <motion.h2
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-8 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent"
           >
             for Indie SaaS Founders
-          </motion.h2>
+          </motion.p>
 
           {/* Description */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-lg sm:text-xl text-muted-foreground mb-10 max-w-3xl mx-auto"
+            className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
           >
             Transform scattered ideas into validated experiments. Track your journey from concept 
             to product-market fit with AI-powered insights that keep you focused and moving forward.
@@ -57,16 +62,17 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-col items-center gap-3"
+            className="flex flex-col items-center gap-4 pt-4"
           >
             <Button
               size="lg"
               onClick={scrollToProblem}
-              className="bg-white text-black hover:bg-gray-100 px-8 py-6 text-base font-medium"
+              className="bg-white text-black hover:bg-gray-100 hover:scale-105 px-8 py-6 text-base font-medium shadow-lg transition-all"
+              aria-label="Scroll to problem section"
             >
               Discover the Problem →
             </Button>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Learn how we&apos;re solving the founder&apos;s dilemma
             </p>
           </motion.div>

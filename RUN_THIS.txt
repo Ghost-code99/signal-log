@@ -1,0 +1,54 @@
+================================================================================
+  COPY-PASTE THESE COMMANDS INTO YOUR TERMINAL (Terminal.app)
+================================================================================
+
+Step 1: Install Homebrew
+-------------------------
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+Step 2: Add Homebrew to PATH
+-----------------------------
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+Step 3: Install Node.js
+------------------------
+brew install node
+
+Step 4: Navigate to Project
+----------------------------
+cd /Users/ghost_/Desktop/Signal-log/signal-log
+
+Step 5: Install Dependencies
+-----------------------------
+npm install
+npm install -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event
+
+Step 6: Run Tests
+-----------------
+npm run test
+
+Step 7: Start Development Server
+---------------------------------
+npm run dev
+
+Step 8: Open Browser
+--------------------
+http://localhost:3000/dashboard
+
+================================================================================
+  DONE! Your dashboard is now running with 42 tests passing! 🎉
+================================================================================
+
+Quick Commands Reference:
+- npm run test         → Run all tests
+- npm run test:watch   → Run tests in watch mode
+- npm run dev          → Start dev server
+- npm run build        → Build for production
+
+Documentation:
+- TESTING_AND_DEBUGGING_REPORT.md    → Full analysis
+- QUICK_START_TESTING.md             → Quick guide
+- STAGE_2_IMPLEMENTATION_SUMMARY.md  → What was built
+- INSTALL_MANUALLY.md                → Detailed installation guide
+

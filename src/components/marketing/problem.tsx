@@ -28,47 +28,48 @@ export function Problem() {
   ];
 
   return (
-    <section id="problem" className="py-16 sm:py-24 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="problem" className="py-20 sm:py-28 bg-background" aria-labelledby="problem-heading">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-20 space-y-6"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+            <h2 id="problem-heading" className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
               The Problem Every Founder Knows
             </h2>
-            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
               Indie SaaS founders validating product experiments struggle because their ideas, notes,
               and progress updates are scattered across tools and moments, slowing validation and
               hiding product-market fit signals.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-10 mb-16" role="list" aria-label="Key problems">
             {problems.map((problem, index) => (
-              <motion.div
+              <motion.article
                 key={problem.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
+                role="listitem"
               >
-                <Card className="h-full border-muted/40 bg-card/50 backdrop-blur hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all">
+                <Card className="h-full border-muted/40 bg-card/50 backdrop-blur hover:border-primary/50 hover:shadow-xl hover:shadow-primary/10 hover:scale-105 transition-all duration-300">
                   <CardContent className="p-8 text-center">
-                    <div className="text-5xl mb-6">{problem.emoji}</div>
-                    <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    <div className="text-6xl mb-6" aria-hidden="true">{problem.emoji}</div>
+                    <h3 className="text-xl sm:text-2xl font-semibold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                       {problem.title}
                     </h3>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-muted-foreground leading-relaxed text-base">
                       {problem.description}
                     </p>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </motion.article>
             ))}
           </div>
 
@@ -82,7 +83,8 @@ export function Problem() {
             <Button
               onClick={scrollToSolution}
               size="lg"
-              className="bg-white text-black hover:bg-gray-100 px-8 py-6 text-base font-medium"
+              className="bg-white text-black hover:bg-gray-100 hover:scale-105 px-8 py-6 text-base font-medium shadow-lg transition-all"
+              aria-label="Scroll to solution section"
             >
               See Our Solution →
             </Button>
