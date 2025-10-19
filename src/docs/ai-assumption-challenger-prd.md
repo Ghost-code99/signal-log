@@ -133,51 +133,57 @@ UI built with shadcn/ui components (Card, Button, Badge). Uses localStorage for 
 
 ### Stage 2 — Real Functionality
 
-1. **Create API route** (`src/app/api/challenge-idea/route.ts`)
-   - Accept POST with `{ idea: string }`
-   - Call OpenAI GPT-4 with critical questioning system prompt
-   - Parse JSON response: `{ questions: string[] }`
-   - Return fallback questions on error
-   - Validation: Test endpoint with curl, verify structured response
+1. ✅ **Create API route** (`src/app/api/challenge-idea/route.ts`)
+   - ✅ Accept POST with `{ idea: string }`
+   - ✅ Call OpenAI GPT-4 with critical questioning system prompt
+   - ✅ Parse JSON response: `{ questions: string[] }`
+   - ✅ Return fallback questions on error
+   - ✅ Validation: Test endpoint with curl, verify structured response
 
-2. **Implement challenge generation flow**
-   - Fetch from `/api/challenge-idea` on button click
-   - Set `isGenerating` loading state
-   - Update `challenges` state with response questions
-   - Show challenge results section
-   - Validation: Network tab shows successful GPT-4 call
+2. ✅ **Implement challenge generation flow**
+   - ✅ Fetch from `/api/challenge-idea` on button click
+   - ✅ Set `isGenerating` loading state
+   - ✅ Update `challenges` state with response questions
+   - ✅ Show challenge results section
+   - ✅ Validation: Network tab shows successful GPT-4 call
 
-3. **Wire up copy to clipboard**
-   - Format text: "Idea: [idea]\n\nChallenging Questions:\n1. [q1]..."
-   - Use `navigator.clipboard.writeText()`
-   - Set `copied` state to true, reset after 2 seconds
-   - Validation: Paste into text editor, verify formatting
+3. ✅ **Wire up copy to clipboard**
+   - ✅ Format text: "Idea: [idea]\n\nChallenging Questions:\n1. [q1]..."
+   - ✅ Use `navigator.clipboard.writeText()`
+   - ✅ Set `copied` state to true, reset after 2 seconds
+   - ✅ Validation: Paste into text editor, verify formatting
 
-4. **Implement reset functionality**
-   - Clear `ideaText`, `challenges`, `showChallenges` states
-   - Return to initial form view
-   - Validation: Click "Start Over", verify form resets
+4. ✅ **Implement reset functionality**
+   - ✅ Clear `ideaText`, `challenges`, `showChallenges` states
+   - ✅ Return to initial form view
+   - ✅ Validation: Click "Start Over", verify form resets
 
-5. **Add localStorage history**
-   - Define `Challenge` interface: `{ id, idea, questions, timestamp }`
-   - Load history from localStorage on mount
-   - Save new challenge to history (keep last 10)
-   - Update localStorage after each generation
-   - Validation: Check localStorage in DevTools after multiple challenges
+5. ✅ **Add localStorage history**
+   - ✅ Define `Challenge` interface: `{ id, idea, questions, timestamp }`
+   - ✅ Load history from localStorage on mount
+   - ✅ Save new challenge to history (keep last 10)
+   - ✅ Update localStorage after each generation
+   - ✅ Validation: Check localStorage in DevTools after multiple challenges
 
-6. **Implement history panel interactions**
-   - Toggle `showHistory` state on button click
-   - Render history items with click handlers
-   - `loadFromHistory()` populates idea and questions
-   - Close history panel after selection
-   - Validation: Click through history items, verify data loads
+6. ✅ **Implement history panel interactions**
+   - ✅ Toggle `showHistory` state on button click
+   - ✅ Render history items with click handlers
+   - ✅ `loadFromHistory()` populates idea and questions
+   - ✅ Close history panel after selection
+   - ✅ Validation: Click through history items, verify data loads
 
-7. **Add error handling**
-   - Try-catch around API calls
-   - Fallback questions if fetch fails
-   - Try-catch around localStorage operations
-   - Console.error for debugging
-   - Validation: Test with network disabled, verify fallbacks
+7. ✅ **Add error handling**
+   - ✅ Try-catch around API calls
+   - ✅ Fallback questions if fetch fails
+   - ✅ Try-catch around localStorage operations
+   - ✅ Console.error for debugging
+   - ✅ Validation: Test with network disabled, verify fallbacks
+
+**Stage 2 Summary:**
+- **Route Added:** `/api/challenge-idea` (POST)
+- **Request Shape:** `{ idea: string }`
+- **Response Shape:** `{ questions: string[] }`
+- **Notable Constraints:** Uses GPT-4 for deeper reasoning, includes fallback questions, supports project linking via URL parameters
 
 ### Stage 3 — Test, Debug, and Safety Checks
 
