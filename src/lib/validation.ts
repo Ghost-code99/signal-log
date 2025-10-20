@@ -13,11 +13,22 @@ const sanitizedString = (minLength: number, maxLength: number) =>
     .trim()
     .transform(val => val.replace(/[<>]/g, '')); // Remove potential HTML tags
 
-// Project name validation
-export const projectNameSchema = sanitizedString(1, 60);
+// Project name validation with custom error messages
+export const projectNameSchema = z
+  .string()
+  .min(1, 'Project name is required')
+  .max(60, 'Project name must be 60 characters or less')
+  .trim()
+  .refine(val => val.length > 0, 'Project name is required')
+  .transform(val => val.replace(/[<>]/g, ''));
 
-// Project description validation
-export const projectDescriptionSchema = sanitizedString(0, 300);
+// Project description validation with custom error messages
+export const projectDescriptionSchema = z
+  .string()
+  .min(0, '')
+  .max(300, 'Project description must be 300 characters or less')
+  .trim()
+  .transform(val => val.replace(/[<>]/g, ''));
 
 // Idea text validation
 export const ideaTextSchema = sanitizedString(10, 2000);
@@ -80,8 +91,20 @@ export const createProjectSchema = z.object({
 // Update Project Schema
 export const updateProjectSchema = z.object({
   id: z.string().min(1, 'Project ID is required'),
-  name: projectNameSchema.optional(),
-  description: projectDescriptionSchema.optional(),
+  name: z
+    .string()
+    .min(1, 'Project name cannot be empty')
+    .max(60, 'Project name must be 60 characters or less')
+    .trim()
+    .transform(val => val.replace(/[<>]/g, ''))
+    .optional(),
+  description: z
+    .string()
+    .min(0, '')
+    .max(300, 'Project description must be 300 characters or less')
+    .trim()
+    .transform(val => val.replace(/[<>]/g, ''))
+    .optional(),
   status: projectStatusSchema.optional(),
   tags: z.array(tagSchema).max(10, 'Maximum 10 tags allowed').optional(),
 });
@@ -136,9 +159,8 @@ export function validateInput<T>(
     return { success: true, data: result };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const errorMessage = error.issues
-        .map(err => `${err.path.join('.')}: ${err.message}`)
-        .join(', ');
+      // Return just the error message without field prefix
+      const errorMessage = error.issues[0]?.message || 'Validation failed';
       return { success: false, error: errorMessage };
     }
     return { success: false, error: 'Validation failed' };
