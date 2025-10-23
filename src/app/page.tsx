@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Target, Lightbulb, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
-import SupabaseTest from '@/components/supabase-test';
 
 export default function Home() {
   return (
@@ -16,10 +15,6 @@ export default function Home() {
       <Problem />
       <Solution />
 
-      {/* Supabase Connection Test */}
-      <section className="container mx-auto px-4 py-8">
-        <SupabaseTest />
-      </section>
 
       {/* Dashboard CTA */}
       <section className="container mx-auto px-4 py-12">
