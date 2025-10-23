@@ -65,7 +65,7 @@ export class RealTimeManager {
       if (!channel) {
         channel = supabaseClient
           .channel(channelName)
-          .on('postgres_changes', {
+          .on('postgres_changes' as any, {
             event: config.event,
             schema: 'public',
             table: config.table,
