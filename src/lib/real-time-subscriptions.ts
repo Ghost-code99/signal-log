@@ -77,7 +77,7 @@ export class RealTimeManager {
               event: config.event,
               timestamp: new Date(),
               data: payload,
-              userId: payload.new?.user_id || payload.old?.user_id
+              userId: (payload as any).new?.user_id || (payload as any).old?.user_id
             }
 
             this.updateQueue.push(update)
