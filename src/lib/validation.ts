@@ -121,7 +121,13 @@ export const challengeIdeaSchema = z.object({
 })
 
 export const scanProjectsSchema = z.object({
-  projectIds: z.array(z.string().uuid()).max(20)
+  projects: z.array(z.object({
+    id: z.string().uuid(),
+    title: z.string(),
+    description: z.string().optional(),
+    status: z.string(),
+    priority: z.string()
+  })).max(20)
 })
 
 // Sanitization functions
