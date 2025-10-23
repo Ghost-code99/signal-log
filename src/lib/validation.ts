@@ -125,7 +125,7 @@ export const scanProjectsSchema = z.object({
     id: z.string().uuid(),
     name: z.string(),
     title: z.string(),
-    description: z.string().optional(),
+    description: z.string(),
     status: z.string(),
     priority: z.string()
   })).max(20)
