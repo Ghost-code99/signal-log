@@ -40,7 +40,7 @@ import {
 
 export function ProjectManagementExample() {
   const { user } = useAuth()
-  const [projects, setProjects] = useState([])
+  const [projects, setProjects] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -171,7 +171,7 @@ export function ProjectManagementExample() {
 
 export function IdeaManagementExample() {
   const { user } = useAuth()
-  const [ideas, setIdeas] = useState([])
+  const [ideas, setIdeas] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -277,7 +277,7 @@ export function IdeaManagementExample() {
 
 export function AIInteractionsExample() {
   const { user } = useAuth()
-  const [interactions, setInteractions] = useState([])
+  const [interactions, setInteractions] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
