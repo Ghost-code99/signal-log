@@ -259,7 +259,7 @@ export class AdvancedSearchEngine {
       metadata: {
         type: interaction.interaction_type,
         createdAt: interaction.created_at,
-        project: interaction.projects?.title || null
+        project: interaction.projects?.[0]?.title || null
       }
     }))
   }
@@ -295,13 +295,13 @@ export class AdvancedSearchEngine {
       id: tag.id,
       table: 'project_tags',
       title: `Tag: ${tag.tag_name}`,
-      content: `Tagged in project: ${tag.projects?.title || 'Unknown'}`,
+      content: `Tagged in project: ${tag.projects?.[0]?.title || 'Unknown'}`,
       relevance: this.calculateRelevance(query, tag.tag_name),
       highlights: this.generateHighlights(query, tag.tag_name),
       metadata: {
         tagName: tag.tag_name,
         createdAt: tag.created_at,
-        project: tag.projects?.title || null
+        project: tag.projects?.[0]?.title || null
       }
     }))
   }
