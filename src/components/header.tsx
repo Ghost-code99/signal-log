@@ -29,14 +29,14 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-gray-800 dark:bg-gray-900/95 dark:supports-[backdrop-filter]:bg-gray-900/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4">
         <div className="flex items-center space-x-8">
           <div className="flex items-center space-x-2">
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-sm">S</span>
             </div>
-            <span className="font-semibold text-xl text-foreground">Signal Log</span>
+            <span className="font-semibold text-xl text-gray-900 dark:text-white">Signal Log</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -46,7 +46,7 @@ export function Header() {
                 key={item.name}
                 variant="ghost"
                 onClick={() => scrollToSection(item.href)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+                className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200"
               >
                 {item.name}
               </Button>
@@ -110,19 +110,19 @@ export function Header() {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-gray-800 dark:bg-gray-900/95 dark:supports-[backdrop-filter]:bg-gray-900/60">
           <div className="container px-4 py-4 space-y-2">
             {navigation.map(item => (
               <Button
                 key={item.name}
                 variant="ghost"
                 onClick={() => scrollToSection(item.href)}
-                className="w-full justify-start text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+                className="w-full justify-start text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200"
               >
                 {item.name}
               </Button>
             ))}
-            <div className="pt-2 border-t border-border">
+            <div className="pt-2 border-t border-gray-200 dark:border-gray-800">
               {user ? (
                 <Link href="/dashboard">
                   <Button variant="outline" className="w-full">
