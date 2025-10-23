@@ -93,9 +93,10 @@ export const createProjectSchema = z.object({
 
 export const updateProjectSchema = z.object({
   id: z.string().uuid(),
+  name: z.string().min(1).max(200).optional(),
   title: z.string().min(1).max(200).optional(),
   description: z.string().max(2000).optional(),
-  status: z.enum(['idea', 'active', 'stalled', 'validated', 'abandoned']).optional(),
+  status: z.enum(['Idea', 'Active', 'Stalled', 'Validated']).optional(),
   priority: z.enum(['low', 'medium', 'high', 'critical']).optional()
 })
 
