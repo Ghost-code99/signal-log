@@ -103,6 +103,7 @@ export const deleteProjectSchema = z.object({
 
 export const generateCanvasSchema = z.object({
   projectId: z.string().uuid(),
+  idea: z.string().min(1).max(1000),
   hypothesis: z.string().min(1).max(1000),
   experiment: z.string().min(1).max(1000),
   metrics: z.array(z.string()).max(10)
