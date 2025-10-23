@@ -83,10 +83,12 @@ export function sanitizeTags(tags: string[]): string[] {
 
 // Additional schemas for specific features
 export const createProjectSchema = z.object({
+  name: z.string().min(1).max(200),
   title: z.string().min(1).max(200),
   description: z.string().max(2000).optional(),
   status: z.enum(['idea', 'active', 'stalled', 'validated', 'abandoned']),
-  priority: z.enum(['low', 'medium', 'high', 'critical'])
+  priority: z.enum(['low', 'medium', 'high', 'critical']),
+  tags: z.array(z.string()).max(10)
 })
 
 export const updateProjectSchema = z.object({
