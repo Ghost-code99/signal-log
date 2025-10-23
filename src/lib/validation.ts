@@ -97,7 +97,8 @@ export const updateProjectSchema = z.object({
   title: z.string().min(1).max(200).optional(),
   description: z.string().max(2000).optional(),
   status: z.enum(['Idea', 'Active', 'Stalled', 'Validated']).optional(),
-  priority: z.enum(['low', 'medium', 'high', 'critical']).optional()
+  priority: z.enum(['low', 'medium', 'high', 'critical']).optional(),
+  tags: z.array(z.string()).max(10).optional()
 })
 
 export const deleteProjectSchema = z.object({
