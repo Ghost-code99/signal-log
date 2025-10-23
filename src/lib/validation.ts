@@ -110,6 +110,7 @@ export const generateCanvasSchema = z.object({
 })
 
 export const generateTagsSchema = z.object({
+  idea: z.string().min(1).max(5000),
   content: z.string().min(1).max(5000),
   context: z.string().max(1000).optional()
 })
