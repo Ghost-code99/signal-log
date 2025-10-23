@@ -1,187 +1,98 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
-// ============================================================================
-// COMMON VALIDATION SCHEMAS
-// ============================================================================
+// User validation schemas
+export const userSchema = z.object({
+  id: z.string().uuid(),
+  email: z.string().email().max(255),
+  full_name: z.string().min(1).max(100).optional(),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime()
+})
 
-// Sanitized string with length limits
-const sanitizedString = (minLength: number, maxLength: number) =>
-  z
-    .string()
-    .min(minLength, `Must be at least ${minLength} characters`)
-    .max(maxLength, `Must be no more than ${maxLength} characters`)
+// Project validation schemas
+export const projectSchema = z.object({
+  id: z.string().uuid(),
+  user_id: z.string().uuid(),
+  title: z.string().min(1).max(200),
+  description: z.string().max(2000).optional(),
+  status: z.enum(['idea', 'active', 'stalled', 'validated', 'abandoned']),
+  priority: z.enum(['low', 'medium', 'high', 'critical']),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime()
+})
+
+// Idea validation schemas
+export const ideaSchema = z.object({
+  id: z.string().uuid(),
+  user_id: z.string().uuid(),
+  content: z.string().min(1).max(5000),
+  suggested_tags: z.array(z.string().max(50)).max(10),
+  status: z.enum(['captured', 'processed', 'integrated', 'dismissed']),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime()
+})
+
+// AI interaction validation schemas
+export const aiInteractionSchema = z.object({
+  id: z.string().uuid(),
+  user_id: z.string().uuid(),
+  project_id: z.string().uuid(),
+  interaction_type: z.enum(['health_scan', 'assumption_challenge', 'experiment_canvas', 'idea_capture']),
+  content: z.string().min(1).max(10000),
+  ai_response: z.string().max(20000).optional(),
+  metadata: z.record(z.any()).optional(),
+  created_at: z.string().datetime()
+})
+
+// Project health metrics validation
+export const healthMetricSchema = z.object({
+  id: z.string().uuid(),
+  user_id: z.string().uuid(),
+  project_id: z.string().uuid(),
+  health_score: z.number().min(0).max(100),
+  health_indicators: z.record(z.any()),
+  created_at: z.string().datetime()
+})
+
+// Project tag validation
+export const projectTagSchema = z.object({
+  id: z.string().uuid(),
+  project_id: z.string().uuid(),
+  tag_name: z.string().min(1).max(50),
+  created_at: z.string().datetime()
+})
+
+// Sanitization functions
+export function sanitizeString(input: string): string {
+  return input
     .trim()
-    .transform(val => val.replace(/[<>]/g, '')); // Remove potential HTML tags
+    .replace(/[<>]/g, '') // Remove potential HTML tags
+    .substring(0, 1000) // Limit length
+}
 
-// Project name validation with custom error messages
-export const projectNameSchema = z
-  .string()
-  .min(1, 'Project name is required')
-  .max(60, 'Project name must be 60 characters or less')
-  .trim()
-  .refine(val => val.length > 0, 'Project name is required')
-  .transform(val => val.replace(/[<>]/g, ''));
+export function sanitizeEmail(email: string): string {
+  return email.toLowerCase().trim()
+}
 
-// Project description validation with custom error messages
-export const projectDescriptionSchema = z
-  .string()
-  .min(0, '')
-  .max(300, 'Project description must be 300 characters or less')
-  .trim()
-  .transform(val => val.replace(/[<>]/g, ''));
+export function sanitizeTags(tags: string[]): string[] {
+  return tags
+    .map(tag => tag.trim().toLowerCase())
+    .filter(tag => tag.length > 0 && tag.length <= 50)
+    .slice(0, 10) // Max 10 tags
+}
 
-// Idea text validation
-export const ideaTextSchema = sanitizedString(10, 2000);
-
-// Project status validation
-export const projectStatusSchema = z.enum([
-  'Active',
-  'Stalled',
-  'Validated',
-  'Idea',
-]);
-
-// Tag validation
-export const tagSchema = sanitizedString(1, 30);
-
-// ============================================================================
-// API ROUTE SCHEMAS
-// ============================================================================
-
-// Project Health Scanner API
-export const scanProjectsSchema = z.object({
-  projects: z
-    .array(
-      z.object({
-        name: projectNameSchema,
-        description: projectDescriptionSchema,
-      })
-    )
-    .min(3, 'Must provide at least 3 projects')
-    .max(5, 'Must provide no more than 5 projects'),
-});
-
-// Assumption Challenger API
-export const challengeIdeaSchema = z.object({
-  idea: ideaTextSchema,
-});
-
-// Idea Capture API
-export const generateTagsSchema = z.object({
-  idea: ideaTextSchema,
-});
-
-// Experiment Canvas API
-export const generateCanvasSchema = z.object({
-  idea: ideaTextSchema,
-});
-
-// ============================================================================
-// DASHBOARD SCHEMAS
-// ============================================================================
-
-// Create Project Schema
-export const createProjectSchema = z.object({
-  name: projectNameSchema,
-  description: projectDescriptionSchema,
-  status: projectStatusSchema,
-  tags: z.array(tagSchema).max(10, 'Maximum 10 tags allowed'),
-});
-
-// Update Project Schema
-export const updateProjectSchema = z.object({
-  id: z.string().min(1, 'Project ID is required'),
-  name: z
-    .string()
-    .min(1, 'Project name cannot be empty')
-    .max(60, 'Project name must be 60 characters or less')
-    .trim()
-    .transform(val => val.replace(/[<>]/g, ''))
-    .optional(),
-  description: z
-    .string()
-    .min(0, '')
-    .max(300, 'Project description must be 300 characters or less')
-    .trim()
-    .transform(val => val.replace(/[<>]/g, ''))
-    .optional(),
-  status: projectStatusSchema.optional(),
-  tags: z.array(tagSchema).max(10, 'Maximum 10 tags allowed').optional(),
-});
-
-// Delete Project Schema
-export const deleteProjectSchema = z.object({
-  id: z.string().min(1, 'Project ID is required'),
-});
-
-// ============================================================================
-// URL PARAMETER SCHEMAS
-// ============================================================================
-
-// Project ID from URL params
-export const projectIdSchema = z
-  .string()
-  .min(1, 'Project ID is required')
-  .regex(/^project-\d+-[a-z0-9]+$/, 'Invalid project ID format');
-
-// Project name from URL params
-export const urlProjectNameSchema = z
-  .string()
-  .min(1, 'Project name is required')
-  .max(60, 'Project name too long')
-  .transform(val => decodeURIComponent(val));
-
-// ============================================================================
-// RESPONSE SCHEMAS
-// ============================================================================
-
-// Standard API response
-export const apiResponseSchema = z.object({
-  success: z.boolean(),
-  error: z.string().optional(),
-  data: z.any().optional(),
-});
-
-// ============================================================================
-// VALIDATION HELPERS
-// ============================================================================
-
-export function validateInput<T>(
-  schema: z.ZodSchema<T>,
-  data: unknown
-): {
-  success: boolean;
-  data?: T;
-  error?: string;
-} {
+// Validation helper
+export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): { success: true; data: T } | { success: false; error: string } {
   try {
-    const result = schema.parse(data);
-    return { success: true, data: result };
+    const validatedData = schema.parse(data)
+    return { success: true, data: validatedData }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      // Return just the error message without field prefix
-      const errorMessage = error.issues[0]?.message || 'Validation failed';
-      return { success: false, error: errorMessage };
+      return { 
+        success: false, 
+        error: error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ')
+      }
     }
-    return { success: false, error: 'Validation failed' };
+    return { success: false, error: 'Validation failed' }
   }
-}
-
-// Safe HTML encoding for user content
-export function encodeHtml(unsafe: string): string {
-  return unsafe
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-// Safe text content (no HTML)
-export function sanitizeText(unsafe: string): string {
-  return unsafe
-    .replace(/[<>]/g, '') // Remove angle brackets
-    .replace(/javascript:/gi, '') // Remove javascript: protocol
-    .replace(/on\w+=/gi, '') // Remove event handlers
-    .trim();
 }
