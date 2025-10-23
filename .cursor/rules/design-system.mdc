@@ -1,0 +1,154 @@
+---
+description: Design system guidelines for consistent component styling
+alwaysApply: true
+---
+
+# Minimalist Design System Rules
+
+This design system follows minimalist principles with clean typography, subtle shadows, and a cohesive gray color palette. All components should maintain visual consistency and accessibility standards.
+
+## Component Strategy
+- Always check shadcn/ui first before creating custom components
+- Customize shadcn/ui components by modifying their Tailwind classes
+- Preserve accessibility and functionality when customizing
+- Only build from scratch if no suitable shadcn/ui component exists
+
+## Color Palette
+
+### Primary Colors
+- **Primary**: `text-gray-900`, `bg-gray-900` - Use for main actions and key elements
+- **Secondary**: `text-gray-700`, `bg-gray-100` - Use for supporting actions
+- **Neutral**: `text-gray-600`, `border-gray-300` - Use for text and subtle backgrounds
+
+### Interactive States
+- **Hover**: `hover:bg-gray-800`, `hover:bg-gray-50` - Hover states for interactive elements
+- **Focus**: `focus:border-gray-500`, `focus-visible:ring-gray-500` - Focus states for accessibility
+- **Disabled**: `text-gray-400`, `opacity-50` - Disabled states
+
+### Status Colors
+- **Success**: `bg-emerald-500/10`, `text-emerald-700` - Success states
+- **Warning**: `bg-amber-500/10`, `text-amber-700` - Warning states
+- **Error**: `bg-red-600`, `border-red-500` - Error and destructive actions
+- **Info**: `bg-cyan-500/10`, `text-cyan-700` - Information states
+
+## Typography
+
+### Headings
+- **Headings**: Use `font-bold` with consistent size scale (`text-3xl`, `text-2xl`, `text-xl`, `text-lg`)
+- **Titles**: Use `font-semibold` for component titles
+- **Subtitles**: Use `font-medium` for secondary headings
+
+### Body Text
+- **Body text**: Use `font-normal` with proper line height (`leading-relaxed`)
+- **UI text**: Use `font-medium` for labels and buttons
+- **Small text**: Use `text-xs` for metadata and labels
+
+### Text Hierarchy
+- **Primary**: `text-gray-900` - Main content
+- **Secondary**: `text-gray-700` - Supporting content  
+- **Muted**: `text-gray-600` - Descriptions and labels
+- **Placeholder**: `text-gray-500` - Input placeholders
+
+## Spacing Scale
+
+Use consistent spacing: 4px, 8px, 16px, 24px, 32px, 48px
+Apply spacing systematically for padding and margins
+
+### Standard Spacing
+- **Gap-2** (`gap-2`): 8px - Tight spacing between related elements
+- **Gap-3** (`gap-3`): 12px - Standard spacing between elements  
+- **Gap-4** (`gap-4`): 16px - Loose spacing between sections
+- **Gap-6** (`gap-6`): 24px - Large spacing between major sections
+
+### Component Padding
+- **P-2** (`p-2`): 8px - Small padding for compact elements
+- **P-3** (`p-3`): 12px - Standard padding for buttons and inputs
+- **P-4** (`p-4`): 16px - Medium padding for card headers
+- **P-6** (`p-6`): 24px - Large padding for cards
+- **P-8** (`p-8`): 32px - Extra large padding for dialogs
+
+## Border Radius
+
+- **Rounded-md** (`rounded-md`): Small elements (buttons, inputs)
+- **Rounded-lg** (`rounded-lg`): Standard elements (cards, buttons, inputs)
+- **Rounded-xl** (`rounded-xl`): Large elements (dialogs, major containers)
+
+## Shadows
+
+- **Shadow-sm** (`shadow-sm`): Default card shadows
+- **Shadow-md** (`shadow-md`): Hover states for cards
+- **Shadow-xl** (`shadow-xl`): Modal dialogs and overlays
+
+## Transitions
+
+- **Duration-200** (`duration-200`): Standard transition duration
+- **Transition-all** (`transition-all`): For comprehensive changes
+- **Transition-colors** (`transition-colors`): For color changes only
+- **Transition-shadow** (`transition-shadow`): For shadow changes only
+- **Transition-opacity** (`transition-opacity`): For opacity changes only
+
+## Focus States
+
+### Focus Rings
+- **Focus-visible:ring-2** (`focus-visible:ring-2`): Standard focus ring
+- **Focus-visible:ring-offset-2** (`focus-visible:ring-offset-2`): Ring offset
+- **Focus-visible:ring-gray-500** (`focus-visible:ring-gray-500`): Ring color
+
+### Focus Borders
+- **Focus:border-gray-500** (`focus:border-gray-500`): Input focus borders
+- **Focus:outline-none** (`focus:outline-none`): Remove default outline
+
+## Component Patterns
+
+### Buttons
+- **Buttons**: Customize shadcn/ui Button with our color palette
+- **Base**: `inline-flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-all duration-200`
+- **Primary**: `bg-gray-900 text-white hover:bg-gray-800 focus-visible:ring-gray-500`
+- **Secondary**: `bg-gray-100 text-gray-900 hover:bg-gray-200 focus-visible:ring-gray-500`
+- **Outline**: `border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus-visible:ring-gray-500`
+
+### Cards
+- **Cards**: Use shadcn/ui Card with our shadow and spacing patterns
+- **Base**: `bg-white text-gray-900 flex flex-col gap-4 rounded-lg border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow duration-200`
+- **Header**: `flex flex-col gap-2 pb-4`
+- **Title**: `text-lg font-medium text-gray-900 leading-tight`
+- **Content**: `text-gray-700`
+- **Footer**: `flex items-center justify-between pt-4 border-t border-gray-100`
+
+### Forms
+- **Forms**: Style shadcn/ui Input, Textarea, Select with our design tokens
+- **Base**: `flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-500 transition-colors duration-200`
+- **Focus**: `focus:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2`
+- **Error**: `aria-invalid:border-red-500 aria-invalid:ring-red-500`
+
+## Accessibility Requirements
+
+### Focus Management
+- All interactive elements must have visible focus states
+- Use `focus-visible:ring-2` for focus rings
+- Include `focus:outline-none` to remove default outlines
+- Ensure sufficient color contrast (4.5:1 minimum)
+
+### ARIA Support
+- Use `aria-invalid` for form validation states
+- Include `sr-only` for screen reader only content
+- Maintain proper heading hierarchy
+- Use semantic HTML elements
+
+## Quick Reference
+
+### Essential Classes
+- **Layout**: `flex`, `flex-col`, `items-center`, `justify-between`, `gap-3`
+- **Spacing**: `p-3`, `p-6`, `px-3`, `py-2`, `pt-4`
+- **Typography**: `text-sm`, `font-medium`, `leading-relaxed`
+- **Colors**: `text-gray-900`, `bg-white`, `border-gray-300`
+- **Interactive**: `hover:bg-gray-50`, `focus:ring-2`, `transition-all duration-200`
+
+### Component Customization
+1. **Modify shadcn/ui components** by updating their Tailwind classes
+2. **Preserve accessibility** features and component structure
+3. **Use design system colors** and spacing consistently
+4. **Test thoroughly** after modifications
+5. **Create custom components** only when shadcn/ui doesn't have suitable options
+
+This design system ensures consistency across all components while maintaining the minimalist aesthetic and accessibility standards.

@@ -4,6 +4,10 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { CTAModal } from '@/components/cta-modal';
+import { useAuth } from '@/lib/auth-context';
+import { UserMenu } from '@/components/auth/user-menu';
+import { AuthModal } from '@/components/auth/auth-modal';
+import Link from 'next/link';
 
 const navigation = [
   { name: 'Problem', href: '#problem' },
@@ -13,6 +17,8 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { user } = useAuth();
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
@@ -23,14 +29,14 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center justify-between px-4">
         <div className="flex items-center space-x-8">
           <div className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-md bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20">
-              <span className="text-white font-bold text-sm">S</span>
+            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-sm">S</span>
             </div>
-            <span className="font-bold text-xl">Signal Log</span>
+            <span className="font-semibold text-xl text-foreground">Signal Log</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -40,7 +46,7 @@ export function Header() {
                 key={item.name}
                 variant="ghost"
                 onClick={() => scrollToSection(item.href)}
-                className="text-sm font-medium hover:text-accent transition-colors"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
               >
                 {item.name}
               </Button>
@@ -49,9 +55,29 @@ export function Header() {
         </div>
 
         <div className="flex items-center space-x-4">
-          <div className="hidden sm:block">
-            <CTAModal />
-          </div>
+          {user ? (
+            <>
+              <Link href="/dashboard">
+                <Button variant="outline" size="sm">
+                  Dashboard
+                </Button>
+              </Link>
+              <UserMenu />
+            </>
+          ) : (
+            <>
+              <div className="hidden sm:block">
+                <CTAModal />
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setShowAuthModal(true)}
+              >
+                Sign In
+              </Button>
+            </>
+          )}
           <ThemeToggle />
 
           {/* Mobile menu button */}
@@ -84,24 +110,37 @@ export function Header() {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container px-4 py-4 space-y-2">
             {navigation.map(item => (
               <Button
                 key={item.name}
                 variant="ghost"
                 onClick={() => scrollToSection(item.href)}
-                className="w-full justify-start text-sm font-medium hover:text-accent transition-colors"
+                className="w-full justify-start text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
               >
                 {item.name}
               </Button>
             ))}
-            <div className="pt-2 border-t border-border/40">
-              <CTAModal />
+            <div className="pt-2 border-t border-border">
+              {user ? (
+                <Link href="/dashboard">
+                  <Button variant="outline" className="w-full">
+                    Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                <CTAModal />
+              )}
             </div>
           </div>
         </div>
       )}
+      
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)}
+      />
     </header>
   );
 }

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { ProtectedRoute } from '@/components/auth/protected-route';
 import {
   LayoutDashboard,
   Plus,
@@ -14,6 +15,9 @@ import {
   Lightbulb,
   FlaskConical,
   ChevronDown,
+  Brain,
+  CheckCircle2,
+  Sparkles,
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -29,6 +33,7 @@ import {
 import { ProjectCard } from '@/components/dashboard/project-card';
 import { ProjectFormModal } from '@/components/dashboard/project-form-modal';
 import { DeleteConfirmDialog } from '@/components/dashboard/delete-confirm-dialog';
+import { CommandPalette } from '@/components/command-palette';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -66,6 +71,7 @@ export default function DashboardPage() {
     'updated'
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
   // Load projects from localStorage on mount
   useEffect(() => {
@@ -248,70 +254,126 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <ProtectedRoute>
+      <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <LayoutDashboard className="h-8 w-8 text-primary" />
-          <h1 className="text-4xl font-bold">Project Dashboard</h1>
+          <LayoutDashboard className="h-8 w-8 text-gray-900" />
+          <h1 className="text-4xl font-bold text-gray-900">Project Dashboard</h1>
         </div>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-lg text-gray-600 leading-relaxed">
           Your strategic command center for all active initiatives
         </p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <FolderOpen className="h-5 w-5 text-primary" />
+        <Card className="p-6 hover:shadow-md transition-shadow duration-200 border border-gray-200">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-xl bg-gray-100 flex items-center justify-center">
+              <FolderOpen className="h-6 w-6 text-gray-900" />
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Total Projects</p>
-              <p className="text-2xl font-bold">{stats.totalProjects}</p>
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-green-500/10 flex items-center justify-center">
-              <TrendingUp className="h-5 w-5 text-green-600" />
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Active Projects</p>
-              <p className="text-2xl font-bold">{stats.activeProjects}</p>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-gray-600">Total Projects</p>
+              <p className="text-3xl font-bold text-gray-900">{stats.totalProjects}</p>
+              <p className="text-xs text-gray-500 mt-1">All initiatives</p>
             </div>
           </div>
         </Card>
 
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
-              <Lightbulb className="h-5 w-5 text-purple-600" />
+        <Card className="p-6 hover:shadow-md transition-shadow duration-200 border border-gray-200">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-xl bg-gray-100 flex items-center justify-center">
+              <TrendingUp className="h-6 w-6 text-gray-900" />
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Ideas This Week</p>
-              <p className="text-2xl font-bold">{stats.ideasThisWeek}</p>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-gray-600">Active Projects</p>
+              <p className="text-3xl font-bold text-gray-900">{stats.activeProjects}</p>
+              <p className="text-xs text-gray-500 mt-1">In progress</p>
             </div>
           </div>
         </Card>
 
-        <Card className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
-              <FlaskConical className="h-5 w-5 text-amber-600" />
+        <Card className="p-6 hover:shadow-md transition-shadow duration-200 border border-gray-200">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-xl bg-gray-100 flex items-center justify-center">
+              <Lightbulb className="h-6 w-6 text-gray-900" />
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Experiments</p>
-              <p className="text-2xl font-bold">
+            <div className="flex-1">
+              <p className="text-sm font-medium text-gray-600">Ideas This Week</p>
+              <p className="text-3xl font-bold text-gray-900">{stats.ideasThisWeek}</p>
+              <p className="text-xs text-gray-500 mt-1">New concepts</p>
+            </div>
+          </div>
+        </Card>
+
+        <Card className="p-6 hover:shadow-md transition-shadow duration-200 border border-gray-200">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-xl bg-gray-100 flex items-center justify-center">
+              <FlaskConical className="h-6 w-6 text-gray-900" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-gray-600">Experiments</p>
+              <p className="text-3xl font-bold text-gray-900">
                 {stats.experimentsInProgress}
               </p>
+              <p className="text-xs text-gray-500 mt-1">Testing hypotheses</p>
             </div>
           </div>
         </Card>
       </div>
+
+      {/* AI Insights Panel */}
+      {projects.length > 0 && (
+        <Card className="mb-8 p-6 bg-gray-50 border border-gray-200">
+          <div className="flex items-start gap-4">
+            <div className="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center">
+              <Brain className="h-5 w-5 text-gray-900" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="text-lg font-semibold text-gray-900">AI Portfolio Insights</h3>
+                <Sparkles className="h-4 w-4 text-gray-900" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {stats.activeProjects > 0 && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <CheckCircle2 className="h-4 w-4 text-gray-600" />
+                    <span className="text-gray-600">
+                      {stats.activeProjects} active project{stats.activeProjects !== 1 ? 's' : ''} in progress
+                    </span>
+                  </div>
+                )}
+                {stats.ideasThisWeek > 0 && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Lightbulb className="h-4 w-4 text-gray-600" />
+                    <span className="text-gray-600">
+                      {stats.ideasThisWeek} new idea{stats.ideasThisWeek !== 1 ? 's' : ''} this week
+                    </span>
+                  </div>
+                )}
+                {stats.experimentsInProgress > 0 && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <FlaskConical className="h-4 w-4 text-gray-600" />
+                    <span className="text-gray-600">
+                      {stats.experimentsInProgress} experiment{stats.experimentsInProgress !== 1 ? 's' : ''} running
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="mt-3">
+                <Link href="/project-health-scanner">
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Brain className="h-4 w-4" />
+                    Run Portfolio Analysis
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Filters and Actions */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
@@ -323,6 +385,11 @@ export default function DashboardPage() {
             onChange={e => setSearchQuery(e.target.value)}
             className="pl-10"
           />
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+            <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+              <span className="text-xs">⌘</span>K
+            </kbd>
+          </div>
         </div>
 
         <div className="flex gap-2">
@@ -393,21 +460,23 @@ export default function DashboardPage() {
 
       {/* Projects Grid */}
       {filteredProjects.length === 0 ? (
-        <Card className="p-12">
+        <Card className="p-12 border-dashed border-gray-300">
           <div className="text-center">
-            <FolderOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">
+            <div className="mx-auto mb-6 h-20 w-20 rounded-full bg-gray-100 flex items-center justify-center">
+              <FolderOpen className="h-10 w-10 text-gray-600" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
               {projects.length === 0
                 ? 'No projects yet'
                 : 'No projects match your filters'}
             </h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-gray-600 mb-6 max-w-md mx-auto leading-relaxed">
               {projects.length === 0
-                ? 'Create your first project to start organizing your initiatives'
-                : 'Try adjusting your search or filter criteria'}
+                ? 'Create your first project to start organizing your initiatives and get strategic insights from your AI partner.'
+                : 'Try adjusting your search or filter criteria to find your projects.'}
             </p>
             {projects.length === 0 && (
-              <Button onClick={() => setIsFormOpen(true)} className="gap-2">
+              <Button onClick={() => setIsFormOpen(true)} className="gap-2 bg-gray-900 hover:bg-gray-800">
                 <Plus className="h-4 w-4" />
                 Create First Project
               </Button>
@@ -415,7 +484,7 @@ export default function DashboardPage() {
           </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
           {filteredProjects.map(project => (
             <ProjectCard
               key={project.id}
@@ -428,8 +497,8 @@ export default function DashboardPage() {
       )}
 
       {/* Quick Actions - Link to Other Features */}
-      <Card className="mt-8 p-6 bg-muted/50">
-        <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
+      <Card className="mt-8 p-6 bg-gray-50 border border-gray-200">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Link href="/idea-capture">
             <Button variant="outline" className="w-full justify-start gap-3">
@@ -495,6 +564,18 @@ export default function DashboardPage() {
         onConfirm={handleDeleteProject}
         onCancel={() => setDeleteConfirm({ isOpen: false, project: null })}
       />
-    </div>
+
+      <CommandPalette
+        open={commandPaletteOpen}
+        onOpenChange={setCommandPaletteOpen}
+        projects={projects}
+        onNewProject={() => {
+          setEditingProject(null);
+          setIsFormOpen(true);
+          setCommandPaletteOpen(false);
+        }}
+      />
+      </div>
+    </ProtectedRoute>
   );
 }

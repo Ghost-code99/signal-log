@@ -1,0 +1,102 @@
+---
+alwaysApply: true
+description: "Signal Log Tech Stack Rules - Next.js 15 App Router with TypeScript, Tailwind CSS, and shadcn/ui"
+---
+
+# Signal Log Tech Stack Rules
+
+## Core Framework
+- **Next.js 15.5.4** with App Router (not Pages Router)
+- **React 19.2.0** with React DOM 19.2.0
+- **TypeScript 5** with strict mode enabled
+- **Node.js** with ES2017 target and ESNext modules
+
+## Styling & UI
+- **Tailwind CSS 3.4.18** for utility-first styling
+- **shadcn/ui** components with "new-york" style variant
+- **CSS Variables** for theming (light/dark mode support)
+- **Framer Motion 12.23.22** for animations
+- **Lucide React 0.544.0** for icons (primary icon library)
+- **@tabler/icons-react 3.35.0** for additional icons
+
+## Component Architecture
+- **Radix UI** primitives for accessible components:
+  - `@radix-ui/react-dialog` for modals
+  - `@radix-ui/react-dropdown-menu` for dropdowns
+  - `@radix-ui/react-separator` for dividers
+  - `@radix-ui/react-slot` for polymorphic components
+- **Class Variance Authority (CVA)** for component variants
+- **clsx** and **tailwind-merge** for conditional styling
+
+## State Management & Data
+- **Zod 3.25.76** for runtime validation and type safety
+- **LocalStorage** for client-side persistence (no database)
+- **Server Actions** for form handling and API logic
+- **Next.js API Routes** for external API integrations
+
+## Development Tools
+- **ESLint 9** with Next.js and Prettier configs
+- **Prettier 3.6.2** for code formatting
+- **Vitest 3.2.4** for testing with jsdom environment
+- **Testing Library** for React component testing
+- **TypeScript** strict mode with path aliases (`@/*` → `./src/*`)
+
+## Build & Deployment
+- **Turbopack** support for faster development
+- **Webpack optimization** for production builds
+- **Vercel** deployment with optimized chunk loading
+- **PostCSS** with Autoprefixer for CSS processing
+
+## Key Patterns & Conventions
+- **App Router** structure: `src/app/` for pages and layouts
+- **Component co-location**: Components in `src/components/`
+- **Type safety**: All props, state, and API responses typed
+- **Server-first**: Use Server Actions over client-side API calls
+- **Mobile-first**: Responsive design with Tailwind breakpoints
+- **Accessibility**: Radix UI primitives for keyboard navigation
+- **Performance**: Code splitting and optimized bundles
+
+## File Structure Rules
+- Use `src/app/` for Next.js App Router pages
+- Use `src/components/ui/` for shadcn/ui components
+- Use `src/lib/` for utilities and validation schemas
+- Use `src/components/` for custom components
+- Use TypeScript interfaces for all data structures
+- Use Zod schemas for all form validation and API inputs
+
+## Styling Rules
+- Use Tailwind utility classes for styling
+- Use CSS variables for theme colors (defined in globals.css)
+- Use `cn()` utility for conditional classes
+- Use responsive prefixes (sm:, md:, lg:, xl:) for mobile-first design
+- Use Framer Motion for complex animations
+- Use Lucide React icons consistently
+
+## Testing Rules
+- Use Vitest for unit and integration tests
+- Use Testing Library for component testing
+- Mock external APIs and localStorage
+- Test both success and error states
+- Use jsdom environment for DOM testing
+
+## Security Rules
+- Sanitize all user inputs with custom `sanitizeText()` function
+- Use Zod validation for all API endpoints
+- Escape HTML content to prevent XSS
+- Validate all form inputs on both client and server
+- Use Server Actions for secure form handling
+
+## Performance Rules
+- Use Next.js Image component for optimized images
+- Implement proper loading states for async operations
+- Use React.memo() for expensive components
+- Optimize bundle size with proper imports
+- Use Turbopack for faster development builds
+
+## Code Quality Rules
+- Follow ESLint and Prettier configurations
+- Use TypeScript strict mode
+- Write comprehensive tests for all features
+- Use meaningful variable and function names
+- Document complex logic with comments
+- Follow Next.js 15 App Router conventions

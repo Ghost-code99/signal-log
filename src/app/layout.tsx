@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import { AuthProvider } from '@/lib/auth-context';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 
@@ -37,11 +38,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5">
-            <Header />
-            <main>{children}</main>
-            <Footer />
-          </div>
+          <AuthProvider>
+            <div className="min-h-screen bg-gray-50">
+              <Header />
+              <main>{children}</main>
+              <Footer />
+            </div>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

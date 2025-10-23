@@ -36,9 +36,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
+  // ESLint configuration moved to eslint.config.mjs
 };
 
 export default nextConfig;

@@ -1,0 +1,270 @@
+# Design System Rules
+
+## Core Principles
+
+### 1. **Semantic Color System**
+- **ALWAYS** use CSS custom properties for colors, never hardcoded Tailwind classes
+- **NEVER** use `bg-white`, `text-gray-900`, `border-gray-300` - use semantic tokens instead
+- **ALWAYS** ensure dark mode compatibility through semantic tokens
+
+**Correct Examples:**
+```tsx
+className="bg-background text-foreground border-border"
+className="bg-primary text-primary-foreground"
+className="bg-card text-card-foreground"
+```
+
+**Incorrect Examples:**
+```tsx
+className="bg-white text-gray-900 border-gray-300" // ❌ Hardcoded colors
+className="text-gray-600" // ❌ No dark mode support
+```
+
+### 2. **Consistent Spacing Scale**
+- **Border Radius**: Use `rounded-sm` (0.375rem), `rounded-md` (0.5rem), `rounded-lg` (0.75rem)
+- **Padding**: Standardize to `p-4` (1rem), `p-6` (1.5rem), `p-8` (2rem)
+- **Gap**: Use `gap-2` (0.5rem), `gap-3` (0.75rem), `gap-4` (1rem), `gap-6` (1.5rem)
+
+### 3. **Focus State Standardization**
+- **ALWAYS** use: `focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`
+- **NEVER** mix different focus ring implementations
+- **ALWAYS** include `outline-none` to remove default browser focus
+
+**Standard Focus Pattern:**
+```tsx
+className="outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+```
+
+### 4. **Component Architecture**
+
+#### **Required Attributes**
+- **ALWAYS** include `data-slot` attribute on root elements
+- **ALWAYS** use `cn()` utility for className merging
+- **ALWAYS** spread props with `...props` pattern
+
+#### **TypeScript Requirements**
+- **ALWAYS** extend `React.ComponentProps<'element'>` for proper typing
+- **ALWAYS** use `VariantProps` for variant-based components
+- **ALWAYS** include proper generic types
+
+**Standard Component Pattern:**
+```tsx
+function Component({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
+  return (
+    <div
+      data-slot="component"
+      className={cn(
+        "base-styles semantic-colors focus-states",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+```
+
+### 5. **Color Token Usage**
+
+#### **Background Colors**
+- `bg-background` - Main background
+- `bg-card` - Card backgrounds
+- `bg-popover` - Popover/dropdown backgrounds
+- `bg-primary` - Primary actions
+- `bg-secondary` - Secondary actions
+- `bg-accent` - Accent elements
+- `bg-muted` - Muted backgrounds
+
+#### **Text Colors**
+- `text-foreground` - Primary text
+- `text-card-foreground` - Text on cards
+- `text-muted-foreground` - Secondary/muted text
+- `text-primary-foreground` - Text on primary backgrounds
+- `text-secondary-foreground` - Text on secondary backgrounds
+
+#### **Border Colors**
+- `border-border` - Default borders
+- `border-input` - Input borders
+- `border-ring` - Focus ring borders
+
+### 6. **Interactive States**
+
+#### **Hover States**
+```tsx
+// Buttons
+"hover:bg-primary/90" // Primary buttons
+"hover:bg-accent hover:text-accent-foreground" // Secondary buttons
+
+// Cards
+"hover:shadow-md transition-shadow duration-200"
+
+// Interactive elements
+"hover:bg-accent/50"
+```
+
+#### **Disabled States**
+```tsx
+"disabled:cursor-not-allowed disabled:opacity-50"
+```
+
+#### **Invalid States**
+```tsx
+"aria-invalid:border-destructive aria-invalid:ring-destructive"
+```
+
+### 7. **Animation Standards**
+
+#### **Transitions**
+- **Duration**: Use `duration-200` for most transitions
+- **Easing**: Default Tailwind easing (ease-in-out)
+- **Properties**: Focus on `transition-colors`, `transition-shadow`, `transition-transform`
+
+#### **Animations**
+- **Fade**: `fade-in-0`, `fade-out-0`
+- **Scale**: `zoom-in-95`, `zoom-out-95`
+- **Slide**: `slide-in-from-top-2`, `slide-in-from-bottom-2`
+
+### 8. **Accessibility Requirements**
+
+#### **Focus Management**
+- **ALWAYS** include visible focus indicators
+- **ALWAYS** use `focus-visible:` for keyboard navigation
+- **NEVER** remove focus indicators without providing alternatives
+
+#### **ARIA Support**
+- **ALWAYS** include proper ARIA attributes where needed
+- **ALWAYS** support screen readers with semantic HTML
+- **ALWAYS** include `aria-invalid` support for form validation
+
+#### **Keyboard Navigation**
+- **ALWAYS** ensure all interactive elements are keyboard accessible
+- **ALWAYS** provide proper tab order
+- **ALWAYS** include keyboard shortcuts where appropriate
+
+### 9. **Component Variants**
+
+#### **Size Variants**
+```tsx
+// Standard sizes
+sm: "h-8 px-3 text-sm"
+default: "h-10 px-4 text-sm" 
+lg: "h-12 px-6 text-base"
+```
+
+#### **Variant Patterns**
+```tsx
+// Use cva for variant-based components
+const componentVariants = cva(
+  "base-styles",
+  {
+    variants: {
+      variant: {
+        default: "default-styles",
+        secondary: "secondary-styles",
+        destructive: "destructive-styles"
+      },
+      size: {
+        sm: "small-styles",
+        default: "default-styles",
+        lg: "large-styles"
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  }
+)
+```
+
+### 10. **Dark Mode Considerations**
+
+#### **Color Adaptations**
+- **ALWAYS** test components in both light and dark modes
+- **ALWAYS** use semantic tokens that adapt automatically
+- **NEVER** assume colors will work in both modes without testing
+
+#### **Contrast Requirements**
+- **ALWAYS** ensure sufficient contrast ratios
+- **ALWAYS** test with accessibility tools
+- **ALWAYS** provide alternative indicators beyond color
+
+## Implementation Checklist
+
+### **Before Creating/Modifying Components:**
+- [ ] Use semantic color tokens only
+- [ ] Include proper `data-slot` attributes
+- [ ] Add comprehensive TypeScript types
+- [ ] Include focus states and accessibility
+- [ ] Test in both light and dark modes
+- [ ] Use consistent spacing scale
+- [ ] Follow standard component pattern
+
+### **Code Review Checklist:**
+- [ ] No hardcoded colors (gray-*, white, black)
+- [ ] Consistent focus ring implementation
+- [ ] Proper semantic HTML structure
+- [ ] Complete TypeScript definitions
+- [ ] Dark mode compatibility
+- [ ] Accessibility compliance
+- [ ] Consistent spacing and sizing
+
+## Common Anti-Patterns to Avoid
+
+### **❌ Don't Do This:**
+```tsx
+// Hardcoded colors
+className="bg-white text-gray-900 border-gray-300"
+
+// Inconsistent focus states
+className="focus:ring-2 focus:ring-gray-500"
+
+// Missing data-slot
+<div className="component-styles">
+
+// Incomplete TypeScript
+function Component({ className }: { className?: string }) {
+```
+
+### **✅ Do This Instead:**
+```tsx
+// Semantic colors
+className="bg-card text-card-foreground border-border"
+
+// Consistent focus states
+className="focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+
+// Proper data-slot
+<div data-slot="component" className="component-styles">
+
+// Complete TypeScript
+function Component({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
+```
+
+## Migration Guide
+
+### **Converting Existing Components:**
+
+1. **Replace hardcoded colors:**
+   - `bg-white` → `bg-card`
+   - `text-gray-900` → `text-card-foreground`
+   - `border-gray-300` → `border-border`
+
+2. **Standardize focus states:**
+   - Replace all focus implementations with standard pattern
+   - Ensure `outline-none` is included
+
+3. **Add missing attributes:**
+   - Include `data-slot` on all root elements
+   - Add proper TypeScript types
+
+4. **Test dark mode:**
+   - Verify all components work in dark mode
+   - Adjust any remaining hardcoded colors
+
+This design system ensures consistency, accessibility, and maintainability across all UI components while supporting both light and dark modes seamlessly.
