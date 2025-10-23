@@ -39,7 +39,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-gradient-to-br from-primary/10 via-accent/5 to-primary/10">
               <Header />
               <main>{children}</main>
               <Footer />
