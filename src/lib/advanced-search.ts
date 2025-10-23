@@ -211,7 +211,7 @@ export class AdvancedSearchEngine {
         status: idea.status,
         suggestedTags: idea.suggested_tags,
         createdAt: idea.created_at,
-        relatedProject: idea.projects?.title || null
+        relatedProject: idea.projects?.[0]?.title || null
       }
     }))
   }
