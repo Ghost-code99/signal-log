@@ -85,7 +85,7 @@ export function sanitizeTags(tags: string[]): string[] {
 export const createProjectSchema = z.object({
   name: z.string().min(1).max(200),
   title: z.string().min(1).max(200),
-  description: z.string().max(2000).optional(),
+  description: z.string().max(2000),
   status: z.enum(['idea', 'active', 'stalled', 'validated', 'abandoned']),
   priority: z.enum(['low', 'medium', 'high', 'critical']),
   tags: z.array(z.string()).max(10)
