@@ -1,6 +1,7 @@
 // Performance Optimization and Caching
 // Provides comprehensive performance monitoring and optimization strategies
 
+import React from 'react'
 import { supabaseClient } from './supabase-client'
 
 export interface PerformanceMetrics {

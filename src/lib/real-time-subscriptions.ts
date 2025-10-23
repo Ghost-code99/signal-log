@@ -1,6 +1,7 @@
 // Real-time Subscriptions and Live Updates
 // Provides real-time data synchronization across the application
 
+import React from 'react'
 import { supabaseClient } from './supabase-client'
 import { RealtimeChannel } from '@supabase/supabase-js'
 

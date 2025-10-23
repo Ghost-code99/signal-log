@@ -1,6 +1,7 @@
 // Data Migration and Schema Evolution Tools
 // Provides comprehensive migration management and schema evolution capabilities
 
+import React from 'react'
 import { supabaseClient } from './supabase-client'
 
 export interface Migration {

@@ -1,6 +1,7 @@
 // Security Hardening and Audit Logging
 // Provides comprehensive security features and audit capabilities
 
+import React from 'react'
 import { supabaseClient } from './supabase-client'
 
 export interface SecurityEvent {
