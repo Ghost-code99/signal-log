@@ -1,6 +1,7 @@
 // Advanced Search and Full-Text Indexing
 // Provides powerful search capabilities across all data
 
+import React from 'react'
 import { supabaseClient } from './supabase-client'
 
 export interface SearchResult {
