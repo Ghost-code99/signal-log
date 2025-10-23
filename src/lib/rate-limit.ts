@@ -14,7 +14,7 @@ const rateLimitConfig: RateLimitConfig = {
 const requestCounts = new Map<string, { count: number; resetTime: number }>()
 
 export function rateLimit(request: NextRequest): { allowed: boolean; remaining: number } {
-  const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown'
+  const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
   const now = Date.now()
   const windowStart = now - rateLimitConfig.windowMs
 
