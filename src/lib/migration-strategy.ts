@@ -477,8 +477,8 @@ export function useMigrationManagement() {
     setLoading(true)
     try {
       // In a real implementation, this would fetch from the database
-      setMigrations(await migrationManager.getAllMigrations())
-      setStatus(migrationManager.getMigrationStatus())
+      setMigrations([])
+      setStatus('ready')
     } catch (error) {
       console.error('Failed to fetch migrations:', error)
     } finally {
