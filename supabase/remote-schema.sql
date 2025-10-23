@@ -245,5 +245,111 @@ CREATE POLICY "Users can insert health metrics for own projects" ON project_heal
     )
   );
 
+-- Additional monitoring and analytics tables
+CREATE TABLE IF NOT EXISTS security_events (
+  id TEXT PRIMARY KEY,
+  type TEXT NOT NULL,
+  severity TEXT NOT NULL,
+  user_id UUID REFERENCES users(id),
+  ip_address INET,
+  user_agent TEXT,
+  resource TEXT NOT NULL,
+  action TEXT NOT NULL,
+  details JSONB,
+  timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  resolved BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE IF NOT EXISTS performance_metrics (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  metric_name TEXT NOT NULL,
+  metric_value NUMERIC NOT NULL,
+  metric_unit TEXT,
+  timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  metadata JSONB
+);
+
+CREATE TABLE IF NOT EXISTS migration_history (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  migration_id TEXT NOT NULL,
+  migration_name TEXT NOT NULL,
+  version TEXT NOT NULL,
+  executed_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  executed_by UUID REFERENCES users(id),
+  status TEXT NOT NULL,
+  duration_ms INTEGER,
+  error_message TEXT,
+  checksum TEXT
+);
+
+CREATE TABLE IF NOT EXISTS backup_history (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  backup_id TEXT NOT NULL,
+  backup_name TEXT NOT NULL,
+  backup_type TEXT NOT NULL,
+  size_bytes BIGINT,
+  status TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  completed_at TIMESTAMP WITH TIME ZONE,
+  created_by UUID REFERENCES users(id),
+  metadata JSONB
+);
+
+-- Create indexes for monitoring tables
+CREATE INDEX IF NOT EXISTS idx_security_events_type ON security_events(type);
+CREATE INDEX IF NOT EXISTS idx_security_events_severity ON security_events(severity);
+CREATE INDEX IF NOT EXISTS idx_security_events_user_id ON security_events(user_id);
+CREATE INDEX IF NOT EXISTS idx_security_events_timestamp ON security_events(timestamp);
+CREATE INDEX IF NOT EXISTS idx_security_events_resolved ON security_events(resolved);
+
+CREATE INDEX IF NOT EXISTS idx_performance_metrics_name ON performance_metrics(metric_name);
+CREATE INDEX IF NOT EXISTS idx_performance_metrics_timestamp ON performance_metrics(timestamp);
+CREATE INDEX IF NOT EXISTS idx_performance_metrics_value ON performance_metrics(metric_value);
+
+CREATE INDEX IF NOT EXISTS idx_migration_history_migration_id ON migration_history(migration_id);
+CREATE INDEX IF NOT EXISTS idx_migration_history_executed_at ON migration_history(executed_at);
+CREATE INDEX IF NOT EXISTS idx_migration_history_status ON migration_history(status);
+
+CREATE INDEX IF NOT EXISTS idx_backup_history_backup_id ON backup_history(backup_id);
+CREATE INDEX IF NOT EXISTS idx_backup_history_created_at ON backup_history(created_at);
+CREATE INDEX IF NOT EXISTS idx_backup_history_status ON backup_history(status);
+
+-- Enable RLS on monitoring tables
+ALTER TABLE security_events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE performance_metrics ENABLE ROW LEVEL SECURITY;
+ALTER TABLE migration_history ENABLE ROW LEVEL SECURITY;
+ALTER TABLE backup_history ENABLE ROW LEVEL SECURITY;
+
+-- Create RLS policies for monitoring tables (admin only)
+CREATE POLICY "Admin can view security events" ON security_events
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM users 
+      WHERE users.id = auth.uid() 
+      AND users.email LIKE '%@admin%'
+    )
+  );
+
+CREATE POLICY "Users can view performance metrics" ON performance_metrics
+  FOR SELECT USING (true);
+
+CREATE POLICY "Admin can view migration history" ON migration_history
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM users 
+      WHERE users.id = auth.uid() 
+      AND users.email LIKE '%@admin%'
+    )
+  );
+
+CREATE POLICY "Admin can view backup history" ON backup_history
+  FOR SELECT USING (
+    EXISTS (
+      SELECT 1 FROM users 
+      WHERE users.id = auth.uid() 
+      AND users.email LIKE '%@admin%'
+    )
+  );
+
 -- Success message
-SELECT 'Signal Log database schema has been successfully applied!' as status;
+SELECT 'Signal Log database schema with monitoring has been successfully applied!' as status;

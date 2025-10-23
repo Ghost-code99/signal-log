@@ -81,6 +81,55 @@ export function sanitizeTags(tags: string[]): string[] {
     .slice(0, 10) // Max 10 tags
 }
 
+// Additional schemas for specific features
+export const createProjectSchema = z.object({
+  title: z.string().min(1).max(200),
+  description: z.string().max(2000).optional(),
+  status: z.enum(['idea', 'active', 'stalled', 'validated', 'abandoned']),
+  priority: z.enum(['low', 'medium', 'high', 'critical'])
+})
+
+export const updateProjectSchema = z.object({
+  id: z.string().uuid(),
+  title: z.string().min(1).max(200).optional(),
+  description: z.string().max(2000).optional(),
+  status: z.enum(['idea', 'active', 'stalled', 'validated', 'abandoned']).optional(),
+  priority: z.enum(['low', 'medium', 'high', 'critical']).optional()
+})
+
+export const deleteProjectSchema = z.object({
+  id: z.string().uuid()
+})
+
+export const generateCanvasSchema = z.object({
+  projectId: z.string().uuid(),
+  hypothesis: z.string().min(1).max(1000),
+  experiment: z.string().min(1).max(1000),
+  metrics: z.array(z.string()).max(10)
+})
+
+export const generateTagsSchema = z.object({
+  content: z.string().min(1).max(5000),
+  context: z.string().max(1000).optional()
+})
+
+export const challengeIdeaSchema = z.object({
+  idea: z.string().min(1).max(5000),
+  assumptions: z.array(z.string()).max(10)
+})
+
+export const scanProjectsSchema = z.object({
+  projectIds: z.array(z.string().uuid()).max(20)
+})
+
+// Sanitization functions
+export function sanitizeText(input: string): string {
+  return input
+    .trim()
+    .replace(/[<>]/g, '') // Remove potential HTML tags
+    .substring(0, 1000) // Limit length
+}
+
 // Validation helper
 export function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): { success: true; data: T } | { success: false; error: string } {
   try {
