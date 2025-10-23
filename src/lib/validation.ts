@@ -123,6 +123,7 @@ export const challengeIdeaSchema = z.object({
 export const scanProjectsSchema = z.object({
   projects: z.array(z.object({
     id: z.string().uuid(),
+    name: z.string(),
     title: z.string(),
     description: z.string().optional(),
     status: z.string(),
