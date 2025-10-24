@@ -2,10 +2,17 @@
 -- This file contains the complete schema for direct application
 -- Use this when Docker is not available for supabase db diff
 
--- Enable necessary extensions
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pg_trgm";
-CREATE EXTENSION IF NOT EXISTS "btree_gin";
+-- Create extensions schema for better security
+CREATE SCHEMA IF NOT EXISTS extensions;
+GRANT USAGE ON SCHEMA extensions TO public;
+
+-- Enable necessary extensions in the extensions schema
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA extensions;
+CREATE EXTENSION IF NOT EXISTS "pg_trgm" SCHEMA extensions;
+CREATE EXTENSION IF NOT EXISTS "btree_gin" SCHEMA extensions;
+
+-- Update search_path to include extensions schema
+ALTER DATABASE postgres SET search_path TO public, extensions;
 
 -- Drop existing tables if they exist (for clean setup)
 DROP TABLE IF EXISTS project_health_metrics CASCADE;
