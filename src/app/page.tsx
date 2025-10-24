@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Target, Lightbulb, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
+// Force rebuild - no SupabaseTest
 
 export default function Home() {
   return (
