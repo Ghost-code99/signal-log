@@ -22,6 +22,9 @@ export const metadata: Metadata = {
     'Transform scattered ideas into validated experiments. Accelerate your path to product-market fit with intelligent strategic collaboration.',
 };
 
+// Force no caching to prevent deployment issues
+export const revalidate = 0;
+
 export default function RootLayout({
   children,
 }: Readonly<{

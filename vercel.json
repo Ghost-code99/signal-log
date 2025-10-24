@@ -6,30 +6,30 @@
   "env": {
     "NEXT_PUBLIC_SUPABASE_URL": "https://sbvxiljjfolgmpycabep.supabase.co",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNidnhpbGpqZm9sZ21weWNhYmVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEyMDUzMTIsImV4cCI6MjA3Njc4MTMxMn0.6xt-RAwi8btnjvC6CY4w6uPUxus0PJr90xamcha88sY",
-    "SUPABASE_SERVICE_ROLE_KEY": "sb_secret_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNidnhpbGpqZm9sZ21weWNhYmVwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTIwNTMxMiwiZXhwIjoyMDc2NzgxMzEyfQ.PmO1gjKC6tY68MoJ1ohYU5EM6H6-aZ5O5qxoKj8YTTw"
+    "SUPABASE_SERVICE_ROLE_KEY": "sb_secret_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNidnhpbGpqZm9sZ21weWNhYmVwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTIwNTMxMiwiZXhwIjoyMDNCNzgxMzEyfQ.PmO1gjKC6tY68MoJ1ohYU5EM6H6-aZ5O5qxoKj8YTTw"
   },
   "build": {
     "env": {
       "NEXT_PUBLIC_SUPABASE_URL": "https://sbvxiljjfolgmpycabep.supabase.co",
       "NEXT_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNidnhpbGpqZm9sZ21weWNhYmVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEyMDUzMTIsImV4cCI6MjA3Njc4MTMxMn0.6xt-RAwi8btnjvC6CY4w6uPUxus0PJr90xamcha88sY",
-      "SUPABASE_SERVICE_ROLE_KEY": "sb_secret_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNidnhpbGpqZm9sZ21weWNhYmVwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTIwNTMxMiwiZXhwIjoyMDc2NzgxMzEyfQ.PmO1gjKC6tY68MoJ1ohYU5EM6H6-aZ5O5qxoKj8YTTw"
+      "SUPABASE_SERVICE_ROLE_KEY": "sb_secret_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNidnhpbGpqZm9sZ21weWNhYmVwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTIwNTMxMiwiZXhwIjoyMDNCNzgxMzEyfQ.PmO1gjKC6tY68MoJ1ohYU5EM6H6-aZ5O5qxoKj8YTTw"
     }
   },
   "headers": [
     {
-      "source": "/api/(.*)",
+      "source": "/(.*)",
       "headers": [
         {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate, proxy-revalidate"
         },
         {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
+          "key": "Pragma",
+          "value": "no-cache"
         },
         {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization"
+          "key": "Expires",
+          "value": "0"
         }
       ]
     }
