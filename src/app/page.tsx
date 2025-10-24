@@ -154,3 +154,4 @@ export default function Home() {
     </>
   );
 }
+// Force complete rebuild - Fri Oct 24 11:51:47 CEST 2025
