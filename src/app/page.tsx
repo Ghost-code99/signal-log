@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Target, Lightbulb, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
-// Force rebuild - Supabase Connection Test REMOVED - cache bust - 2024
 
 export default function Home() {
   return (
@@ -16,11 +15,6 @@ export default function Home() {
       <Problem />
       <Solution />
 
-
-      {/* Dashboard CTA */}
-      {/* Hidden section to prevent Supabase test injection */}
-      <div style={{ display: 'none' }}>Supabase Connection Test</div>
-      
       <section className="container mx-auto px-4 py-12">
         <Card className="p-8 shadow-sm hover:shadow-md transition-shadow duration-200">
           <div className="text-center max-w-3xl mx-auto">
@@ -45,7 +39,6 @@ export default function Home() {
         </Card>
       </section>
 
-      {/* Features Section */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -58,16 +51,13 @@ export default function Home() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {/* Feature 1 - NEW */}
           <Card className="p-6 hover:shadow-md transition-shadow duration-200">
             <div className="space-y-4">
               <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center">
                 <BarChart3 className="h-6 w-6 text-foreground" />
               </div>
               <div>
-                <Badge className="mb-2">
-                  NEW
-                </Badge>
+                <Badge className="mb-2">NEW</Badge>
                 <h3 className="text-xl font-semibold text-card-foreground mb-2">
                   AI Project Health Scanner
                 </h3>
@@ -82,7 +72,6 @@ export default function Home() {
             </div>
           </Card>
 
-          {/* Feature 2 */}
           <Card className="p-6 hover:shadow-md transition-shadow duration-200">
             <div className="space-y-4">
               <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center">
@@ -105,7 +94,6 @@ export default function Home() {
             </div>
           </Card>
 
-          {/* Feature 3 */}
           <Card className="p-6 hover:shadow-md transition-shadow duration-200">
             <div className="space-y-4">
               <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center">
@@ -128,7 +116,6 @@ export default function Home() {
             </div>
           </Card>
 
-          {/* Feature 4 */}
           <Card className="p-6 hover:shadow-md transition-shadow duration-200">
             <div className="space-y-4">
               <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center">
@@ -157,4 +144,3 @@ export default function Home() {
     </>
   );
 }
-// Force complete rebuild - Fri Oct 24 2024 - Supabase Connection Test removed
