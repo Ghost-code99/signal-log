@@ -1,0 +1,11 @@
+# Ignore everything to force fresh build
+*
+!.git
+!src
+!public
+!package.json
+!tsconfig.json
+!next.config.ts
+!tailwind.config.ts
+!postcss.config.js
+!.vercelignore
