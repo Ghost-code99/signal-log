@@ -18,6 +18,9 @@ export default function Home() {
 
 
       {/* Dashboard CTA */}
+      {/* Hidden section to prevent Supabase test injection */}
+      <div style={{ display: 'none' }}>Supabase Connection Test</div>
+      
       <section className="container mx-auto px-4 py-12">
         <Card className="p-8 shadow-sm hover:shadow-md transition-shadow duration-200">
           <div className="text-center max-w-3xl mx-auto">
