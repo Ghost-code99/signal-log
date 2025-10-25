@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles, Target, Lightbulb, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
-// Force rebuild - no SupabaseTest - cache bust
+// Force rebuild - Supabase Connection Test REMOVED - cache bust - 2024
 
 export default function Home() {
   return (
@@ -154,4 +154,4 @@ export default function Home() {
     </>
   );
 }
-// Force complete rebuild - Fri Oct 24 11:51:47 CEST 2025
+// Force complete rebuild - Fri Oct 24 2024 - Supabase Connection Test removed

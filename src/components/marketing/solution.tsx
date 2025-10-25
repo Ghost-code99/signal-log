@@ -1,5 +1,7 @@
 'use client';
 
+// Force rebuild - Removed Supabase Connection Test - 2024
+// This component should NOT contain any Supabase test elements
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
