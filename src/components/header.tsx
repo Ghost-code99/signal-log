@@ -13,6 +13,7 @@ const navigation = [
   { name: 'Problem', href: '#problem' },
   { name: 'Solution', href: '#solution' },
   { name: 'Get Started', href: '#cta' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 export function Header() {
@@ -20,10 +21,14 @@ export function Header() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user } = useAuth();
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+  const handleNavigation = (href: string) => {
+    if (href.startsWith('#')) {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      window.location.href = href;
     }
     setMobileMenuOpen(false);
   };
@@ -45,7 +50,7 @@ export function Header() {
               <Button
                 key={item.name}
                 variant="ghost"
-                onClick={() => scrollToSection(item.href)}
+                onClick={() => handleNavigation(item.href)}
                 className="text-sm font-medium text-white/80 hover:text-white transition-colors duration-200"
               >
                 {item.name}
@@ -116,7 +121,7 @@ export function Header() {
               <Button
                 key={item.name}
                 variant="ghost"
-                onClick={() => scrollToSection(item.href)}
+                onClick={() => handleNavigation(item.href)}
                 className="w-full justify-start text-sm font-medium text-white/80 hover:text-white transition-colors duration-200"
               >
                 {item.name}
