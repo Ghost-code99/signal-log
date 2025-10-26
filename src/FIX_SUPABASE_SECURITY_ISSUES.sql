@@ -11,10 +11,17 @@
 CREATE SCHEMA IF NOT EXISTS extensions;
 
 -- Move pg_trgm extension to extensions schema
-ALTER EXTENSION IF EXISTS pg_trgm SET SCHEMA extensions;
-
--- Move btree_gin extension to extensions schema  
-ALTER EXTENSION IF EXISTS btree_gin SET SCHEMA extensions;
+-- Note: Only run these if the extensions exist
+DO $$ 
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_trgm') THEN
+    ALTER EXTENSION pg_trgm SET SCHEMA extensions;
+  END IF;
+  
+  IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'btree_gin') THEN
+    ALTER EXTENSION btree_gin SET SCHEMA extensions;
+  END IF;
+END $$;
 
 -- Revoke CREATE and USAGE on public schema from PUBLIC
 -- This prevents unprivileged users from creating objects in public
@@ -29,7 +36,7 @@ GRANT USAGE ON SCHEMA public TO service_role;
 -- This requires dashboard configuration, but we can prepare the database
 
 -- Create a table to track MFA settings (if not exists)
-CREATE TABLE IF NOT EXISTS auth.mfa_settings (
+CREATE TABLE IF NOT EXISTS mfa_settings (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
   mfa_enabled BOOLEAN DEFAULT false,
@@ -39,15 +46,15 @@ CREATE TABLE IF NOT EXISTS auth.mfa_settings (
 );
 
 -- Enable RLS on MFA settings table
-ALTER TABLE auth.mfa_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE mfa_settings ENABLE ROW LEVEL SECURITY;
 
 -- Create policy for MFA settings
-CREATE POLICY "Users can manage own MFA settings" ON auth.mfa_settings
+CREATE POLICY "Users can manage own MFA settings" ON mfa_settings
   FOR ALL USING (auth.uid() = user_id);
 
 -- 3. Strengthen Password Policies
 -- Create a function to validate password complexity
-CREATE OR REPLACE FUNCTION auth.validate_password_strength(password TEXT)
+CREATE OR REPLACE FUNCTION validate_password_strength(password TEXT)
 RETURNS BOOLEAN AS $$
 BEGIN
   -- Check minimum length (8 characters)
@@ -124,6 +131,8 @@ CREATE INDEX IF NOT EXISTS idx_security_events_user_id ON security_events(user_i
 -- (This assumes your existing RLS policies are already in place)
 
 -- Add audit logging for sensitive operations
+-- Note: Triggers on auth.users require special permissions
+-- This function can be used for your own tables
 CREATE OR REPLACE FUNCTION audit_trigger()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -145,24 +154,20 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Apply audit trigger to sensitive tables
-CREATE TRIGGER audit_users_trigger
-  AFTER INSERT OR UPDATE OR DELETE ON auth.users
-  FOR EACH ROW EXECUTE FUNCTION audit_trigger();
+-- Note: Cannot create triggers on auth.users without special permissions
+-- You can apply this trigger to your own tables instead
 
 -- 7. Additional Security Headers and CORS
 -- These are handled by your middleware.ts file, but we can add database-level security
 
 -- Create a function to check if user is admin
+-- Note: You may need to adjust this based on your user structure
 CREATE OR REPLACE FUNCTION is_admin(user_id UUID)
 RETURNS BOOLEAN AS $$
 BEGIN
-  -- Check if user has admin role (you can customize this logic)
-  RETURN EXISTS (
-    SELECT 1 FROM auth.users 
-    WHERE id = user_id 
-    AND raw_user_meta_data->>'role' = 'admin'
-  );
+  -- This is a placeholder - implement based on your admin check logic
+  -- You can check against a users table or use JWT claims
+  RETURN FALSE; -- Default to non-admin
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
