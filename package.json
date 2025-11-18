@@ -23,9 +23,12 @@
     "test:coverage": "vitest run --coverage",
     "test:all": "npm run test:unit && npm run test:integration && npm run test:components && npm run test:api",
     "type-check": "tsc --noEmit",
-    "preview": "next build && next start"
+    "preview": "next build && next start",
+    "check:clerk": "node check-clerk-setup.js",
+    "setup:clerk": "./setup-clerk.sh"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.35.2",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-checkbox": "^1.3.3",

@@ -42,29 +42,30 @@ This document maps the complete authentication journey for Signal Log, a multi-p
 
 **What the user sees:**
 - Dedicated signup page at `/sign-up`
-- Title: "Create Your Account"
-- Subtitle: "Start managing your project portfolio with AI strategy intelligence"
+- Clerk's `<SignUp />` component with styled appearance
+- Title: "Create Your Account" (or Clerk default)
 - Email input field
 - Password input field (with strength indicator)
-- Name field (handled by Clerk's SignUp component)
+- Full Name field (handled by Clerk's SignUp component)
 - "Show password" toggle
 - "Create Account" button
 - Link to switch to login: "Already have an account? Sign in"
-- Terms of Service / Privacy Policy links (footer)
+- Terms of Service / Privacy Policy links (footer, if configured in Clerk)
 
 **What actions they can take:**
-- Enter email/password → Form submission
+- Enter email/password/name → Form submission
 - Toggle "Show password" → Reveal/hide password
 - Click "Sign in" link → Switch to login mode
 
 **What happens next:**
 - Form validation → Account creation → Step 3 (Email Verification - handled by Clerk)
+- After successful signup → Redirects to `/onboarding` (configured in Clerk)
 
 **Decision points:**
 - Valid credentials → Proceeds to email verification
-- Invalid credentials → Error message displayed
+- Invalid credentials → Error message displayed (handled by Clerk)
 
-**Note:** Social login (Google, GitHub, etc.) is planned for future implementation. Initial release uses email/password only.
+**Implementation Note:** Initial release uses email/password only. Social login (Google, GitHub, etc.) is planned for future implementation.
 
 ---
 
@@ -264,11 +265,12 @@ This document maps the complete authentication journey for Signal Log, a multi-p
 
 **What the user sees:**
 - Dedicated login page at `/sign-in`
-- Title: "Sign In"
+- Clerk's `<SignIn />` component with styled appearance
+- Title: "Sign In" (or Clerk default)
 - Email input field
 - Password input field
 - "Show password" toggle
-- "Remember me" checkbox (optional)
+- "Remember me" checkbox (optional, if enabled in Clerk)
 - "Forgot password?" link (uses Clerk defaults)
 - "Sign In" button
 - Link to switch to signup: "Don't have an account? Sign up"
@@ -278,10 +280,11 @@ This document maps the complete authentication journey for Signal Log, a multi-p
 - Click "Forgot password" → Password reset flow (Clerk defaults)
 - Click "Sign up" → Switch to signup
 - Toggle "Show password"
-- Check "Remember me"
+- Check "Remember me" (if available)
 
 **What happens next:**
 - **Email login:** Credentials validated → Step 3 (Session Established)
+- After successful login → Redirects to `/dashboard` (configured in Clerk)
 - **Invalid credentials:** Error message → Stay on login page
 
 **Decision points:**
@@ -289,7 +292,7 @@ This document maps the complete authentication journey for Signal Log, a multi-p
 - Invalid credentials → Error displayed, can retry
 - Forgot password → Clerk's default password reset flow
 
-**Note:** Social login (Google, GitHub, etc.) is planned for future implementation. Initial release uses email/password only.
+**Implementation Note:** Initial release uses email/password only. Social login (Google, GitHub, etc.) is planned for future implementation.
 
 ---
 
@@ -345,20 +348,18 @@ This document maps the complete authentication journey for Signal Log, a multi-p
 
 **What actions they can take:**
 - Re-enter password
-- Click "Forgot password" → Password reset flow
+- Click "Forgot password" → Password reset flow (Clerk defaults)
 - Click "Show password" to verify they're typing correctly
-- Try social login instead
 - Switch to signup if they don't have account
 
 **What happens next:**
-- Correct credentials → Login succeeds
-- Click "Forgot password" → Password reset email sent
-- Multiple failed attempts → Rate limiting / account lockout (if implemented)
+- Correct credentials → Login succeeds → Redirects to `/dashboard`
+- Click "Forgot password" → Password reset email sent (Clerk handles)
+- Multiple failed attempts → Clerk's rate limiting / account lockout (if enabled)
 
 **Recovery path:**
-1. User corrects credentials → Retry login
-2. User clicks "Forgot password" → Reset flow
-3. User tries social login → Alternative authentication
+1. User corrects credentials → Retry login → Success
+2. User clicks "Forgot password" → Clerk's reset flow → New password set → Login
 
 ---
 
@@ -372,19 +373,18 @@ This document maps the complete authentication journey for Signal Log, a multi-p
 
 **What actions they can take:**
 - Click "Sign in" → Switch to login form
-- Click "Forgot password" → Password reset flow
+- Click "Forgot password" → Password reset flow (Clerk defaults)
 - Try different email address
-- Try social login with that email
 
 **What happens next:**
 - User switches to login → Login flow
-- User resets password → Password reset flow
+- User resets password → Clerk's password reset flow
 - User uses different email → Signup continues
 
 **Recovery path:**
-1. User realizes they have account → Switch to login
-2. User forgot password → Reset password
-3. User wants different account → Use different email
+1. User realizes they have account → Switch to login → Enter credentials → Success
+2. User forgot password → Clerk's reset flow → New password set → Login
+3. User wants different account → Use different email → Signup continues
 
 ---
 

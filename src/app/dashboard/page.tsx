@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ProtectedRoute } from '@/components/auth/protected-route';
+// ProtectedRoute removed - middleware handles route protection
 import {
   LayoutDashboard,
   Plus,
@@ -254,7 +254,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <ProtectedRoute>
+    <>
       <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
@@ -576,6 +576,6 @@ export default function DashboardPage() {
         }}
       />
       </div>
-    </ProtectedRoute>
+    </>
   );
 }
