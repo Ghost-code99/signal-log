@@ -4,9 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { CTAModal } from '@/components/cta-modal';
-import { useAuth } from '@/lib/auth-context';
-import { UserMenu } from '@/components/auth/user-menu';
-import { AuthModal } from '@/components/auth/auth-modal';
+import { UserButton, SignedIn, SignedOut } from '@clerk/nextjs';
 import Link from 'next/link';
 
 const navigation = [
@@ -18,8 +16,6 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const { user } = useAuth();
 
   const handleNavigation = (href: string) => {
     if (href.startsWith('#')) {
@@ -60,29 +56,30 @@ export function Header() {
         </div>
 
         <div className="flex items-center space-x-4">
-          {user ? (
-            <>
-              <Link href="/dashboard">
-                <Button variant="outline" size="sm">
-                  Dashboard
-                </Button>
-              </Link>
-              <UserMenu />
-            </>
-          ) : (
-            <>
-              <div className="hidden sm:block">
-                <CTAModal />
-              </div>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setShowAuthModal(true)}
-              >
+          <SignedIn>
+            <Link href="/dashboard">
+              <Button variant="outline" size="sm">
+                Dashboard
+              </Button>
+            </Link>
+            <UserButton 
+              appearance={{
+                elements: {
+                  avatarBox: "h-8 w-8",
+                },
+              }}
+            />
+          </SignedIn>
+          <SignedOut>
+            <div className="hidden sm:block">
+              <CTAModal />
+            </div>
+            <Link href="/sign-in">
+              <Button variant="outline" size="sm">
                 Sign In
               </Button>
-            </>
-          )}
+            </Link>
+          </SignedOut>
           <ThemeToggle />
 
           {/* Mobile menu button */}
@@ -128,24 +125,20 @@ export function Header() {
               </Button>
             ))}
             <div className="pt-2 border-t border-white/20">
-              {user ? (
+              <SignedIn>
                 <Link href="/dashboard">
                   <Button variant="outline" className="w-full">
                     Dashboard
                   </Button>
                 </Link>
-              ) : (
+              </SignedIn>
+              <SignedOut>
                 <CTAModal />
-              )}
+              </SignedOut>
             </div>
           </div>
         </div>
       )}
-      
-      <AuthModal 
-        isOpen={showAuthModal} 
-        onClose={() => setShowAuthModal(false)}
-      />
     </header>
   );
 }

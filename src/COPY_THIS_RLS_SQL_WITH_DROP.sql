@@ -156,3 +156,4 @@ SELECT 'RLS policies successfully created!' as status;
 -- ========================================
 -- ✅ DONE! Check Security Advisor now
 -- ========================================
+

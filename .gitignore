@@ -78,3 +78,6 @@ next-env.d.ts
 Thumbs.db
 .DS_Store
 .env.local
+
+# clerk configuration (can include secrets)
+/.clerk/
