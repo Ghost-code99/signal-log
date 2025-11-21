@@ -2,6 +2,7 @@
 
 import { ThemeToggle } from '@/components/theme-toggle';
 import { FeedbackTrigger } from '@/components/feedback-modal';
+import Link from 'next/link';
 
 export function Footer() {
   return (
@@ -39,6 +40,12 @@ export function Footer() {
 
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             <FeedbackTrigger className="hover:text-foreground transition-colors duration-200 min-h-[44px] sm:min-h-0 flex items-center" />
+            <Link
+              href="/changelog"
+              className="hover:text-foreground transition-colors duration-200 min-h-[44px] sm:min-h-0 flex items-center"
+            >
+              Changelog
+            </Link>
             <a
               href="https://pirateskills.com/contact"
               target="_blank"
