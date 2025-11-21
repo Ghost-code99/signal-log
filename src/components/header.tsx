@@ -12,6 +12,7 @@ import Link from 'next/link';
 const navigation = [
   { name: 'Problem', href: '#problem' },
   { name: 'Solution', href: '#solution' },
+  { name: 'Pricing', href: '/pricing' },
   { name: 'Get Started', href: '#cta' },
   { name: 'Contact', href: '/contact' },
 ];
@@ -41,7 +42,7 @@ export function Header() {
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-sm">S</span>
             </div>
-            <span className="font-semibold text-xl text-white">Signal Log</span>
+            <span className="font-semibold text-lg sm:text-xl text-white">Signal Log</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -59,12 +60,13 @@ export function Header() {
           </nav>
         </div>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           {user ? (
             <>
               <Link href="/dashboard">
-                <Button variant="outline" size="sm">
-                  Dashboard
+                <Button variant="outline" size="sm" className="h-10 sm:h-8 min-w-[44px] sm:min-w-0">
+                  <span className="hidden sm:inline">Dashboard</span>
+                  <span className="sm:hidden">Dash</span>
                 </Button>
               </Link>
               <UserMenu />
@@ -77,6 +79,7 @@ export function Header() {
               <Button 
                 variant="outline" 
                 size="sm"
+                className="h-10 sm:h-8 min-w-[44px] sm:min-w-0"
                 onClick={() => setShowAuthModal(true)}
               >
                 Sign In
@@ -89,7 +92,7 @@ export function Header() {
           <Button
             variant="ghost"
             size="sm"
-            className="md:hidden"
+            className="md:hidden h-10 w-10 min-w-[44px] p-0"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <svg
@@ -122,7 +125,7 @@ export function Header() {
                 key={item.name}
                 variant="ghost"
                 onClick={() => handleNavigation(item.href)}
-                className="w-full justify-start text-sm font-medium text-white/80 hover:text-white transition-colors duration-200"
+                className="w-full justify-start text-base sm:text-sm font-medium text-white/80 hover:text-white transition-colors duration-200 h-11 sm:h-9 min-h-[44px] sm:min-h-0"
               >
                 {item.name}
               </Button>
@@ -130,7 +133,7 @@ export function Header() {
             <div className="pt-2 border-t border-white/20">
               {user ? (
                 <Link href="/dashboard">
-                  <Button variant="outline" className="w-full">
+                  <Button variant="outline" className="w-full h-11 min-h-[44px]">
                     Dashboard
                   </Button>
                 </Link>

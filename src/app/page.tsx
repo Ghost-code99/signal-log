@@ -21,16 +21,16 @@ export default function Home() {
             <div className="w-16 h-16 bg-primary rounded-lg flex items-center justify-center mx-auto mb-6">
               <BarChart3 className="h-8 w-8 text-primary-foreground" />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-card-foreground mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-card-foreground mb-4 px-4">
               Manage All Your Projects in One Place
             </h2>
-            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground mb-6 leading-relaxed px-4">
               Use the new Multi-Project Dashboard to organize your initiatives,
               track progress, and link ideas, assumptions, and experiments to
               specific projects.
             </p>
             <Link href="/dashboard">
-              <Button size="lg" className="gap-2">
+              <Button size="lg" className="gap-2 h-11 sm:h-10 min-h-[44px] sm:min-h-0">
                 <BarChart3 className="h-5 w-5" />
                 Open Dashboard
               </Button>
@@ -40,11 +40,11 @@ export default function Home() {
       </section>
 
       <section className="container mx-auto px-4 py-20">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+        <div className="text-center mb-12 px-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-4">
             Four Powerful Tools to Get Started
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             No database required. No complex setup. Just AI-powered intelligence
             to help you think better and move faster.
           </p>
@@ -67,7 +67,7 @@ export default function Home() {
                 </p>
               </div>
               <Link href="/project-health-scanner">
-                <Button className="w-full">Try It Now</Button>
+                <Button className="w-full h-11 sm:h-9 min-h-[44px] sm:min-h-0">Try It Now</Button>
               </Link>
             </div>
           </Card>
@@ -87,7 +87,7 @@ export default function Home() {
                 </p>
               </div>
               <Link href="/idea-capture">
-                <Button className="w-full" variant="outline">
+                <Button className="w-full h-11 sm:h-9 min-h-[44px] sm:min-h-0" variant="outline">
                   Try It Now
                 </Button>
               </Link>
@@ -109,7 +109,7 @@ export default function Home() {
                 </p>
               </div>
               <Link href="/assumption-challenger">
-                <Button className="w-full" variant="outline">
+                <Button className="w-full h-11 sm:h-9 min-h-[44px] sm:min-h-0" variant="outline">
                   Try It Now
                 </Button>
               </Link>
@@ -131,7 +131,7 @@ export default function Home() {
                 </p>
               </div>
               <Link href="/experiment-canvas">
-                <Button className="w-full" variant="outline">
+                <Button className="w-full h-11 sm:h-9 min-h-[44px] sm:min-h-0" variant="outline">
                   Try It Now
                 </Button>
               </Link>
