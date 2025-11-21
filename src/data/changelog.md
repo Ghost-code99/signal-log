@@ -4,6 +4,28 @@ All notable changes to Signal Log will be documented in this file.
 
 ---
 
+## v1.1 - January 22, 2025
+
+### 🎉 New Feature: Public Changelog Page
+
+We've launched a public changelog page so you can stay up to date with all our updates! Visit `/changelog` to see what's new, what we've improved, and what we've fixed.
+
+**What's New:**
+- Public changelog page at `/changelog`
+- Version history with dates and descriptions
+- Easy-to-read format with categories and badges
+- Link in footer for easy access
+- Responsive design that works on all devices
+
+**Why It Matters:**
+- Stay informed about new features and improvements
+- See what's been fixed and what's coming next
+- Understand the value of each update at a glance
+
+**Try it:** Visit [Changelog](/changelog) or click the link in the footer.
+
+---
+
 ## v1.0 - January 21, 2025
 
 ### 🎉 We're Live!
