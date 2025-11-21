@@ -34,6 +34,7 @@ interface SecurityScore {
   highFindings: number
   mediumFindings: number
   lowFindings: number
+  lastUpdated?: Date | string // Optional: last scan timestamp
 }
 
 const SEVERITY_COLORS = {
@@ -160,9 +161,11 @@ export function SecurityAdvisor() {
             <div className="col-span-1 md:col-span-3">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold">Overall Security Score</h3>
-                <Badge variant="outline">
-                  Last scan: {new Date(score.lastUpdated).toLocaleString()}
-                </Badge>
+                {score.lastUpdated && (
+                  <Badge variant="outline">
+                    Last scan: {new Date(score.lastUpdated).toLocaleString()}
+                  </Badge>
+                )}
               </div>
               <div className="flex items-center gap-4">
                 <div className={`text-6xl font-bold ${getScoreColor(score.overallScore)}`}>

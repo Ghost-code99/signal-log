@@ -259,10 +259,10 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <LayoutDashboard className="h-8 w-8 text-gray-900" />
-          <h1 className="text-4xl font-bold text-gray-900">Project Dashboard</h1>
+          <LayoutDashboard className="h-6 w-6 sm:h-8 sm:w-8 text-gray-900" />
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">Project Dashboard</h1>
         </div>
-        <p className="text-lg text-gray-600 leading-relaxed">
+        <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
           Your strategic command center for all active initiatives
         </p>
       </div>

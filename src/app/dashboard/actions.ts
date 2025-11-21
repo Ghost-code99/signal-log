@@ -7,6 +7,7 @@ import {
   validateInput,
   sanitizeText,
 } from '../../lib/validation';
+import { checkPlanAccess } from '@/lib/subscription-check';
 
 /**
  * Server Actions for Multi-Project Dashboard
@@ -95,6 +96,7 @@ export async function createProject(input: CreateProjectInput): Promise<{
   success: boolean;
   project?: Project;
   error?: string;
+  requiresUpgrade?: boolean;
 }> {
   console.log('[Server Action] createProject called:', {
     name: input.name,
@@ -102,6 +104,17 @@ export async function createProject(input: CreateProjectInput): Promise<{
   });
 
   try {
+    // Security: Gate this feature behind Starter plan
+    // Server-side check prevents free users from accessing premium features
+    const accessCheck = await checkPlanAccess('starter');
+    if (!accessCheck.hasAccess) {
+      return {
+        success: false,
+        error: accessCheck.error || 'This feature requires a subscription',
+        requiresUpgrade: true,
+      };
+    }
+
     // Validate input with Zod schema
     const validation = validateInput(createProjectSchema, input);
     if (!validation.success) {
